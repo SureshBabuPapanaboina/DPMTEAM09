@@ -28,7 +28,7 @@ local.properties
 
 #lejos specific 
 *.nxj
-*.nxt
+*.nxd
 
 #emacs temp file 
 *.*~
