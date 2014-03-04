@@ -25,3 +25,10 @@ local.properties
 
 # Locally stored "Eclipse launch configurations"
 *.launch
+
+#lejos specific 
+*.nxj
+*.nxt
+
+#emacs temp file 
+*.*~
