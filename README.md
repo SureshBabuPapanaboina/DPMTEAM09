@@ -1,4 +1,4 @@
 DPMTEAM09
 =========
 
-dpm team 09
+Lab 6 repo 
