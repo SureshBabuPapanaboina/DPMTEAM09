@@ -14,7 +14,6 @@ import lejos.nxt.comm.RConsole;
 public class Configuration {
 	private Coordinate startLocation;// starting location
 	private Coordinate currentLocation ; //current location ;
-	private Coordinate nextLocation; //current location ;
 	private boolean driveComplete  = false ;
 	
 	private int ROTATE_SPEED = 60 ;
@@ -129,6 +128,5 @@ public class Configuration {
 	public void setCurrentLocation(Coordinate currentLocation) {
 		this.currentLocation = currentLocation;
 	}
-
 	
 }

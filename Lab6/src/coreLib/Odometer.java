@@ -2,7 +2,8 @@ package coreLib;
 
 import lejos.nxt.NXTRegulatedMotor;
 /**
- * odometer will obtain a reference to the CurrentCoordinate defined in Configuration and update this shared variable.
+ * odometer will obtain a reference to the CurrentCoordinate defined in 
+ * Configuration and update this shared variable. using the 
  * 
  * @author yuechuan
  *

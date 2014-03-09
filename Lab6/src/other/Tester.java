@@ -5,7 +5,6 @@ import java.util.Stack;
 import lejos.nxt.Button;
 import lejos.nxt.comm.RConsole;
 import coreLib.Configuration;
-import coreLib.ArmMotor;
 import coreLib.Configuration;
 import coreLib.Coordinate;
 import coreLib.Driver;

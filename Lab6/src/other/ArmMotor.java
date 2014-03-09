@@ -1,10 +1,12 @@
-package coreLib;
+package other;
 
+import coreLib.Configuration;
 import lejos.nxt.NXTRegulatedMotor;
 import lejos.nxt.Sound;
 
 /**
- * this class is used to move the arm to grab object 
+ * this class is used to move the arm to grab object.
+ * this is only used for lab 5
  * @author yuechuan
  *	@version 1.1
  */

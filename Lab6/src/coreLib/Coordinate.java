@@ -18,7 +18,7 @@ public class Coordinate extends Point{
 	}
 	
 	/**
-	 * theta is in <b> RAD </b>
+	 * Theta is in <b> RAD </b>
 	 * @return
 	 */
 	public double getTheta() {
@@ -47,12 +47,12 @@ public class Coordinate extends Point{
 	
 	/**
 	 * @param currentLocation (x,y,theata wrt y axes)
-	 * @param nextLocation (x,y, and some bogus theata)
+	 * @param nextLocation (x,y,  theata will not be considered)
 	 * @return the concave turning angle where the head of the
 	 * robot points to the next location. where neg means counter
-	 * clockwise turn and positive means clockwise turns <b> in deg</b>
+	 * clockwise turn and positive means clockwise turns in <b>deg</b>
 	 */
-		public static double calculateRotationAngle( Coordinate currentLocation
+	static double calculateRotationAngle( Coordinate currentLocation
 			, Coordinate nextLocation){
 		double	 dX = nextLocation.getX() - currentLocation.getX()
 				,dY = nextLocation.getY() - currentLocation.getY(),
@@ -84,28 +84,29 @@ public class Coordinate extends Point{
 		else if (dX==0 && dY == 0){
 			result = 0 ;
 		}
-	
 	return normalize(result);
 }
 
 	/**
 	 * @param start
 	 * @param end
-	 * @return the distance between c1 and c2 using the formula sqrt(dX^2 + dY^2) 
+	 * @return The Euclidean distance between c1 and c2 using the formula sqrt(dX^2 + dY^2) 
 	 */
 	public static double calculateDistance(Coordinate start , Coordinate end){
 		return Math.sqrt( sqr(end.getY() - start.getY()) + sqr(end.getX() - start.getX())); 
 	}
 	
-	public static double sqr(double x){
+	private static double sqr(double x){
 		return x* x;
 	}
+	
 	/**
-	 * normalize angle in degress 
-	 * @param angle in deg
+	 * normalize angle in degrees,
+	 * meaning any angle larger than 180 and less than -180 will be normalized to a value within [-180,180]. 
+	 * @param angle in deg 
 	 * @return cancave angle in deg 
 	 */
-	public static double normalize (double angle ){
+	private static double normalize (double angle ){
 		double normalized = angle;
 		if (angle > 180){
 			normalized = (-360+ angle);
@@ -115,34 +116,21 @@ public class Coordinate extends Point{
 		}
 		return normalized;
 	}
+
 	/**
-	 * calculate the slop of this coordiante and given coordinate 
-	 * @param c
-	 * @deprecated unmaintained 
-	 * @return
-	 */
-	private double calcSlop(Coordinate c){
-		return (c.getY() - this.getY()) / (c.getX() - this.getX());
-	}
-	
-	/**
-	 * copy the coordinate, this is used as a simple clone method 
+	 * copy the coordinate, this is used as a simple clone method.
 	 */
 	public Coordinate copy(){
 		return new Coordinate(this.getX(),this.getY() , this.getTheta());
 	}
 	
 	/**
-	 * return true if current coordinate is near the given coordinate 
+	 * return true if current coordinate is within 10 cm of the given coordinate 
 	 * @param c 
 	 * @return true if c is near the given Coordination
 	 */
 	public boolean isNear(Coordinate c) {
-		
-		double deltaDist = (this.getX()-c.getX()) *(this.getX()-c.getX()) 
-				+ (this.getY()-c.getY()) *(this.getY()-c.getY()) ;
-		RConsole.println("is Near distance : " + deltaDist);
-		return deltaDist <= 10 ? true : false ;
+		return isNear(c,10);
 	}
 	/**
 	 *  @return true if c is near current location at a maximum of maxDist 

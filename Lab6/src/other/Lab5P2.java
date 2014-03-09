@@ -1,8 +1,8 @@
 package other;
 
 import java.util.Stack;
+
 import coreLib.Configuration;
-import coreLib.ArmMotor;
 import coreLib.Configuration;
 import coreLib.Coordinate;
 import coreLib.Driver;
