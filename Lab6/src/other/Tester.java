@@ -4,7 +4,7 @@ import java.util.Stack;
 
 import lejos.nxt.Button;
 import lejos.nxt.comm.RConsole;
-import coreLib.AbstractConfig;
+import coreLib.Configuration;
 import coreLib.ArmMotor;
 import coreLib.Configuration;
 import coreLib.Coordinate;
@@ -19,7 +19,7 @@ import coreLib.UltrasonicPoller;
  *	@version 1.3
  */
 public class Tester {
-	private static AbstractConfig config = Configuration.getInstance();
+	private static Configuration config = Configuration.getInstance();
 	
 	public static void main(String[] args) {
 		//has to be placed before driver initialization 

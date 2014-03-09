@@ -10,13 +10,13 @@ import lejos.nxt.LCD;
  */
 public class LCDWriter extends Thread {
 	private static final long DISPLAY_PERIOD = 250;
-	private AbstractConfig config;
+	private Configuration config;
 	public String [] s ;
 	private Object lock ;
 	private static boolean threadStarted = false ;
 	private static LCDWriter lcd ;
 
-	private LCDWriter(AbstractConfig config){
+	private LCDWriter(Configuration config){
 		lock = new Object();;
 		s = new String[8];
 		this.config = config;
@@ -30,7 +30,7 @@ public class LCDWriter extends Thread {
 	 */
 	public static LCDWriter getInstance (){
 		if (lcd == null){
-			lcd = new LCDWriter(AbstractConfig.getInstance());
+			lcd = new LCDWriter(Configuration.getInstance());
 		}
 		return lcd;
 	}

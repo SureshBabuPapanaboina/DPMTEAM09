@@ -1,7 +1,7 @@
 package other;
 
 import java.util.Stack;
-import coreLib.AbstractConfig;
+import coreLib.Configuration;
 import coreLib.ArmMotor;
 import coreLib.Configuration;
 import coreLib.Coordinate;
@@ -27,8 +27,8 @@ public class Lab5P2 {
 	
 	//declearation of necessary items 
 	private static Driver driver = Driver.getInstance();
-	private static AbstractConfig config = Configuration.getInstance();
-	private static ColorSensor cs = new ColorSensor(AbstractConfig.LIGHT_SENSOR_PORT);
+	private static Configuration config = Configuration.getInstance();
+	private static ColorSensor cs = new ColorSensor(Configuration.LIGHT_SENSOR_PORT);
 	private static LCDWriter lcd = LCDWriter.getInstance();
 	private static Odometer odo = Odometer.getInstance();
 	private static UltrasonicPoller usp = UltrasonicPoller.getInstance();

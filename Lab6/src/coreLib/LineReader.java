@@ -11,7 +11,7 @@ import lejos.nxt.ColorSensor;
  */
 public class LineReader extends Thread{
 	private ColorSensor colorSensor; 
-	private AbstractConfig config;
+	private Configuration config;
 	private int previousSensedValue , currentSensedValue ;
 	private boolean passedLine = false ;
 	private long sensorStartTime;
@@ -25,14 +25,14 @@ public class LineReader extends Thread{
 	 */
 	private LinkedList<LineReaderListener> lrlistenerList = new LinkedList<LineReaderListener>();
 
-	private LineReader(AbstractConfig config){
-		colorSensor  = new ColorSensor(AbstractConfig.LIGHT_SENSOR_PORT);
+	private LineReader(Configuration config){
+		colorSensor  = new ColorSensor(Configuration.LIGHT_SENSOR_PORT);
 		this.config = config;    
 	}
 	
 	public static LineReader getInstance(){
 		if (lineReader == null){
-			lineReader = new LineReader(AbstractConfig.getInstance());
+			lineReader = new LineReader(Configuration.getInstance());
 		}
 		return lineReader;
 	}

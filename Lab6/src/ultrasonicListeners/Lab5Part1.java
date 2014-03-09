@@ -1,6 +1,6 @@
 package ultrasonicListeners;
 
-import coreLib.AbstractConfig;
+import coreLib.Configuration;
 import coreLib.Configuration;
 import coreLib.Driver;
 import coreLib.LCDWriter;
@@ -40,7 +40,7 @@ public class Lab5Part1 implements UltrasonicListener{
 	 * @param args
 	 */
 	public static void main(String [] args){
-		AbstractConfig config = Configuration.getInstance();
+		Configuration config = Configuration.getInstance();
 		UltrasonicPoller uspoller = UltrasonicPoller.getInstance();
 		LCDWriter.getInstance().start();
 		LCDWriter lcd = LCDWriter.getInstance();
@@ -62,7 +62,7 @@ public class Lab5Part1 implements UltrasonicListener{
 	public void ultrasonicDistance(int distanceFromObsticle) {
 		Driver.getInstance().motorStop();
 		LCDWriter.getInstance().writeToScreen("see smt["+ distanceFromObsticle + "]", 3);
-		ColorSensor cs = new ColorSensor(AbstractConfig.LIGHT_SENSOR_PORT);
+		ColorSensor cs = new ColorSensor(Configuration.LIGHT_SENSOR_PORT);
 		cs.setFloodlight(true);
 		
 		while(true){

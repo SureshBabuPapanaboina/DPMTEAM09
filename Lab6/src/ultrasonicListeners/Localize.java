@@ -1,6 +1,6 @@
 package ultrasonicListeners;
 
-import coreLib.AbstractConfig;
+import coreLib.Configuration;
 import coreLib.Driver;
 import coreLib.LCDWriter;
 import coreLib.UltrasonicListener;
@@ -33,7 +33,7 @@ public class Localize implements UltrasonicListener{
 		driver.motorStop();
 		RConsole.println("localization entered " + ++i + "times");
 		if (!secondAngle){
-			angle1 = AbstractConfig.getInstance().getCurrentLocation().getTheta();
+			angle1 = Configuration.getInstance().getCurrentLocation().getTheta();
 			LCDWriter.getInstance().writeToScreen("ang1 " + Math.toDegrees(angle1) , 6);
 			//rotate back 
 			driver.rotateToRelatively(-360, true);
@@ -42,7 +42,7 @@ public class Localize implements UltrasonicListener{
 			called = false;
 		}
 		else {
-			angle2 = AbstractConfig.getInstance().getCurrentLocation().getTheta();
+			angle2 = Configuration.getInstance().getCurrentLocation().getTheta();
 			LCDWriter.getInstance().writeToScreen("ang2 " + Math.toDegrees(angle2) , 5);
 			//rotate to middle 
 			double angleFromOrigin = ((angle1 + angle2)/2)- angle2 ;

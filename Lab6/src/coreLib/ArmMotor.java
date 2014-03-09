@@ -9,12 +9,12 @@ import lejos.nxt.Sound;
  *	@version 1.1
  */
 public class ArmMotor {
-	private static AbstractConfig config ;
-	public static final NXTRegulatedMotor ARM_M= AbstractConfig.SENSOR_MOTOR;
+	private static Configuration config ;
+	public static final NXTRegulatedMotor ARM_M= Configuration.SENSOR_MOTOR;
 	static int movementDeg = 180 ;
 	private static boolean isOpen = true ;
 	
-	private ArmMotor(AbstractConfig conf){
+	private ArmMotor(Configuration conf){
 		config = conf;
 	}
 

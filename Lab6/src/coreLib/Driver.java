@@ -10,9 +10,9 @@ import lejos.nxt.comm.RConsole;
  *
  */
 public class Driver extends Thread{
-	private AbstractConfig config ;
-	private NXTRegulatedMotor leftMotor= AbstractConfig.LEFT_MOTOR , 
-								rightMotor = AbstractConfig.RIGHT_MOTOR;
+	private Configuration config ;
+	private NXTRegulatedMotor leftMotor= Configuration.LEFT_MOTOR , 
+								rightMotor = Configuration.RIGHT_MOTOR;
 
 	
 	private static Driver instance ;
@@ -30,7 +30,7 @@ public class Driver extends Thread{
 	 * @param config
 	 */
 	@Deprecated
-	public Driver(AbstractConfig config){
+	public Driver(Configuration config){
 		this.config = config ;
 
 
@@ -43,7 +43,7 @@ public class Driver extends Thread{
 	 */
 	public static Driver getInstance(){
 		if (instance == null){
-			instance = new Driver(AbstractConfig.getInstance());
+			instance = new Driver(Configuration.getInstance());
 		}
 		return instance;
 	}
@@ -99,15 +99,15 @@ public class Driver extends Thread{
 	public void forward(double dist){
 		motorStopped = false ;
 		
-		int currentT = AbstractConfig.LEFT_MOTOR.getTachoCount();
-		double rotations = dist/ (2*Math.PI*(+ AbstractConfig.RIGHT_RADIUS)) ;
+		int currentT = Configuration.LEFT_MOTOR.getTachoCount();
+		double rotations = dist/ (2*Math.PI*(+ Configuration.RIGHT_RADIUS)) ;
 		RConsole.println("rotations" + rotations );
 		
 		int finalTachoCount =  currentT+ (int) (rotations * 360 );
-		RConsole.println("current Tacho " + AbstractConfig.LEFT_MOTOR.getTachoCount() + "\t\tfinal Tacho"  + finalTachoCount );
+		RConsole.println("current Tacho " + Configuration.LEFT_MOTOR.getTachoCount() + "\t\tfinal Tacho"  + finalTachoCount );
 		motorForward();
 		while(!motorStopped && finalTachoCount- leftMotor.getTachoCount() > 0 ){
-			RConsole.println("current Tacho " + AbstractConfig.LEFT_MOTOR.getTachoCount() );
+			RConsole.println("current Tacho " + Configuration.LEFT_MOTOR.getTachoCount() );
 			try{Thread.sleep(20);} catch (Exception e){};
 		}
 		
@@ -121,15 +121,15 @@ public class Driver extends Thread{
 	public void backward(double dist){
 		
 		RConsole.println("BackWard" );
-		int currentT = AbstractConfig.LEFT_MOTOR.getTachoCount();
-		double rotations = dist/ (2*Math.PI*(+ AbstractConfig.RIGHT_RADIUS)) ;
+		int currentT = Configuration.LEFT_MOTOR.getTachoCount();
+		double rotations = dist/ (2*Math.PI*(+ Configuration.RIGHT_RADIUS)) ;
 		RConsole.println("rotations" + rotations );
 		
 		int finalTachoCount =  currentT- (int) (rotations * 360 );
-		RConsole.println("current Tacho " + AbstractConfig.LEFT_MOTOR.getTachoCount() + "\t\tfinal Tacho"  + finalTachoCount );
+		RConsole.println("current Tacho " + Configuration.LEFT_MOTOR.getTachoCount() + "\t\tfinal Tacho"  + finalTachoCount );
 		motorBackward();
 		while(!motorStopped && leftMotor.getTachoCount() - finalTachoCount > 0 ){
-			RConsole.println("current Tacho " + AbstractConfig.LEFT_MOTOR.getTachoCount() );
+			RConsole.println("current Tacho " + Configuration.LEFT_MOTOR.getTachoCount() );
 			try{Thread.sleep(20);} catch (Exception e){};
 		}
 		motorStop();
@@ -155,8 +155,8 @@ public class Driver extends Thread{
 	public void rotateToRelatively(double degree, boolean returnRightAway){
 		
 		motorStopped = false;
-		rightMotor.setSpeed(AbstractConfig.getInstance().getRotationSpeed());
-		leftMotor.setSpeed(AbstractConfig.getInstance().getRotationSpeed());
+		rightMotor.setSpeed(Configuration.getInstance().getRotationSpeed());
+		leftMotor.setSpeed(Configuration.getInstance().getRotationSpeed());
 	        if (degree < 0){		//if degree is negative then rotate back ward
 	        	motorBackward();
 	        }
@@ -164,10 +164,10 @@ public class Driver extends Thread{
 	        motorStopped = false ;
 	        
 	        leftMotor.rotate(
-	        	convertAngle(AbstractConfig.LEFT_RADIUS, AbstractConfig.WIDTH, degree)
+	        	convertAngle(Configuration.LEFT_RADIUS, Configuration.WIDTH, degree)
 	        	, true);
 	        rightMotor.rotate(
-	        	-convertAngle(AbstractConfig.RIGHT_RADIUS,AbstractConfig.WIDTH , degree)
+	        	-convertAngle(Configuration.RIGHT_RADIUS,Configuration.WIDTH , degree)
 	        	, returnRightAway);
 	        //set flage to true 
 	        motorStop();
@@ -201,16 +201,16 @@ public class Driver extends Thread{
 	 * @param speed
 	 */
 	public static void setSpeed(int speed){
-		AbstractConfig.LEFT_MOTOR.setSpeed(speed);
-		AbstractConfig.RIGHT_MOTOR.setSpeed(speed);
+		Configuration.LEFT_MOTOR.setSpeed(speed);
+		Configuration.RIGHT_MOTOR.setSpeed(speed);
 	}
 	/**
 	 * set motor to go forward till stop()
 	 */
 	public void motorForward(){
 		motorStopped = false ;
-		AbstractConfig.LEFT_MOTOR.forward();
-		AbstractConfig.RIGHT_MOTOR.forward();		
+		Configuration.LEFT_MOTOR.forward();
+		Configuration.RIGHT_MOTOR.forward();		
 
 	}
 	/**
@@ -218,8 +218,8 @@ public class Driver extends Thread{
 	 */
 	public void motorBackward(){
 		motorStopped = false ;
-		AbstractConfig.LEFT_MOTOR.backward();
-		AbstractConfig.RIGHT_MOTOR.backward();
+		Configuration.LEFT_MOTOR.backward();
+		Configuration.RIGHT_MOTOR.backward();
 	}
 	
 	/**
@@ -235,8 +235,8 @@ public class Driver extends Thread{
 	public void motorStop(){
 		motorStopped = true ;
 		RConsole.println("Motor Stopped");
-		AbstractConfig.LEFT_MOTOR.stop();
-		AbstractConfig.RIGHT_MOTOR.stop();
+		Configuration.LEFT_MOTOR.stop();
+		Configuration.RIGHT_MOTOR.stop();
 	}
 
 }

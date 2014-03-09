@@ -17,7 +17,7 @@ import lejos.nxt.comm.RConsole;
  */
 public class UltrasonicPoller extends Thread implements UltrasonicPlanner {
 	private int SLEEP_INTERVAL = 50 ;
-	AbstractConfig config;
+	Configuration config;
 	UltrasonicSensor uSensor;
 
 	
@@ -31,9 +31,9 @@ public class UltrasonicPoller extends Thread implements UltrasonicPlanner {
 	private ArrayList <UltrasonicListener> usListenerList = new ArrayList<UltrasonicListener>();
 	private static boolean listenerExecutionDisabled = false ;
 	
-	private UltrasonicPoller (AbstractConfig config){
+	private UltrasonicPoller (Configuration config){
 		this.config = config;
-		uSensor = new UltrasonicSensor(AbstractConfig.ULTRASONIC_SENSOR_PORT);
+		uSensor = new UltrasonicSensor(Configuration.ULTRASONIC_SENSOR_PORT);
 		//start the sensor 
 		uSensor.continuous();
 		//filter the distance and get 10 times polling avg
@@ -46,14 +46,14 @@ public class UltrasonicPoller extends Thread implements UltrasonicPlanner {
 	
 	public static UltrasonicPoller getInstance(){
 		if (instance == null){
-			instance = new UltrasonicPoller(AbstractConfig.getInstance());
+			instance = new UltrasonicPoller(Configuration.getInstance());
 		}
 		return instance;
 	}
 	
 	public void run (){
 		threadStarted = true ;
-		while (!AbstractConfig.getInstance().isDriveComplete()){
+		while (!Configuration.getInstance().isDriveComplete()){
 			prevDist = distance;
 			distance = uSensor.getDistance();
 

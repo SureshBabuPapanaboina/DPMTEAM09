@@ -10,7 +10,7 @@ public class Odometer extends Thread {
 	private static final long UPDATE_PERIOD = 25; //ms
 	private Object lock; 	// lock object for mutual exclusion
 
-	private AbstractConfig config;
+	private Configuration config;
 	private Coordinate cCoord ;  //current location (x,y,heading)
 	private NXTRegulatedMotor lMotor; // left motor 
 	private NXTRegulatedMotor rMotor;
@@ -21,12 +21,12 @@ public class Odometer extends Thread {
 	**/
 	public static Odometer getInstance(){
 		if (odo == null){
-			odo = new Odometer(AbstractConfig.getInstance());
+			odo = new Odometer(Configuration.getInstance());
 		}
 		return odo;
 	}
 
-	private Odometer(AbstractConfig config){
+	private Odometer(Configuration config){
 		this.config = config;
 		lock = new Object();
 		lMotor = Configuration.LEFT_MOTOR;
@@ -62,12 +62,12 @@ public class Odometer extends Thread {
 				rTCount = newRightCount;
 				
 				//calculate the distance traveled for each wheel 
-				leftArcDistance = getArcLen(deltaLeftCount,AbstractConfig.LEFT_RADIUS);
-				rightArcDistance = getArcLen(deltaRightCount,AbstractConfig.RIGHT_RADIUS);
+				leftArcDistance = getArcLen(deltaLeftCount,Configuration.LEFT_RADIUS);
+				rightArcDistance = getArcLen(deltaRightCount,Configuration.RIGHT_RADIUS);
 				
 
 				//calculate the degree 
-				deltaTheta = (leftArcDistance - rightArcDistance) / AbstractConfig.WIDTH;
+				deltaTheta = (leftArcDistance - rightArcDistance) / Configuration.WIDTH;
 				//calculate the displacement 
 				displacement = (leftArcDistance + rightArcDistance) / 2.0;
 				
