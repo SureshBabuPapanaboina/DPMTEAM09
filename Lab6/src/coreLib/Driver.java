@@ -67,7 +67,6 @@ public class Driver extends Thread{
 	 */
 	public void travelTo(Coordinate nextLocation) {
 		Coordinate currentLoc  = new Coordinate(odo.getX(), odo.getY(), odo.getTheta());
-		config.setNextLocation(nextLocation);
 		config.setStartLocation(currentLoc.copy());
 		
 		double distance = Coordinate.calculateDistance(currentLoc, nextLocation);

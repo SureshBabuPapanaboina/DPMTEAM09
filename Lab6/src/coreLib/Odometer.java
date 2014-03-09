@@ -1,7 +1,12 @@
 package coreLib;
 
 import lejos.nxt.NXTRegulatedMotor;
-
+/**
+ * odometer will obtain a reference to the CurrentCoordinate defined in Configuration and update this shared variable.
+ * 
+ * @author yuechuan
+ *
+ */
 public class Odometer extends Thread {
 	private static boolean threadStarted = false ;
 	private static Odometer odo;
@@ -10,7 +15,6 @@ public class Odometer extends Thread {
 	private static final long UPDATE_PERIOD = 25; //ms
 	private Object lock; 	// lock object for mutual exclusion
 
-	private Configuration config;
 	private Coordinate cCoord ;  //current location (x,y,heading)
 	private NXTRegulatedMotor lMotor; // left motor 
 	private NXTRegulatedMotor rMotor;
@@ -27,14 +31,15 @@ public class Odometer extends Thread {
 	}
 
 	private Odometer(Configuration config){
-		this.config = config;
 		lock = new Object();
 		lMotor = Configuration.LEFT_MOTOR;
 		rMotor = Configuration.RIGHT_MOTOR;
 		cCoord = config.getCurrentLocation();
 	}
-
-
+	
+	/**
+	 * begin the odometer 
+	 */
 	public void run(){
 		threadStarted = true;
 		long updateStart, updateEnd;
@@ -144,7 +149,7 @@ public class Odometer extends Thread {
 		}
 		return result;
 	}
-	//TODO
+
 	private Coordinate setX(double x) {
 		synchronized (lock) {
 			cCoord.setX(x);

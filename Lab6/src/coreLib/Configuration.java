@@ -123,28 +123,12 @@ public class Configuration {
 		return currentLocation;
 	}
 	/**
-	 * set the current location to currentLocation
+	 * set the current location to currentLocation this is 
 	 * @param currentLocation
 	 */
 	public void setCurrentLocation(Coordinate currentLocation) {
 		this.currentLocation = currentLocation;
 	}
-	
-	/**
-	 * returns the next location  
-	 * @return
-	 * @deprecated since we are using a stack system we should use the stack peek instead 
-	 */
-	public Coordinate getNextLocation() {
-		return nextLocation;
-	}
-	/**
-	 * set the next location 
-	 * @param nextLocation
-	 * @deprecated we are now using a stack to represent the next locations 
-	 */
-	public void setNextLocation(Coordinate nextLocation) {
-		this.nextLocation = nextLocation;
-	}
+
 	
 }
