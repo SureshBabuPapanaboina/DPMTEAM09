@@ -28,6 +28,11 @@ public final class Configuration {
 	 * initialize to (0,0,0)
 	 */
 	private static Pose startPosition = new Pose();
+	/**
+	 * the next travel to position . this is maintained by the Driver class 
+	 * DO NOT MANUAL OVERRIDE 
+	 */
+	private static Pose nextPose;
 	
 	
 	
@@ -48,6 +53,7 @@ public final class Configuration {
 	 * finished.
 	 */
 	private static boolean driveComplete ;
+
 	
 	/**
 	* made private so no class can inherit and instantiate 
@@ -138,5 +144,21 @@ public final class Configuration {
 	 */
 	public static void setCurrentLocation(Pose currentLocation) {
 		currentPosition = currentLocation;
+	}
+	/**
+	 * returns the next location  
+	 * @return
+	 * @deprecated since we are using a stack system we should use the stack peek instead 
+	 */
+	public static Pose getNextLocation() {
+		return nextPose;
+	}
+	/**
+	 * set the next location 
+	 * @param nextLocation
+	 * @deprecated we are now using a stack to represent the next locations 
+	 */
+	protected static void setNextLocation(Pose nextLocation) {
+		nextPose = nextLocation;
 	}
 }

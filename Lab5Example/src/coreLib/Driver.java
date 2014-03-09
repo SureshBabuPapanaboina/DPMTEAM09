@@ -11,18 +11,12 @@ import lejos.nxt.comm.RConsole;
  */
 public class Driver extends Thread{
 	private AbstractConfig config ;
-	private Coordinate currentCoordinate, startCoord , endCoord;
 	private NXTRegulatedMotor leftMotor= AbstractConfig.LEFT_MOTOR , 
 								rightMotor = AbstractConfig.RIGHT_MOTOR;
 
 	
 	private static Driver instance ;
 	private Odometer odo = Odometer.getInstance();
-	/**
-	 * lock is not used because it causes a lejos bug... 
-	 */
-	private Object lock ;
-	
 	/**
 	 * indicate if the motor is running or not.
 	 * set by motorStop and motorForward
@@ -40,7 +34,7 @@ public class Driver extends Thread{
 		this.config = config ;
 
 
-		endCoord = config.getStartLocation();
+		config.getStartLocation();
 	}
 	
 	/**
