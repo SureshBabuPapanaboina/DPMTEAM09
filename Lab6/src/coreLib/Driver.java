@@ -4,48 +4,40 @@ import lejos.nxt.NXTRegulatedMotor;
 import lejos.nxt.comm.RConsole;
 
 /**
- * driver class that has the control of motor 
+ * Driver class that has the control of motor, not open to extension
+ * because we do not want two instance of this running at the same time.
  * @author yuechuan
- * @version 1.8 
+ * @version 1.9 
  *
  */
-public class Driver extends Thread{
-	private Configuration config ;
-	private NXTRegulatedMotor leftMotor= Configuration.LEFT_MOTOR , 
-								rightMotor = Configuration.RIGHT_MOTOR;
-
+public final class Driver extends Thread{
 	
-	private static Driver instance ;
-	private Odometer odo = Odometer.getInstance();
+	private final static boolean DEBUG = Configuration.DEBUG;
+	private static Configuration config ;
+	private static Odometer odo;
+	private static NXTRegulatedMotor leftMotor, rightMotor;
+
 	/**
 	 * indicate if the motor is running or not.
 	 * set by motorStop and motorForward
 	 */
-	private boolean motorStopped = true ;
+	private static boolean motorStopped = true ;
 
 	/**
 	 * do not use this to initialize another instance. only used for extension.
 	 * use getInstance to either generate a new instance on the fly or get the previously
 	 * generated instance 
 	 * @param config
+	 * @Deprecated open for extend
 	 */
-	@Deprecated
-	public Driver(Configuration config){
-		this.config = config ;
 
+	private Driver(Configuration config){
+		this.config = config ;
+		this.odo = Odometer.getInstance();
+		leftMotor= config.LEFT_MOTOR; 
+		rightMotor = config.RIGHT_MOTOR;
 
 		config.getStartLocation();
-	}
-	
-	/**
-	 * 
-	 * @return an instance of Driver 
-	 */
-	public static Driver getInstance(){
-		if (instance == null){
-			instance = new Driver(Configuration.getInstance());
-		}
-		return instance;
 	}
 
 	/**
@@ -65,17 +57,17 @@ public class Driver extends Thread{
 	 * 
 	 * @param nextLocationg
 	 */
-	public void travelTo(Coordinate nextLocation) {
+	public static void travelTo(Coordinate nextLocation) {
 		Coordinate currentLoc  = new Coordinate(odo.getX(), odo.getY(), odo.getTheta());
 		config.setStartLocation(currentLoc.copy());
 		
 		double distance = Coordinate.calculateDistance(currentLoc, nextLocation);
 		double turningAngle = Coordinate.calculateRotationAngle(currentLoc, nextLocation);
 		
-		RConsole.println("Driver:travelTo:CurrentCoord: " + currentLoc.toString2());
-		RConsole.println("Driver:travelTo:NxtCoord: " + nextLocation.toString2());
-		RConsole.println("Driver:travelTo:traveling dist: " + distance);
-		RConsole.println("Driver:travelTo:turning Angle: " + turningAngle);
+		if (DEBUG) RConsole.println("Driver:travelTo:CurrentCoord: " + currentLoc.toString2());
+		if (DEBUG) RConsole.println("Driver:travelTo:NxtCoord: " + nextLocation.toString2());
+		if (DEBUG) RConsole.println("Driver:travelTo:traveling dist: " + distance);
+		if (DEBUG) RConsole.println("Driver:travelTo:turning Angle: " + turningAngle);
 		//make turn
 		rotateToRelatively(turningAngle);
 
@@ -83,10 +75,10 @@ public class Driver extends Thread{
 		
 		forward(distance);
 		
-		RConsole.println("Driver:travelTo:currentCoordinate : x " + config.getCurrentLocation().getX()
+		if (DEBUG) RConsole.println("Driver:travelTo:currentCoordinate : x " + config.getCurrentLocation().getX()
 			+"\ty " + config.getCurrentLocation().getY() 
 			+ "\ttheata " +config.getCurrentLocation().getTheta());
-			RConsole.println("=======");
+			if (DEBUG) RConsole.println("=======");
 		
 			
 		}
@@ -95,18 +87,18 @@ public class Driver extends Thread{
 	 * move wheel forward at the same speed it was running at before 
 	 * @param dist
 	 */
-	public void forward(double dist){
+	public static void forward(double dist){
 		motorStopped = false ;
 		
 		int currentT = Configuration.LEFT_MOTOR.getTachoCount();
 		double rotations = dist/ (2*Math.PI*(+ Configuration.RIGHT_RADIUS)) ;
-		RConsole.println("rotations" + rotations );
+		if (DEBUG) RConsole.println("rotations" + rotations );
 		
 		int finalTachoCount =  currentT+ (int) (rotations * 360 );
-		RConsole.println("current Tacho " + Configuration.LEFT_MOTOR.getTachoCount() + "\t\tfinal Tacho"  + finalTachoCount );
+		if (DEBUG) RConsole.println("current Tacho " + Configuration.LEFT_MOTOR.getTachoCount() + "\t\tfinal Tacho"  + finalTachoCount );
 		motorForward();
 		while(!motorStopped && finalTachoCount- leftMotor.getTachoCount() > 0 ){
-			RConsole.println("current Tacho " + Configuration.LEFT_MOTOR.getTachoCount() );
+			if (DEBUG) RConsole.println("current Tacho " + Configuration.LEFT_MOTOR.getTachoCount() );
 			try{Thread.sleep(20);} catch (Exception e){};
 		}
 		
@@ -114,21 +106,29 @@ public class Driver extends Thread{
 	}
 	
 	/**
-	 * move wheel backward at the same speed it was running at before 
+	 * move wheel backward at the same speed it was running at before.
+	 * <b> The motor will always move a tinny bit more than the defined distance 
+	 * due to the implementation. </b> the extra amount depends on how fast can CPU process 
+	 * can run the while loop, the highest pulling interval should be more than 20 ms, which is the
+	 * time I have set arbitrarily.
 	 * @param dist
 	 */
-	public void backward(double dist){
+	public static void backward(double dist){
 		
-		RConsole.println("BackWard" );
+		if (DEBUG) RConsole.println("BackWard" );
 		int currentT = Configuration.LEFT_MOTOR.getTachoCount();
 		double rotations = dist/ (2*Math.PI*(+ Configuration.RIGHT_RADIUS)) ;
-		RConsole.println("rotations" + rotations );
+		if (DEBUG) RConsole.println("rotations" + rotations );
 		
 		int finalTachoCount =  currentT- (int) (rotations * 360 );
-		RConsole.println("current Tacho " + Configuration.LEFT_MOTOR.getTachoCount() + "\t\tfinal Tacho"  + finalTachoCount );
+		if (DEBUG) RConsole.println("current Tacho " + Configuration.LEFT_MOTOR.getTachoCount() + "\t\tfinal Tacho"  + finalTachoCount );
 		motorBackward();
+		//check if the motor has reached the given distance
+		int sleepIntv = 20 ;		//how long the loop should wait before checking 
 		while(!motorStopped && leftMotor.getTachoCount() - finalTachoCount > 0 ){
-			RConsole.println("current Tacho " + Configuration.LEFT_MOTOR.getTachoCount() );
+			if (DEBUG) RConsole.println("current Tacho " + Configuration.LEFT_MOTOR.getTachoCount() );
+			//if the motor still have lots to rotate then sleep longer 
+			sleepIntv = (leftMotor.getTachoCount() - finalTachoCount > 50) ? 50 : 20 ;
 			try{Thread.sleep(20);} catch (Exception e){};
 		}
 		motorStop();
@@ -142,7 +142,7 @@ public class Driver extends Thread{
 	 *	when ever possible 
 	 * @param degree
 	 */
-	public void rotateToRelatively(double degree){
+	public static void rotateToRelatively(double degree){
 		rotateToRelatively(degree, false);			
 	}
 	/**
@@ -151,7 +151,7 @@ public class Driver extends Thread{
 	 * @param degree 
 	 * @param returnRightAway should the function finish before finishing the turn 
 	 */
-	public void rotateToRelatively(double degree, boolean returnRightAway){
+	public static void rotateToRelatively(double degree, boolean returnRightAway){
 		
 		motorStopped = false;
 		rightMotor.setSpeed(Configuration.getInstance().getRotationSpeed());
@@ -159,7 +159,7 @@ public class Driver extends Thread{
 	        if (degree < 0){		//if degree is negative then rotate back ward
 	        	motorBackward();
 	        }
-	        //set flage to indicate motor is running 
+	        //set flag to indicate motor is running 
 	        motorStopped = false ;
 	        
 	        leftMotor.rotate(
@@ -168,12 +168,11 @@ public class Driver extends Thread{
 	        rightMotor.rotate(
 	        	-convertAngle(Configuration.RIGHT_RADIUS,Configuration.WIDTH , degree)
 	        	, returnRightAway);
-	        //set flage to true 
+	        //set flag to true 
 	        motorStop();
 	}
 	
 	/**
-	 * 
 	 * @param radius radius of the wheel 
 	 * @param distance distance we want to cover 
 	 * @return angle the wheel need to rotate in degree
@@ -183,7 +182,7 @@ public class Driver extends Thread{
 	}
 
 	/**
-	 * convert angle in deg to the distance driven in cm
+	 * convert angle the wheel need to turn (in deg) to the distance driven in cm
 	 */
 	private static int convertAngle(double radius, double width, double angle) {
 		return convertDistance(radius, Math.PI * width * angle / 360.0);
@@ -192,7 +191,7 @@ public class Driver extends Thread{
 	 * turn to angle wrt to the y axies
 	 * @param in degrees 
 	 */
-	public void turnTo(double theata) {
+	public static void turnTo(double theata) {
 		rotateToRelatively(theata);		
 	}
 	/**
@@ -200,42 +199,45 @@ public class Driver extends Thread{
 	 * @param speed
 	 */
 	public static void setSpeed(int speed){
-		Configuration.LEFT_MOTOR.setSpeed(speed);
-		Configuration.RIGHT_MOTOR.setSpeed(speed);
+		leftMotor.setSpeed(speed);
+		rightMotor.setSpeed(speed);
+		if (DEBUG) RConsole.println("Motor speed set to :" + speed);
 	}
 	/**
-	 * set motor to go forward till stop()
+	 * set motor to go forward till motorStop() or flt() 
+	 * All actions involving forwarding the motor must call this method
 	 */
-	public void motorForward(){
+	public static void motorForward(){
 		motorStopped = false ;
-		Configuration.LEFT_MOTOR.forward();
-		Configuration.RIGHT_MOTOR.forward();		
-
+		leftMotor.forward();
+		rightMotor.forward();		
 	}
 	/**
-	 * set motor to go backward till stop()
+	 * set motor to go backward till motorStop()
+	 * All actions involving backing of the motor must call this method
 	 */
-	public void motorBackward(){
+	public static void motorBackward(){
 		motorStopped = false ;
-		Configuration.LEFT_MOTOR.backward();
-		Configuration.RIGHT_MOTOR.backward();
+		leftMotor.backward();
+		rightMotor.backward();
 	}
 	
 	/**
 	 * check if motor is stopped 
-	 * @return
+	 * @return true if the motor is in a non action state  
 	 */
-	public boolean isMotorStopped() {
+	public static boolean isMotorStopped() {
 		return motorStopped;
 	}
 	/**
-	 * stop motor 
+	 * stop motor
+	 * All actions involving stopping the motor must call this method
 	 */
-	public void motorStop(){
+	public static void motorStop(){
 		motorStopped = true ;
-		RConsole.println("Motor Stopped");
-		Configuration.LEFT_MOTOR.stop();
-		Configuration.RIGHT_MOTOR.stop();
+		if (DEBUG) RConsole.println("Motor Stopped");
+		leftMotor.stop();
+		rightMotor.stop();
 	}
 
 }

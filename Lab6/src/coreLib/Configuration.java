@@ -27,6 +27,10 @@ public class Configuration {
 	static final double LEFT_RADIUS = 2.090 ;
 	static final double RIGHT_RADIUS =2.090;
 	static final double WIDTH = 15.24 ;
+	/**
+	 * enable /disable debuging 
+	 */
+	public static final boolean DEBUG = false;
 	
 	private static Configuration config = null ;
 	
