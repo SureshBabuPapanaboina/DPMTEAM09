@@ -19,7 +19,7 @@ import coreLib.UltrasonicPoller;
  * @author yuechuan
  *
  */
-public class BlockInFrontInterrupt implements UltrasonicListener{
+public class BlockAvoidanceLab5 implements UltrasonicListener{
 	private int distanceOnInvoke = 20;
 	private boolean continuous = true ;
 	private boolean called = false ;

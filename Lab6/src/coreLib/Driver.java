@@ -14,6 +14,7 @@ public final class Driver extends Thread{
 	
 	private final static boolean DEBUG = Configuration.DEBUG;
 	private static Configuration config ;
+	//TODO remove dependency on odometer 
 	private static Odometer odo;
 	private static NXTRegulatedMotor leftMotor, rightMotor;
 
@@ -64,6 +65,8 @@ public final class Driver extends Thread{
 	 * @param nextLocationg
 	 */
 	public void travelTo(Coordinate nextLocation) {
+		
+		//TODO remove dependency on odometer : see if we can get the coordinate from Configuration 
 		Coordinate currentLoc  = new Coordinate(odo.getX(), odo.getY(), odo.getTheta());
 		config.setStartLocation(currentLoc.copy());
 		

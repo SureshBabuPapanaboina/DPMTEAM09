@@ -8,12 +8,12 @@ import lejos.nxt.comm.RConsole;
 
 /**
  * This class hosts a public method that does the localization. 
- * an instance of this class is used in the lab5 part 2 
+ * an instance of this class is used in the lab5 part 2.
  * @author yuechuan
  * @version 1.2
  *
  */
-public class Localize implements UltrasonicListener{
+public class LocalizeLab5 implements UltrasonicListener{
 	//the following 3 is used for the UltrasonicListener
 	private int distanceOnInvoke;
 	private boolean continuous;
@@ -23,7 +23,7 @@ public class Localize implements UltrasonicListener{
 
 	Driver driver = Driver.getInstance();
 	
-	public Localize(int distanceOnInvoke , boolean continuous){
+	public LocalizeLab5(int distanceOnInvoke , boolean continuous){
 		this.distanceOnInvoke = distanceOnInvoke;
 		this.continuous = continuous;
 	}

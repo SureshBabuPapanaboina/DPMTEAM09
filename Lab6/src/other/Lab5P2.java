@@ -9,8 +9,8 @@ import coreLib.Driver;
 import coreLib.LCDWriter;
 import coreLib.Odometer;
 import coreLib.UltrasonicPoller;
-import ultrasonicListeners.BlockInFrontInterrupt;
-import ultrasonicListeners.Localize;
+import ultrasonicListeners.BlockAvoidanceLab5;
+import ultrasonicListeners.LocalizeLab5;
 import lejos.nxt.Button;
 import lejos.nxt.ColorSensor;
 import lejos.nxt.ColorSensor.Color;
@@ -41,7 +41,7 @@ public class Lab5P2 {
 	private static Stack <Coordinate> wayPoints = new Stack<Coordinate>();	
 
 	public static void main(String[] args) {
-		BlockInFrontInterrupt bifi = new BlockInFrontInterrupt();
+		BlockAvoidanceLab5 bifi = new BlockAvoidanceLab5();
 		bifi.setCalled(false).setContinuous(true);
 		//start the threads NOTE : do not start twice 
 		driver.start();
@@ -271,7 +271,7 @@ public class Lab5P2 {
 		Driver.setSpeed(config.getRotationSpeed());
 		UltrasonicPoller upoller = UltrasonicPoller.getInstance();
 		
-		Localize loc = new Localize(30, true);
+		LocalizeLab5 loc = new LocalizeLab5(30, true);
 		upoller.subscribe(loc);
 		
 		//start rotating 
