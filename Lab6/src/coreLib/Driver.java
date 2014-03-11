@@ -17,6 +17,8 @@ public final class Driver extends Thread{
 	private static Odometer odo;
 	private static NXTRegulatedMotor leftMotor, rightMotor;
 
+	private static Driver instance = new Driver(Configuration.getInstance());
+	
 	/**
 	 * indicate if the motor is running or not.
 	 * set by motorStop and motorForward
@@ -39,7 +41,11 @@ public final class Driver extends Thread{
 
 		config.getStartLocation();
 	}
-
+	
+	public static Driver getInstance(){
+		return instance;
+	}
+	
 	/**
 	 * overloaded version of <br> {@code travelTo(new Coordinate(x, y, 0));			}
 	 * @param x
@@ -57,7 +63,7 @@ public final class Driver extends Thread{
 	 * 
 	 * @param nextLocationg
 	 */
-	public static void travelTo(Coordinate nextLocation) {
+	public void travelTo(Coordinate nextLocation) {
 		Coordinate currentLoc  = new Coordinate(odo.getX(), odo.getY(), odo.getTheta());
 		config.setStartLocation(currentLoc.copy());
 		
@@ -87,7 +93,7 @@ public final class Driver extends Thread{
 	 * move wheel forward at the same speed it was running at before 
 	 * @param dist
 	 */
-	public static void forward(double dist){
+	public void forward(double dist){
 		motorStopped = false ;
 		
 		int currentT = Configuration.LEFT_MOTOR.getTachoCount();
@@ -113,7 +119,7 @@ public final class Driver extends Thread{
 	 * time I have set arbitrarily.
 	 * @param dist
 	 */
-	public static void backward(double dist){
+	public void backward(double dist){
 		
 		if (DEBUG) RConsole.println("BackWard" );
 		int currentT = Configuration.LEFT_MOTOR.getTachoCount();
@@ -129,7 +135,7 @@ public final class Driver extends Thread{
 			if (DEBUG) RConsole.println("current Tacho " + Configuration.LEFT_MOTOR.getTachoCount() );
 			//if the motor still have lots to rotate then sleep longer 
 			sleepIntv = (leftMotor.getTachoCount() - finalTachoCount > 50) ? 50 : 20 ;
-			try{Thread.sleep(20);} catch (Exception e){};
+			try{Thread.sleep(sleepIntv);} catch (Exception e){};
 		}
 		motorStop();
 	}
@@ -142,7 +148,7 @@ public final class Driver extends Thread{
 	 *	when ever possible 
 	 * @param degree
 	 */
-	public static void rotateToRelatively(double degree){
+	public void rotateToRelatively(double degree){
 		rotateToRelatively(degree, false);			
 	}
 	/**
@@ -151,7 +157,7 @@ public final class Driver extends Thread{
 	 * @param degree 
 	 * @param returnRightAway should the function finish before finishing the turn 
 	 */
-	public static void rotateToRelatively(double degree, boolean returnRightAway){
+	public void rotateToRelatively(double degree, boolean returnRightAway){
 		
 		motorStopped = false;
 		rightMotor.setSpeed(Configuration.getInstance().getRotationSpeed());
@@ -177,21 +183,21 @@ public final class Driver extends Thread{
 	 * @param distance distance we want to cover 
 	 * @return angle the wheel need to rotate in degree
 	 */
-	private static int convertDistance(double radius, double distance) {
+	private int convertDistance(double radius, double distance) {
 		return (int) ((180.0 * distance) / (Math.PI * radius));
 	}
 
 	/**
 	 * convert angle the wheel need to turn (in deg) to the distance driven in cm
 	 */
-	private static int convertAngle(double radius, double width, double angle) {
+	private int convertAngle(double radius, double width, double angle) {
 		return convertDistance(radius, Math.PI * width * angle / 360.0);
 	}
 	/**
 	 * turn to angle wrt to the y axies
 	 * @param in degrees 
 	 */
-	public static void turnTo(double theata) {
+	public void turnTo(double theata) {
 		rotateToRelatively(theata);		
 	}
 	/**
@@ -207,7 +213,7 @@ public final class Driver extends Thread{
 	 * set motor to go forward till motorStop() or flt() 
 	 * All actions involving forwarding the motor must call this method
 	 */
-	public static void motorForward(){
+	public void motorForward(){
 		motorStopped = false ;
 		leftMotor.forward();
 		rightMotor.forward();		
@@ -216,7 +222,7 @@ public final class Driver extends Thread{
 	 * set motor to go backward till motorStop()
 	 * All actions involving backing of the motor must call this method
 	 */
-	public static void motorBackward(){
+	public void motorBackward(){
 		motorStopped = false ;
 		leftMotor.backward();
 		rightMotor.backward();
@@ -233,7 +239,7 @@ public final class Driver extends Thread{
 	 * stop motor
 	 * All actions involving stopping the motor must call this method
 	 */
-	public static void motorStop(){
+	public void motorStop(){
 		motorStopped = true ;
 		if (DEBUG) RConsole.println("Motor Stopped");
 		leftMotor.stop();

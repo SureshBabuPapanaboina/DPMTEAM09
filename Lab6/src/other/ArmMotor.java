@@ -7,6 +7,7 @@ import lejos.nxt.Sound;
 /**
  * this class is used to move the arm to grab object.
  * this is only used for lab 5
+ * @deprecated not used, may require change 
  * @author yuechuan
  *	@version 1.1
  */

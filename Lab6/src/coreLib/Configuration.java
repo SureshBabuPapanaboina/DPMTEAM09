@@ -26,9 +26,9 @@ public class Configuration {
 	public static final SensorPort LIGHT_SENSOR_PORT = SensorPort.S2;
 	static final double LEFT_RADIUS = 2.090 ;
 	static final double RIGHT_RADIUS =2.090;
-	static final double WIDTH = 15.24 ;
+	static final double WIDTH = 24 ;
 	/**
-	 * enable /disable debuging 
+	 * enable /disable debugging 
 	 */
 	public static final boolean DEBUG = false;
 	

@@ -16,32 +16,31 @@ import lejos.nxt.comm.RConsole;
  *
  */
 public class UltrasonicPoller extends Thread implements UltrasonicPlanner {
-	private int SLEEP_INTERVAL = 50 ;
 	Configuration config;
 	UltrasonicSensor uSensor;
+	private ArrayList <UltrasonicListener> usListenerList = new ArrayList<UltrasonicListener>(); //lst of listeners
 
-	
-	private int distance = 25; //initialize the distance read to 25
+	private int pollingInterval = 50 ;	//in ms
+	private int currentDist = 25; //initialize the distance read to 25
 	/**
-	 * the previous distance 
+	 * the previous distance stored
 	 */
-	private int prevDist = distance;
+	private int prevDist = currentDist;
+	private boolean distanceUpdated = false ;
 	private static UltrasonicPoller instance ;
-	private static boolean threadStarted = false ;
-	private ArrayList <UltrasonicListener> usListenerList = new ArrayList<UltrasonicListener>();
-	private static boolean listenerExecutionDisabled = false ;
-	
+	private static boolean listenerExecutionDisabled = false ;	//true if we want to disable the ultrasonic listener and only allow passive pulling 
+		
 	private UltrasonicPoller (Configuration config){
 		this.config = config;
 		uSensor = new UltrasonicSensor(Configuration.ULTRASONIC_SENSOR_PORT);
-		//start the sensor 
-		uSensor.continuous();
+		uSensor.continuous();	//start the sensor 
+
 		//filter the distance and get 10 times polling avg
 		double mean = 0 ;
 		for (int i = 0 ; i < 10 ; i ++ ){
 			mean = ((mean*i) + uSensor.getDistance())/i;
 		}
-		distance = (int) mean ;
+		currentDist = (int) mean ;
 	}
 	
 	public static UltrasonicPoller getInstance(){
@@ -52,39 +51,41 @@ public class UltrasonicPoller extends Thread implements UltrasonicPlanner {
 	}
 	
 	public void run (){
-		threadStarted = true ;
 		while (!Configuration.getInstance().isDriveComplete()){
-			prevDist = distance;
-			distance = uSensor.getDistance();
+			prevDist = currentDist;
+			currentDist = uSensor.getDistance();
+			distanceUpdated = true ;
 
-			LCDWriter.getInstance().writeToScreen("Dist " + distance, 7);
+			LCDWriter.getInstance().writeToScreen("Dist " + currentDist, 7);
 			if (!listenerExecutionDisabled){
 				for (final UltrasonicListener usw : usListenerList){
 					//if the distance is within range.
 					//if it has not been called
 					//or if it should be called continuously
-					if (usw.getDistanceOnInvoke() >= distance && (!usw.isCalled() || usw.isContinuous())){
+					//then start a new Thread to run the code specified in the UltrasonicListener 
+					if (usw.getDistanceOnInvoke() >= currentDist && (!usw.isCalled() || usw.isContinuous())){
 						new Thread (){
 							public void run(){
-								usw.ultrasonicDistance(distance);		
+								usw.ultrasonicDistance(currentDist);		
 							}
 						}.run();
 						usw.setCalled(true);
 					}
 				}
 			}
-			
-			try { Thread.sleep(SLEEP_INTERVAL); } catch(Exception e){};
+			try { Thread.sleep(pollingInterval); } catch(Exception e){};
 		} 
-		threadStarted = false;
 	}
+	
 	/**
-	 * subscribe the listener iff there is no doublecates in the list.
-	 * or else update the values in the list
+	 * subscribe the listener to the ultrasonicPoller
+	 *  if and only if there are no duplicates in the Arraylist that keeps the UltrasonicListeners.
+	 * or else update the values in the list. if the UltrasonicListener already exist in the list
+	 * then do nothing and return true.
 	 * @param uListener
 	 * @param distanceOnInvoke
 	 * @param continuous
-	 * @return true if subscriber is doublecated 
+	 * @return true if subscriber is duplicated 
 	 */
 	public boolean subscribe(UltrasonicListener uListener){
 		boolean subscribe =!containsListener(uListener);
@@ -93,15 +94,22 @@ public class UltrasonicPoller extends Thread implements UltrasonicPlanner {
 		}
 		return subscribe;
 	}
+	/**
+	 * enable the execution of UltrasonicLister code
+	 */
 	public static void enableULinsteners(){
 		listenerExecutionDisabled = false;
 	}
+	/**
+	 * disable the execution of UltrasonicLister code
+	 */
 	public static void disableULinsteners(){
 		listenerExecutionDisabled = true;
 	}
 	
 	/**
-	 * 
+	 * checks if the {@link UltrasonicListener} is already present in the 
+	 * arraylist of listeners.
 	 * @param ulistener
 	 * @return true if the listener exist 
 	 */
@@ -117,15 +125,15 @@ public class UltrasonicPoller extends Thread implements UltrasonicPlanner {
 	}
 	
 	/**
-	 * 
-	 * @param ulistener 
+	 *  remove a {@link UltrasonicListener} from the arraylist of executables
+	 * @param uListener 
 	 * @return true when unsubscribe successful, if the item does not exist in the 
 	 * stack then return false 
 	 */
-	public boolean unsubscribe(UltrasonicListener ulistener){
+	public boolean unsubscribe(UltrasonicListener uListener){
 		boolean removed = false ;
 		for (UltrasonicListener usl: usListenerList){
-			if (usl.equals(ulistener)){
+			if (usl.equals(uListener)){
 				usListenerList.remove(usl);
 				removed = true ;
 			}
@@ -134,34 +142,42 @@ public class UltrasonicPoller extends Thread implements UltrasonicPlanner {
 	}
 	
 	/**
-	 * distance refresh rate 20hz 
+	 * Get the last distance value polled from sensor.<br><b>Note</b><br>it is possible to
+	 * call this method many times before the distance value is updated again from the sensor.
+	 * the mean calculated from these data will be wrong. a way to avoid polling the value numerous
+	 * times is by using the method hasDistanceUpdated(), example code :
+	 * 
+	 * {@code }<br>if (hasDistanceUpdated()) value = getDistance() <br><br>
+
+	 * distance refresh rate around 20hz 
 	 * @return
 	 */
 	public int getDistance() {
-		return distance;
+		distanceUpdated  = false ;
+		return currentDist;
 	}
 	
-
 	/**
-	 * check for threashold and return true if there is a possible block 
+	 * @return true when the distance is updated since the last time
+	 * getDistance is called.
+	 */
+	public boolean hasDistanceUpdated(){
+		return distanceUpdated;
+	}
+	
+	/**
+	 * check for threshold and return true if there is a possible block 
+	 * @deprecated no reason to use this , but forgot why I put it here 
 	 * @return 
 	 */
 	public boolean objectDetected(){
 		boolean result = false;
-		if (Math.abs(prevDist - distance) > 5 && distance < 100  ){
-			RConsole.println("prevDist" + prevDist + "\t\tcurrentDist" + distance );
+		if (Math.abs(prevDist - currentDist) > 5 && currentDist < 100  ){
+			RConsole.println("prevDist" + prevDist + "\t\tcurrentDist" + currentDist );
 			result = true ;
 		}
 		return result;
 		
-	}
-	
-	public static boolean isThreadStarted() {
-		return threadStarted;
-	}
-
-	public static void setThreadStarted(boolean threadStarted) {
-		UltrasonicPoller.threadStarted = threadStarted;
 	}
 
 }

@@ -9,7 +9,6 @@ import lejos.nxt.NXTRegulatedMotor;
  *
  */
 public class Odometer extends Thread {
-	private static boolean threadStarted = false ;
 	private static Odometer odo;
 	
 	// odometer update period, in ms
@@ -42,7 +41,6 @@ public class Odometer extends Thread {
 	 * begin the odometer 
 	 */
 	public void run(){
-		threadStarted = true;
 		long updateStart, updateEnd;
 		double leftArcDistance;
 		double rightArcDistance;
@@ -117,7 +115,6 @@ public class Odometer extends Thread {
 		return Math.toRadians(deltaTachometerCount) * radius;
 	}
 
-	//TODO 
 	public double getX() {
 		double result;
 
@@ -130,7 +127,6 @@ public class Odometer extends Thread {
 
 	public double getY() {
 		double result;
-
 		synchronized (lock) {
 			result = cCoord.getY();
 		}
@@ -184,6 +180,7 @@ public class Odometer extends Thread {
 	 * END OF ACCESSORS and SETTERS
 	 * =============================================================================
 	 */
+	
 	/**
 	 * returns the average tachoCount of both motors 
 	 * @return the average tacho count 

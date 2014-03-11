@@ -13,22 +13,19 @@ import coreLib.Odometer;
 import coreLib.UltrasonicPoller;
 
 /**
- * test class used to calibrate the odometer and the wheels 
+ * test class used to calibrate the odometer and the wheels.
+ * Sample code to demonstrate navigation.
  * @author yuechuan
  *	@version 1.3
  */
 public class Tester {
-	private static Configuration config = Configuration.getInstance();
 	
 	public static void main(String[] args) {
-		//has to be placed before driver initialization 
-//		config.setCurrentLocation(new 
-//		Coordinate(30, 30, 0));
 		
 		LCDWriter lcd = LCDWriter.getInstance();
 		Odometer odo = Odometer.getInstance();
-		UltrasonicPoller usp = UltrasonicPoller.getInstance();
 		Driver driver = Driver.getInstance();
+		UltrasonicPoller usp = UltrasonicPoller.getInstance();
 		RConsole.openAny(5000);
 				
 		lcd.start();
@@ -38,36 +35,13 @@ public class Tester {
 		
 		while(Button.waitForAnyPress() != Button.ID_ENTER){}
 		lcd.writeToScreen("started", 0);
-		
-		
-		
-//		Stack<Coordinate> st = new Stack<Coordinate>();
-//		st.push(new Coordinate(0, 0, 0));
-//		st.push(new Coordinate(30, 0, 0));
-//		st.push(new Coordinate(60, 90, 0));
-//		st.push(new Coordinate(0, 60, 0));
-		
-		driver.travelTo(60,0);
-		driver.travelTo(60,60);
-		driver.travelTo(0,60);
-		driver.travelTo(0,0);
-//		driver.travelTo(30,60);
-//		driver.travelTo(0,60);
-		
 
-//		while (!st.empty()){
-//			RConsole.println("current :" + config.getCurrentLocation().toString() + "\t\tdestination : "  + st.peek().toString() );
-//			lcd.writeToScreen(odo.getX()+"", 1);
-//			lcd.writeToScreen(odo.getY()+"", 2);
-//			lcd.writeToScreen(odo.getTheta()+"", 3);
-//			driver.travelTo(st.peek());
-//			
-//			while(usp.getDistance() > 15 ){}
-//			
-//			RConsole.println("current :" + config.getCurrentLocation().toString() + "\t\tdestination : "  + st.peek().toString() );
-//			st.pop();
-//		}
-		
+		//square drive 
+		driver.travelTo(90,0);
+		driver.travelTo(90,90);
+		driver.travelTo(0,90);
+		driver.travelTo(0,0);
+
 		lcd.writeToScreen("done", 6);
 		
 	}
