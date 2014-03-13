@@ -8,7 +8,14 @@ import lejos.nxt.Motor;
  * Try different values using this test for WHEEL_RADIUS and WIDTH
  * Can also use this as a base for odometry/correction
  * 
- * The robot should drive in a square for as long as possible
+ * The robot should be able to complete two laps with less than 3 cm difference 
+ * from the origin and diverge less than 15 deg from the starting angle
+ * (without the odometery correction). 
+ * 
+ * With odo correction : 
+ * robot should maintain less than 3 cm difference from origin and less than 15 deg 
+ * divergence after <b> 5 runs </b> 
+ * 
  */
 public class BasicMovementTest {
 	private static final double WHEEL_RADIUS = 2.16;
