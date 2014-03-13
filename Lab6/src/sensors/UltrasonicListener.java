@@ -1,4 +1,4 @@
-package coreLib;
+package sensors;
 
 /**
  * these are the interface for classes that listens to the ultrasonic poller
@@ -10,12 +10,14 @@ package coreLib;
 public interface UltrasonicListener {
 	
 	//TODO make the ultrasonicPoller create a new thread every time it handles the Listener!!!!
+	//TODO: Not sure if all these are really necessary
+	
 	/**
 	 * this is the method that ultrasonic poller will execute in a Thread 
 	 * when the threshold distance is reached.
 	 * @param distanceFromObsticle
 	 */
-	public void ultrasonicDistance(int distanceFromObsticle);
+	public void ultrasonicDistance(int distanceFromObstacle);
 	
 	/**
 	 * 

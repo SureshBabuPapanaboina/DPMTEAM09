@@ -1,4 +1,4 @@
-package coreLib;
+package robotcore;
 
 
 import lejos.nxt.LCD;

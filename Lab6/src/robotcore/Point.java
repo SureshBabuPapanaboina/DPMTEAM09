@@ -1,4 +1,4 @@
-package coreLib;
+package robotcore;
 
 public class Point {
 	private double x , y ;

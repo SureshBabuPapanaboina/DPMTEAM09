@@ -1,8 +1,9 @@
-package coreLib;
+package sensors;
 
 
 import java.util.LinkedList;
 
+import robotcore.Configuration;
 import lejos.nxt.ColorSensor;
 /**
  * this is used to read line from the grund with the colorReader

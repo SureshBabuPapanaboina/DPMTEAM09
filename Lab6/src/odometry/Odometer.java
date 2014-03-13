@@ -1,5 +1,8 @@
-package coreLib;
+package odometry;
 
+import robotcore.Configuration;
+import robotcore.Coordinate;
+import robotcore.LCDWriter;
 import lejos.nxt.NXTRegulatedMotor;
 /**
  * odometer will obtain a reference to the CurrentCoordinate defined in 

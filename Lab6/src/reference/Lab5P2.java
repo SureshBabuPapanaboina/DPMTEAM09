@@ -1,21 +1,18 @@
-package other;
+package reference;
 
 import java.util.Stack;
 
-import coreLib.Configuration;
-import coreLib.Configuration;
-import coreLib.Coordinate;
-import coreLib.Driver;
-import coreLib.LCDWriter;
-import coreLib.Odometer;
-import coreLib.UltrasonicPoller;
-import ultrasonicListeners.BlockAvoidanceLab5;
-import ultrasonicListeners.LocalizeLab5;
+import odometry.Odometer;
+import robotcore.Configuration;
+import robotcore.Coordinate;
+import robotcore.LCDWriter;
+import sensors.UltrasonicPoller;
 import lejos.nxt.Button;
 import lejos.nxt.ColorSensor;
 import lejos.nxt.ColorSensor.Color;
 import lejos.nxt.Sound;
 import lejos.nxt.comm.RConsole;
+import movement.Driver;
 /**
  * lab 5 part 2 code, arm must be open completely at the beginning to produce better 
  * localization 

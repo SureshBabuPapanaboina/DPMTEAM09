@@ -1,10 +1,10 @@
-package ultrasonicListeners;
+package reference;
 
-import coreLib.Configuration;
-import coreLib.Driver;
-import coreLib.LCDWriter;
-import coreLib.UltrasonicListener;
+import robotcore.Configuration;
+import robotcore.LCDWriter;
+import sensors.UltrasonicListener;
 import lejos.nxt.comm.RConsole;
+import movement.Driver;
 
 /**
  * This class hosts a public method that does the localization. 

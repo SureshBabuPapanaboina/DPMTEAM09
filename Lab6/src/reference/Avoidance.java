@@ -1,9 +1,9 @@
 /**
  * 
  */
-package ultrasonicListeners;
+package reference;
 
-import coreLib.UltrasonicListener;
+import sensors.UltrasonicListener;
 
 /**
  * @author yuechuan

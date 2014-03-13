@@ -1,5 +1,8 @@
-package coreLib;
+package movement;
 
+import odometry.Odometer;
+import robotcore.Configuration;
+import robotcore.Coordinate;
 import lejos.nxt.NXTRegulatedMotor;
 import lejos.nxt.comm.RConsole;
 

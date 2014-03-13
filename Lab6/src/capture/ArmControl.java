@@ -1,4 +1,7 @@
-package coreLib;
+package capture;
+
+import robotcore.Configuration;
+
 /**
  *TODO unimplemented class 
  * @author yuechuan

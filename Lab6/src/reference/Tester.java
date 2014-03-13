@@ -1,16 +1,15 @@
-package other;
+package reference;
 
 import java.util.Stack;
 
+import odometry.Odometer;
+import robotcore.Configuration;
+import robotcore.Coordinate;
+import robotcore.LCDWriter;
+import sensors.UltrasonicPoller;
 import lejos.nxt.Button;
 import lejos.nxt.comm.RConsole;
-import coreLib.Configuration;
-import coreLib.Configuration;
-import coreLib.Coordinate;
-import coreLib.Driver;
-import coreLib.LCDWriter;
-import coreLib.Odometer;
-import coreLib.UltrasonicPoller;
+import movement.Driver;
 
 /**
  * test class used to calibrate the odometer and the wheels.

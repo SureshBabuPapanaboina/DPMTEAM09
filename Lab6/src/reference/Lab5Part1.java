@@ -1,14 +1,13 @@
-package ultrasonicListeners;
+package reference;
 
-import coreLib.Configuration;
-import coreLib.Configuration;
-import coreLib.Driver;
-import coreLib.LCDWriter;
-import coreLib.UltrasonicListener;
-import coreLib.UltrasonicPoller;
+import robotcore.Configuration;
+import robotcore.LCDWriter;
+import sensors.UltrasonicListener;
+import sensors.UltrasonicPoller;
 import lejos.nxt.Button;
 import lejos.nxt.ColorSensor;
 import lejos.robotics.Color;
+import movement.Driver;
 /**
  * lab 5 part 1, this class is a ultrasnicListener and 
  * can subscribe to the ultrasonic poller. see the UltrasonicListener 

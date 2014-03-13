@@ -1,7 +1,9 @@
-package coreLib;
+package sensors;
 
 import java.util.ArrayList;
 
+import robotcore.Configuration;
+import robotcore.LCDWriter;
 import lejos.nxt.UltrasonicSensor;
 import lejos.nxt.comm.RConsole;
 
@@ -15,8 +17,8 @@ import lejos.nxt.comm.RConsole;
  * @author yuechuan
  *
  */
-public class UltrasonicPoller extends Thread implements UltrasonicPlanner {
-	Configuration config;
+public class UltrasonicPoller extends Thread {
+	Configuration config = Configuration.getInstance();
 	UltrasonicSensor uSensor;
 	private ArrayList <UltrasonicListener> usListenerList = new ArrayList<UltrasonicListener>(); //lst of listeners
 
@@ -29,9 +31,11 @@ public class UltrasonicPoller extends Thread implements UltrasonicPlanner {
 	private boolean distanceUpdated = false ;
 	private static UltrasonicPoller instance ;
 	private static boolean listenerExecutionDisabled = false ;	//true if we want to disable the ultrasonic listener and only allow passive pulling 
-		
-	private UltrasonicPoller (Configuration config){
-		this.config = config;
+	
+	/**
+	 * Private constructor
+	 */
+	private UltrasonicPoller (){
 		uSensor = new UltrasonicSensor(Configuration.ULTRASONIC_SENSOR_PORT);
 		uSensor.continuous();	//start the sensor 
 
@@ -43,15 +47,25 @@ public class UltrasonicPoller extends Thread implements UltrasonicPlanner {
 		currentDist = (int) mean ;
 	}
 	
+	/**
+	 * Since is a singleton, get the instance?
+
+	 * @return
+	 */
 	public static UltrasonicPoller getInstance(){
+		 // TODO: This doesn't really make sense... 
+		 //since you're not really making it a singleton if that's the intention
 		if (instance == null){
-			instance = new UltrasonicPoller(Configuration.getInstance());
+			instance = new UltrasonicPoller();
 		}
 		return instance;
 	}
 	
+	/**
+	 * Runs the poller thread
+	 */
 	public void run (){
-		while (!Configuration.getInstance().isDriveComplete()){
+		while (!config.isDriveComplete()){
 			prevDist = currentDist;
 			currentDist = uSensor.getDistance();
 			distanceUpdated = true ;

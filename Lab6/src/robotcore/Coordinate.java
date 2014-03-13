@@ -1,4 +1,4 @@
-package coreLib;
+package robotcore;
 
 import lejos.nxt.comm.RConsole;
 
@@ -52,7 +52,7 @@ public class Coordinate extends Point{
 	 * robot points to the next location. where neg means counter
 	 * clockwise turn and positive means clockwise turns in <b>deg</b>
 	 */
-	static double calculateRotationAngle( Coordinate currentLocation
+	public static double calculateRotationAngle( Coordinate currentLocation
 			, Coordinate nextLocation){
 		double	 dX = nextLocation.getX() - currentLocation.getX()
 				,dY = nextLocation.getY() - currentLocation.getY(),

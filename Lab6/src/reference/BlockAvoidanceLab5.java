@@ -1,16 +1,15 @@
 /**
  * 
  */
-package ultrasonicListeners;
+package reference;
 
+import odometry.Odometer;
+import robotcore.Coordinate;
+import sensors.UltrasonicListener;
+import sensors.UltrasonicPoller;
 import lejos.nxt.Motor;
 import lejos.nxt.Sound;
-import other.Lab5P2;
-import coreLib.Coordinate;
-import coreLib.Driver;
-import coreLib.Odometer;
-import coreLib.UltrasonicListener;
-import coreLib.UltrasonicPoller;
+import movement.Driver;
 
 /**
  * This class is used when there's an obstacle very near the robot 

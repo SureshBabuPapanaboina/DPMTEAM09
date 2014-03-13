@@ -1,6 +1,6 @@
-package other;
+package reference;
 
-import coreLib.Configuration;
+import robotcore.Configuration;
 import lejos.nxt.NXTRegulatedMotor;
 import lejos.nxt.Sound;
 

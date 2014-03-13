@@ -1,7 +1,7 @@
 /**
  * 
  */
-package coreLib;
+package sensors;
 
 /**
  * LineReaderListener is the interface that contains the method signiture 
