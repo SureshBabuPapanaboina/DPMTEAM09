@@ -124,7 +124,7 @@ public class Configuration {
 	
 	/**
 	 * Get the opponent drop zone to avoid
-	 * @param lowerLeft coordinate
+	 * @return
 	 */
 	public Coordinate getOpponentDropZone(){
 		return null;
@@ -132,7 +132,7 @@ public class Configuration {
 	
 	/**
 	 * Get the coordinates of the drop zone where to bring the flag
-	 * @param lowerLeft coordinate
+	 * @return
 	 */
 	public Coordinate getDropZone(){
 		return null;

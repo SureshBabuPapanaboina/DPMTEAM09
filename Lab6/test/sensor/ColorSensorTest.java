@@ -17,7 +17,7 @@ public class ColorSensorTest {
 	
 	public static void main(String[] args){
 		// LCD need to be cleared by the user 
-		LCDWriter lcd = LCDWriter.getInstance();
+		final LCDWriter lcd = LCDWriter.getInstance();
 		try{lcd.start();} catch (Exception e){};
 		
 		int option = 0;
