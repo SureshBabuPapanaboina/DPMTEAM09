@@ -70,6 +70,18 @@ public class LCDWriter extends Thread {
 		}
 
 	}
+	/**
+	 * clear the display 
+	 */
+	public void clear (){
+		synchronized (lock) {
+			s = new String [8];
+			for(int i = 0 ; i < 8 ; i++){
+				s[i] = "";
+			}
+		}
+		
+	}
 	
 	protected static String formattedDoubleToString(double x, int places) {
 		String result = "";

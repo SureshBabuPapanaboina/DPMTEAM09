@@ -13,11 +13,11 @@ import lejos.robotics.Color;
  *
  */
 public class ColorSensorTest {
-	
+    
 	
 	public static void main(String[] args){
 		// LCD need to be cleared by the user 
-		LCDWriter lcd = LCDWriter.getInstance();
+		final LCDWriter lcd = LCDWriter.getInstance();
 		try{lcd.start();} catch (Exception e){};
 		
 		int option = 0;
@@ -32,42 +32,31 @@ public class ColorSensorTest {
 		final ColorSensor ls = new ColorSensor(SensorPort.S1);
 		
 			(new Thread() {
-			public void run() {
-				int op = 0;
-				int floodlight = Color.RED;
-				ls.setFloodlight(floodlight);
-				ls.setFloodlight(true);
-				Color current;
-				while(true){
-					//SLEEP TO ALLOW EXIT
-					try {	Thread.sleep(15); } catch (InterruptedException e) {}
-					
-					//Wait for button press to either take value or cycle
-					//floodlight
-					while (op == 0) op = Button.waitForAnyPress();
-					
-					switch(op){
-					case Button.ID_LEFT:
-						//cycle floodlight color
-						floodlight++;
-						floodlight %= 13;	//13 colors
-						ls.setFloodlight(floodlight);
-						break;
-					case Button.ID_RIGHT:
-						//display current value
-						current = ls.getColor();
-						lcd.writeToScreen("R" + current.getRed(), 1);
-						lcd.writeToScreen("G" + current.getGreen(), 2);
-						lcd.writeToScreen("B"+ current.getBlue(),3);
-						lcd.writeToScreen("Press any button to continue.", 4);
-						
-						op = 0;
-						//Wait for button press to erase from display and continue
-						while (op == 0) op = Button.waitForAnyPress();
-
-					}
-					
-				}
+    			public void run() {
+    				int op = 0;
+    				int floodlight = Color.RED;
+    				ls.setFloodlight(floodlight);
+    				ls.setFloodlight(true);
+    				Color current;
+    				while(true){
+    					//SLEEP TO ALLOW EXIT
+    					try {	Thread.sleep(15); } catch (InterruptedException e) {}
+                        
+                        floodlight++;
+                        floodlight % = 3;
+                        ls.setFloodlight(floodlight);
+     
+                        while(true){
+       		    			lcd.writeToScreen("R" + current.getRed(), 1);
+    						lcd.writeToScreen("G" + current.getGreen(), 2);
+    						lcd.writeToScreen("B"+ current.getBlue(),3);
+                            lcd.writeToScreen("Right to change");
+                            try {    Thread.sleep(15); } catch (InterruptedException e) {}
+                            if (Button.waitForAnyPress() == Button.ID_RIGHT) break;
+                        }
+    				}
+    					
+    			}
 	
 			}
 		}).start();
