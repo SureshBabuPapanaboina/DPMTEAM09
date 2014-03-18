@@ -1,4 +1,4 @@
-package movement;
+package test.movement;
 /*
  * SquareDriver.java
  */

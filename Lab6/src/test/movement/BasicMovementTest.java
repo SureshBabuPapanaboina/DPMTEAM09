@@ -1,4 +1,4 @@
-package movement;
+package test.movement;
 
 import lejos.nxt.Button;
 import lejos.nxt.Motor;
