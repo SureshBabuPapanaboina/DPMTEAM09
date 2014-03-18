@@ -5,12 +5,29 @@ package robotcore;
  * callbacks on this class will change the robot state and thus affect its actions in the core
  *
  */
-public class StateMachine {
+public class StateMachine extends Thread{
+	
+	private robotcore.State currentState;
 	
 	/**
 	 * Initializes the state machine, creates instances of the states
 	 */
 	public StateMachine(){
+		currentState = States.SETUP;
+	}
+	
+	/**
+	 * Run the state machine, this is the main process!
+	 */
+	@Override
+	public void run(){
+		//The first state
+		currentState.onEnter();
+		
+		//Cycle through the states until you reach the fnial state
+		while(!(currentState.equals(States.FINAL))){ 
+			transition();
+		}
 		
 	}
 	
@@ -18,8 +35,8 @@ public class StateMachine {
 	 * Gets the current state
 	 * @return
 	 */
-	public State getCurrentState(){
-		return null;
+	public robotcore.State getCurrentState(){
+		return currentState;
 	}
 	
 	/**
@@ -27,78 +44,17 @@ public class StateMachine {
 	 * and on enter of the nextState
 	 * @param state
 	 */
-	public void transitionTo(State state){
-		
+	public void transition(){
+		currentState.onExit(); //cleanup
+		currentState = currentState.next(); //get the next state
+		currentState.onEnter(); //run the next state
 	}
 	
 	/**
-	 * Transition to Localizing State
+	 * Call this to interrupt a current state (this is basically for the travelling/obstacle avoidance
 	 */
-	public void onDoneSetup(){
-		
+	public void interrupt(){
+		currentState.interrupt();
 	}
-	
-	/**
-	 * Transition to travelling state
-	 */
-	public void onDoneLocalizing(){
-		
-	}
-	
-	/**
-	 * Transition to search state
-	 */
-	public void onZoneReached(){
-		
-	}
-	
-	/**
-	 * Transition to the Capture State
-	 */
-	public void onFound(){
-		
-	}
-	
-	/**
-	 * Transition to the BlockRemoval state (removes the block from the endzone
-	 */
-	public void onFoundWrongBlock(){
-		
-	}
-	
-	/**
-	 * Transition back to the search state
-	 */
-	public void onWrongBlockRemoved(){
-		
-	}
-	
-	/**
-	 * Transition to the travelling state to the endzone
-	 */
-	public void onCapture(){
-		
-	}
-	
-	/**
-	 * Transition to the obstacle avoidance state
-	 */
-	public void onObstacleDetected(){
-		
-	}
-	
-	/**
-	 * Transition back to the travelling state
-	 * 
-	 */
-	public void onPathModified(){
-		
-	}
-	
-	/**
-	 * Enter final state
-	 */
-	public void onFlagZoneReached(){
-		
-	}
+
 }
