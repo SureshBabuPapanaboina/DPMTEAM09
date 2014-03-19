@@ -14,9 +14,14 @@ public interface State {
 	public void onEnter();
 	
 	/**
+	 * For extra cases
+	 */
+	public void interrupt();
+	
+	/**
 	 * This runs the main point of the state
 	 */
-	public void run();
+	public State next();
 	
 	/**
 	 * This runs some cleanup
