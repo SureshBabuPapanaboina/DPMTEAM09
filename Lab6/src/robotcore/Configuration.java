@@ -21,11 +21,21 @@ public class Configuration {
 	private int ROTATE_SPEED = 60 ;
 	private int FORWARD_SPEED = 200;
 	//robot hardware
+	//motors 
 	public static final NXTRegulatedMotor LEFT_MOTOR = Motor.A;
 	public static final NXTRegulatedMotor RIGHT_MOTOR = Motor.B;
-	public static final NXTRegulatedMotor SENSOR_MOTOR= Motor.C;
+	public static final NXTRegulatedMotor SENSOR_MOTOR= Motor.C;	
+	public static final NXTRegulatedMotor LEFT_ARM_MOTOR= Motor.C;	//TODO
+	public static final NXTRegulatedMotor RIGHT_ARM_MOTOR= Motor.C;	//TODO
+	
+	
+	//sensors
 	public static final SensorPort ULTRASONIC_SENSOR_PORT = SensorPort.S1;
-	public static final SensorPort LIGHT_SENSOR_PORT = SensorPort.S2;
+	public static final SensorPort LINE_READER_LEFT = SensorPort.S2;
+	public static final SensorPort LINE_READER_RIGHT = SensorPort.S2;	//TODO
+	public static final SensorPort COLOR_SENSOR = SensorPort.S2;	//TODO
+	
+	
 	public static final double LEFT_RADIUS = 2.090 ;
 	public static final double RIGHT_RADIUS =2.090;
 	public static final double WIDTH = 24 ;

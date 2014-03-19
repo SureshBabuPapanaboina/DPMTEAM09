@@ -11,7 +11,8 @@ package sensors;
  */
 public interface LineReaderListener {
 	/**
-	 * if a line is passed call this method 
+	 * if a line is passed call this method, 
+	 * @param isLeft true if method is called by a left Color sensor else false siginfies right Sensor
 	 */
-	public void passedLine();
+	public void passedLine(boolean isLeft);	
 }

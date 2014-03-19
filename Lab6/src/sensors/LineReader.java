@@ -1,7 +1,7 @@
 package sensors;
 
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 import robotcore.Configuration;
 import lejos.nxt.ColorSensor;
@@ -11,33 +11,55 @@ import lejos.nxt.ColorSensor;
  *	@version 1.3
  */
 public class LineReader extends Thread{
+	/**
+	 * if this a left sensor then true 
+	 * else false 
+	 */
+	private boolean isLeft ;
 	private ColorSensor colorSensor; 
 	private Configuration config;
 	private int previousSensedValue , currentSensedValue ;
 	private boolean passedLine = false ;
 	private long sensorStartTime;
+	 
 	
-	private static LineReader lineReader ;
+	private static LineReader leftLineReader ;
+	private static LineReader rightLineReader ;
 
 	/**
 	 * contains a list of classes to call when a line is detected. A
 	 * linkedList is used in this implementation since there seem to be 
 	 * no support for HashSet and the other Set seem to be deprecated 
+	 * 
+	 * <br>
+	 * 
+	 * <b> note <b> there are two instances that need to be started : left and right Sensor
+	 * either of them will occupy one thread. 
 	 */
-	private LinkedList<LineReaderListener> lrlistenerList = new LinkedList<LineReaderListener>();
-
-	private LineReader(Configuration config){
-		colorSensor  = new ColorSensor(Configuration.LIGHT_SENSOR_PORT);
-		this.config = config;    
+	private ArrayList<LineReaderListener> lrlistenerList = new ArrayList<LineReaderListener>();
+	
+	/**
+	 * create a line reader Sensor
+	 * @param config
+	 * @param left if true then this is the left sensor else right 
+	 */
+	private LineReader(Configuration config,boolean left){
+		//left or right sensor 
+		colorSensor  = left? new ColorSensor(Configuration.LINE_READER_LEFT) : new ColorSensor(Configuration.LINE_READER_RIGHT);
+		isLeft = left;
+		this.config = config;
 	}
 	
-	public static LineReader getInstance(){
-		if (lineReader == null){
-			lineReader = new LineReader(Configuration.getInstance());
-		}
-		return lineReader;
+	public static LineReader getLeftSensor(){
+		if (leftLineReader == null){ leftLineReader = new LineReader(Configuration.getInstance(),true); 	}
+		return leftLineReader;
 	}
-
+	public static LineReader getRightSensor(){
+		if (rightLineReader == null){ rightLineReader = new LineReader(Configuration.getInstance(),false); 	}
+		return rightLineReader;
+	}
+	
+	
 	public void run (){
 		colorSensor.setFloodlight(true);
 		
@@ -78,6 +100,15 @@ public class LineReader extends Thread{
 		}
 	}
 	/**
+	 * have the subscriber to subscribe the both the left and right Line reader
+	 * @param subscriber 
+	 */
+	public static void subscribeToAll(LineReaderListener subscriber){
+		if (rightLineReader == null || rightLineReader == null ) throw new NullPointerException("l/r LRdr uninitialized");
+		rightLineReader.subscribe(subscriber);
+		leftLineReader.subscribe(subscriber);
+	}
+	/**
 	 *  remove subscriber from list of actions 
 	 * @param subscriber
 	 * @return true if it contain subscriber
@@ -85,26 +116,41 @@ public class LineReader extends Thread{
 	public boolean unsubscribe(LineReaderListener subscriber) {
 		return lrlistenerList.remove(subscriber);
 	}
+	/**
+	 * remove subscriber from both l and r lineReader's list of actions
+	 * , similar to calling unsubscribe() from each of left / right sensor
+	 * @param subscriber
+	 */
+	public static void unsubscribeToAll(LineReaderListener subscriber) {
+		if (rightLineReader == null || rightLineReader == null ) throw new NullPointerException("l/r LRdr uninitialized");
+		
+		rightLineReader.unsubscribe(subscriber);
+		leftLineReader.unsubscribe(subscriber);
+		
+	}
 	
 	/**
 	 * execute the list of items when line has passed.
 	 */
 	private void callBack(){
 		for (LineReaderListener lr : lrlistenerList){
-			lr.passedLine();
+			lr.passedLine(isLeft);
 		}
 	}
 	
-	public int getLightValue(){
+	private int getLightValue(){
 			return currentSensedValue;			
 	}
-		
+	/**
+	 * return true if the line is passed 
+	 * @return
+	 */
 	public boolean isPassedLine() {
 			return passedLine;			
 	}
 	
 	/**
-	 * derivative if robot has passed line 
+	 * derivative method to determine if the robot has passed a line 
 	 * @param currentSensedValue
 	 * @param previousSensedValue
 	 * @return a determination if one has passed a line or not
