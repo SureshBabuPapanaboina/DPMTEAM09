@@ -149,22 +149,36 @@ public class Odometer extends Thread {
 		}
 		return result;
 	}
-
-	private Coordinate setX(double x) {
+	
+	/**
+	 * set x of odometer 
+	 * @param x
+	 * @return
+	 */
+	Coordinate setX(double x) {
 		synchronized (lock) {
 			cCoord.setX(x);
 		}
 		return cCoord;
 	}
-
-	private Coordinate setY(double y) {
+/**
+ * set y of odometer 
+ * @param y
+ * @return
+ */
+	Coordinate setY(double y) {
 		synchronized (lock) {
 			cCoord.setY(y);
 		}
 		return cCoord;
 	}
-
-	private Coordinate setTheta(double theta) {
+	
+	/**
+	 * set theta in <b> rad <b>
+	 * @param theta
+	 * @return
+	 */
+	Coordinate setTheta(double theta) {
 		if (Math.abs(theta) >= 2*Math.PI){
 			if (theta < 0 ) 
 				theta = theta + 2*Math.PI;

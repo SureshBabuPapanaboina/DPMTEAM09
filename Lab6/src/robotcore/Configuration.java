@@ -58,7 +58,7 @@ public class Configuration {
 	}
 	
 	private Configuration(){
-		setCurrentLocation(new Coordinate(0, 0, 0));
+		currentLocation = new Coordinate(0, 0, 0);
 		setStartLocation(new Coordinate(0, 0, 0));
 		RConsole.openUSB(3000);
 	}
@@ -230,12 +230,6 @@ public class Configuration {
 	public Coordinate getCurrentLocation() {
 		return currentLocation;
 	}
-	/**
-	 * set the current location to currentLocation this is 
-	 * @param currentLocation
-	 */
-	public void setCurrentLocation(Coordinate currentLocation) {
-		this.currentLocation = currentLocation;
-	}
 	
+
 }
