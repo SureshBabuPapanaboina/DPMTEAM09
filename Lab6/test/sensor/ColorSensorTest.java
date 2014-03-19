@@ -1,4 +1,4 @@
-package test.sensor;
+package sensor;
 
 import robotcore.Configuration;
 import robotcore.LCDWriter;
@@ -13,7 +13,7 @@ import lejos.robotics.Color;
  *
  */
 public class ColorSensorTest extends Thread {
-	final ColorSensor ls = new ColorSensor(Configuration.LIGHT_SENSOR_PORT);    
+	final ColorSensor ls = new ColorSensor(Configuration.COLOR_SENSOR_PORT);    
 	final static LCDWriter lcd = LCDWriter.getInstance();
 	
 	public static void main(String[] args){

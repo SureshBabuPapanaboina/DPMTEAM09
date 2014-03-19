@@ -25,7 +25,7 @@ public class Lab5P2 {
 	//declearation of necessary items 
 	private static Driver driver = Driver.getInstance();
 	private static Configuration config = Configuration.getInstance();
-	private static ColorSensor cs = new ColorSensor(Configuration.LIGHT_SENSOR_PORT);
+	private static ColorSensor cs = new ColorSensor(Configuration.COLOR_SENSOR_PORT);
 	private static LCDWriter lcd = LCDWriter.getInstance();
 	private static Odometer odo = Odometer.getInstance();
 	private static UltrasonicPoller usp = UltrasonicPoller.getInstance();
