@@ -4,6 +4,9 @@
 *.ear
 *.class
 
+#my c++ assignments 
+A3/*
+
 # eclipse specific git ignore
 *.pydevproject
 .project
