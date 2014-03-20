@@ -1,4 +1,4 @@
-package test.sensor;
+package sensor;
 
 import robotcore.Configuration;
 import robotcore.LCDWriter;
@@ -12,14 +12,13 @@ import lejos.robotics.Color;
  * best for block color and/or what is the range and what is the best flood light.
  */
 public class ColorSensorTest extends Thread {
-	final ColorSensor ls = new ColorSensor(Configuration.COLOR_SENSOR);    
+	final ColorSensor ls = new ColorSensor(Configuration.COLOR_SENSOR_PORT);    
 	final static LCDWriter lcd = LCDWriter.getInstance();
 	
 	public static void main(String[] args){
 		Configuration config = Configuration.getInstance();
 		
 		// LCD need to be cleared by the user 
-		
 		try{lcd.start();} catch (Exception e){};
 		
 		int option = 0;
@@ -67,3 +66,6 @@ public class ColorSensorTest extends Thread {
 		
 
 }
+
+
+

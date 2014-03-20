@@ -61,7 +61,7 @@ public class Lab5Part1 implements UltrasonicListener{
 	public void ultrasonicDistance(int distanceFromObsticle) {
 		Driver.getInstance().motorStop();
 		LCDWriter.getInstance().writeToScreen("see smt["+ distanceFromObsticle + "]", 3);
-		ColorSensor cs = new ColorSensor(Configuration.LIGHT_SENSOR_PORT);
+		ColorSensor cs = new ColorSensor(Configuration.COLOR_SENSOR_PORT);
 		cs.setFloodlight(true);
 		
 		while(true){

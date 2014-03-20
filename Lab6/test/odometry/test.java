@@ -1,4 +1,4 @@
-package test;
+package odometry;
 
 import odometry.Odometer;
 

@@ -15,7 +15,7 @@ public class Odometer extends Thread {
 	private static Odometer odo;
 	
 	// odometer update period, in ms
-	private static final long UPDATE_PERIOD = 25; //ms
+	private static final long UPDATE_PERIOD = 50; //ms
 	private Object lock; 	// lock object for mutual exclusion
 
 	private Coordinate cCoord ;  //current location (x,y,heading)

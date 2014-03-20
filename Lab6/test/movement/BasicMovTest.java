@@ -1,6 +1,7 @@
-package test.movement;
+package movement;
 
 import lejos.nxt.Button;
+import lejos.nxt.LCD;
 import lejos.nxt.Motor;
 
 /**
@@ -17,16 +18,20 @@ import lejos.nxt.Motor;
  * divergence after <b> 5 runs </b> 
  * 
  */
-public class BasicMovementTest {
-	private static final double WHEEL_RADIUS = 2.16;
+public class BasicMovTest {
+	private static final double WHEEL_RADIUS = 2.3;
 	//Also width between wheels
-	private static final double WIDTH = 15.6;
+	private static final double WIDTH = 22.4;
 	
 	/** 
 	 * Move in a square and try to fix the config params until they're just right
 	 * @param args
 	 */
 	public static void main(String[] args){
+		
+		LCD.drawString("Waiting for button press.", 0, 0);
+		while (Button.waitForAnyPress() != Button.ID_ESCAPE);
+
 		// spawn a new Thread to avoid SquareDriver.drive() from blocking
 		(new Thread() {
 			public void run() {
