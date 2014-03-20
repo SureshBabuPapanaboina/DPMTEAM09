@@ -32,7 +32,7 @@ public class CaptureMechanism {
 		RemoteConnection rc = RemoteConnection.getInstance();
 		
 		rc.getRemoteNXT().A.rotateTo(-45);
-		rc.getRemoteNXT().B.rotateTo(-45);
+		rc.getRemoteNXT().B.rotateTo(45);
 	}
 	
 	/**
@@ -42,7 +42,7 @@ public class CaptureMechanism {
 		RemoteConnection rc = RemoteConnection.getInstance();
 		
 		rc.getRemoteNXT().A.rotateTo(90);
-		rc.getRemoteNXT().B.rotateTo(90);
+		rc.getRemoteNXT().B.rotateTo(-90);
 	}
 	
 	/**

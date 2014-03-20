@@ -39,6 +39,10 @@ public class RemoteConnection {
 		return instance;
 	}
 	
+	/**
+	 * Gets remote brick reference
+	 * @return
+	 */
 	public RemoteNXT getRemoteNXT(){
 		if(remoteNXT == null)
 			setupConnection();
@@ -46,6 +50,9 @@ public class RemoteConnection {
 		return remoteNXT;
 	}
 	
+	/**
+	 * Closes the remote brick connection
+	 */
 	public void closeConnection(){
 		remoteNXT.close();
 		remoteNXT = null;
