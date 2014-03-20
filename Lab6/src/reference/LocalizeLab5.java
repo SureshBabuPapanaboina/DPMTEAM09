@@ -22,7 +22,7 @@ public class LocalizeLab5 implements UltrasonicListener{
 	boolean secondAngle = false ;	// if this is called a second time then turn back 
 
 	Driver driver = Driver.getInstance();
-	
+
 	public LocalizeLab5(int distanceOnInvoke , boolean continuous){
 		this.distanceOnInvoke = distanceOnInvoke;
 		this.continuous = continuous;

@@ -9,11 +9,10 @@ import lejos.robotics.Color;
 
 /**
  * A test bed to check the capabilities of our color sensors to determine which is the
- * best for block color and/or what is the range and what is the best floodlight
- *
+ * best for block color and/or what is the range and what is the best flood light.
  */
 public class ColorSensorTest extends Thread {
-	final ColorSensor ls = new ColorSensor(Configuration.LIGHT_SENSOR_PORT);    
+	final ColorSensor ls = new ColorSensor(Configuration.COLOR_SENSOR);    
 	final static LCDWriter lcd = LCDWriter.getInstance();
 	
 	public static void main(String[] args){
@@ -55,7 +54,7 @@ public class ColorSensorTest extends Thread {
             while(true){
                 current = ls.getColor();
                 
-				lcd.writeToScreen("R" + current.getRed(), 1);
+				lcd.writeToScreen("R" + current.getRed(),1);
 				lcd.writeToScreen("G" + current.getGreen(), 2);
 				lcd.writeToScreen("B"+ current.getBlue(),3);
                 lcd.writeToScreen("Right to change",4);
