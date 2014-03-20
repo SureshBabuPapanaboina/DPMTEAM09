@@ -1,5 +1,6 @@
 package movement;
 
+import odometry.Odometer;
 import lejos.nxt.Button;
 import lejos.nxt.LCD;
 import lejos.nxt.Motor;
@@ -20,10 +21,9 @@ import lejos.nxt.Motor;
  */
 public class BasicMovTest {
 	private static final double WHEEL_RADIUS = 2.3;
-	//Also width between wheels
-	private static final double WIDTH = 22.4;
-	
-	/** 
+	private static final double WIDTH = 22.4;	//Also width between wheels
+		
+p	/** 
 	 * Move in a square and try to fix the config params until they're just right
 	 * @param args
 	 */
