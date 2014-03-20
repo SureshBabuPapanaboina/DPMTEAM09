@@ -13,11 +13,11 @@ import lejos.nxt.NXTRegulatedMotor;
  */
 public class Odometer extends Thread {
 	private static Odometer odo;
+	private boolean DEBUG = Configuration.DEBUG;
 	
 	// odometer update period, in ms
-	private static final long UPDATE_PERIOD = 25; //ms
+	private static final long UPDATE_PERIOD = 50; //ms
 	private Object lock; 	// lock object for mutual exclusion
-
 	private Coordinate cCoord ;  //current location (x,y,heading)
 	private NXTRegulatedMotor lMotor; // left motor 
 	private NXTRegulatedMotor rMotor;
@@ -54,7 +54,7 @@ public class Odometer extends Thread {
 		double deltaY;
 		
 		while (true) {
-			LCDWriter.getInstance().writeToScreen("OdoT " + getTheta(), 5);
+			if (DEBUG) LCDWriter.getInstance().writeToScreen("OdoT " + getTheta(), 5);
 			updateStart = System.currentTimeMillis();
 				updateStart = System.currentTimeMillis();
 				//get the starting tacho count
@@ -90,7 +90,7 @@ public class Odometer extends Thread {
 					setTheta(currentTheta + deltaTheta);
 				}
 				
-				LCDWriter.getInstance().writeToScreen(cCoord.toString(), 2);
+				if (DEBUG) LCDWriter.getInstance().writeToScreen(cCoord.toString(), 2);
 				
 			// this ensures that the odometer only runs once every period
 			updateEnd = System.currentTimeMillis();

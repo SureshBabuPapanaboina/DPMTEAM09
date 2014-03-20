@@ -160,11 +160,12 @@ public final class Driver extends Thread{
 	/**
 	 * rotate to the angle wrt to the current robot angle.
 	 * the method will only finish after rotating is over.
+	 * this class will not set the motorStop flag !!! 
+	 * <b> make sure to call motor Stop after you use this method!!!</b>
 	 * @param degree 
 	 * @param returnRightAway should the function finish before finishing the turn 
 	 */
 	public void rotateToRelatively(double degree, boolean returnRightAway){
-		
 		motorStopped = false;
 		rightMotor.setSpeed(Configuration.getInstance().getRotationSpeed());
 		leftMotor.setSpeed(Configuration.getInstance().getRotationSpeed());
@@ -180,8 +181,7 @@ public final class Driver extends Thread{
 	        rightMotor.rotate(
 	        	-convertAngle(Configuration.RIGHT_RADIUS,Configuration.WIDTH , degree)
 	        	, returnRightAway);
-	        //set flag to true 
-	        motorStop();
+//	        motorStop();
 	}
 	
 	/**

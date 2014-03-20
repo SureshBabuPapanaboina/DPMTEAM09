@@ -80,7 +80,7 @@ public enum States implements State{
 		@Override
 		public void onEnter() {
 			// TODO Auto-generated method stub
-			
+			Localization.localize();
 		}
 
 		@Override
@@ -194,7 +194,6 @@ public enum States implements State{
 
 		@Override
 		public State next() {
-			// TODO Auto-generated method stub
 			return TRAVELLING_TO_END;
 		}
 

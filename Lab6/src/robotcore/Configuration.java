@@ -33,12 +33,12 @@ public class Configuration {
 	public static final SensorPort ULTRASONIC_SENSOR_PORT = SensorPort.S1;
 	public static final SensorPort LINE_READER_LEFT = SensorPort.S2;
 	public static final SensorPort LINE_READER_RIGHT = SensorPort.S2;	//TODO
-	public static final SensorPort COLOR_SENSOR = SensorPort.S2;	//TODO
+	public static final SensorPort COLOR_SENSOR_PORT = SensorPort.S2;	//TODO
 	
 	
 	public static final double LEFT_RADIUS = 2.090 ;
 	public static final double RIGHT_RADIUS =2.090;
-	public static final double WIDTH = 24 ;
+	public static final double WIDTH = 22.5 ;
 	/**
 	 * enable /disable debugging 
 	 */
@@ -58,9 +58,9 @@ public class Configuration {
 	}
 	
 	private Configuration(){
-		currentLocation = new Coordinate(0, 0, 0);
-		setStartLocation(new Coordinate(0, 0, 0));
-		RConsole.openUSB(3000);
+		currentLocation = new Coordinate(15, 15, 0);
+		setStartLocation(new Coordinate(15, 15, 0));
+		RConsole.openUSB(1000);
 	}
 	
 	/**
