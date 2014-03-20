@@ -23,7 +23,7 @@ public class BasicMovTest {
 	private static final double WHEEL_RADIUS = 2.3;
 	private static final double WIDTH = 22.4;	//Also width between wheels
 		
-p	/** 
+	/** 
 	 * Move in a square and try to fix the config params until they're just right
 	 * @param args
 	 */

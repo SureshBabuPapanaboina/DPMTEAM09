@@ -11,7 +11,7 @@ public class StateMachineCycleTest {
 
 	@Test
 	public void regularCycle() {
-		
+
 		StateMachine sm = new StateMachine();
 		assertEquals(States.SETUP, sm.getCurrentState());
 		
