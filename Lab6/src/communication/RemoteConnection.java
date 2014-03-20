@@ -2,6 +2,8 @@ package communication;
 
 import java.io.IOException;
 
+import lejos.nxt.LCD;
+import lejos.nxt.Sound;
 import lejos.nxt.comm.NXTCommConnector;
 import lejos.nxt.comm.RS485;
 import lejos.nxt.remote.RemoteNXT;
@@ -17,7 +19,7 @@ import lejos.nxt.remote.RemoteNXT;
 public class RemoteConnection {
 	
 	private static RemoteConnection instance = null;
-	public static RemoteNXT remoteNXT;
+	private RemoteNXT remoteNXT;
 
 	/**
 	 * Exists to defeat instantiation to ensure singleton
@@ -36,15 +38,35 @@ public class RemoteConnection {
 		}
 		return instance;
 	}
+	
+	public RemoteNXT getRemoteNXT(){
+		if(remoteNXT == null)
+			setupConnection();
+		
+		return remoteNXT;
+	}
+	
+	public void closeConnection(){
+		remoteNXT.close();
+		remoteNXT = null;
+	}
 
 	/**
 	 * Sets up connection using RS485 connection over the two bricks
 	 */
-	public static void SetupConnection(){
+	public void setupConnection(){
 		NXTCommConnector rsconn = RS485.getConnector();
+
 		try {
 			remoteNXT = new RemoteNXT("NXT", rsconn);
 		} catch (IOException e) {
+			LCD.drawString(e.toString(), 0, 0);
+		}
+		
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
