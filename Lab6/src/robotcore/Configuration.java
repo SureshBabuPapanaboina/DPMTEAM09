@@ -31,7 +31,7 @@ public class Configuration {
 	
 	//sensors
 	public static final SensorPort ULTRASONIC_SENSOR_PORT = SensorPort.S1;
-	public static final SensorPort LINE_READER_LEFT = SensorPort.S2;
+	public static final SensorPort LINE_READER_LEFT = SensorPort.S1;
 	public static final SensorPort LINE_READER_RIGHT = SensorPort.S2;	//TODO
 	public static final SensorPort COLOR_SENSOR_PORT = SensorPort.S2;	//TODO
 	
