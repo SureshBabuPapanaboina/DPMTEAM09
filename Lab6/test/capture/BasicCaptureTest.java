@@ -19,14 +19,14 @@ public class BasicCaptureTest {
 		cm.close();
 		
 		cm.open();
-		config.LEFT_MOTOR.setSpeed(50);
-		config.RIGHT_MOTOR.setSpeed(50);
+		config.LEFT_MOTOR.setSpeed(100);
+		config.RIGHT_MOTOR.setSpeed(100);
 		
 		config.LEFT_MOTOR.forward();
 		config.RIGHT_MOTOR.forward();
 		
 		try {
-			Thread.sleep(1500);
+			Thread.sleep(5000);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -37,14 +37,14 @@ public class BasicCaptureTest {
 		
 		cm.align();
 		
-		config.LEFT_MOTOR.setSpeed(50);
-		config.RIGHT_MOTOR.setSpeed(50);
+		config.LEFT_MOTOR.setSpeed(200);
+		config.RIGHT_MOTOR.setSpeed(200);
 		
 		config.LEFT_MOTOR.forward();
 		config.RIGHT_MOTOR.forward();
 		
 		try {
-			Thread.sleep(1500);
+			Thread.sleep(5000);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

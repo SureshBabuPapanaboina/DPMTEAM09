@@ -29,6 +29,11 @@ public class NXTLCPRespond
         }
     }
 
+    /**
+     * Main program to run on second brick
+     * @param args
+     * @throws Exception
+     */
     public static void main(String[] args) throws Exception
     {
         NXTCommConnector conn = RS485.getConnector();
@@ -36,5 +41,7 @@ public class NXTLCPRespond
         Responder resp = new Responder(conn);
         resp.start();
         resp.join();
+        
+        //shouldn't exit until complete, might need to add fault tolerant behaviour
     }
 }

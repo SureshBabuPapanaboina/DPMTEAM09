@@ -17,6 +17,7 @@ public class ObjectDetector{
 	 * @param up
 	 */
 	private ObjectDetector(ColorPoller cp, UltrasonicPoller up){
+		//TODO: remove these and add references to singletons
 		
 	}
 	
