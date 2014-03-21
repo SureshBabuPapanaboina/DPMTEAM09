@@ -1,5 +1,9 @@
+
+bluetooth
+bluetoothclient
 capture
 communication
+interbrick
 movement
 navigation
 objectdetection
@@ -7,7 +11,6 @@ odometry
 reference
 robotcore
 search
+sensor
 sensors
-test
-test.movement
-test.sensor
+statemachine

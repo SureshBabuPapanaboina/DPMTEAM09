@@ -20,6 +20,10 @@ public class Configuration {
 	
 	private int ROTATE_SPEED = 60 ;
 	private int FORWARD_SPEED = 200;
+	
+	//constants about the plying field
+	public static final int GRID_SIZE = 8; //set to demo size
+	
 	//robot hardware
 	//motors 
 	public static final NXTRegulatedMotor LEFT_MOTOR = Motor.A;

@@ -1,7 +1,9 @@
 package navigation;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 
+import robotcore.Configuration;
 import lejos.robotics.pathfinding.Node;
 
 /**
@@ -12,29 +14,42 @@ import lejos.robotics.pathfinding.Node;
  *  
  */
 public class Map {
-
-	Node[][] nodes;
 	
-	HashSet<Node> blocked;
+	private static Map instance;
+	private int gridSize;
+	private Node[][] nodes;
+	
+	
+	private HashSet<Node> blocked;
 	
 	/**
-	 * Basic constructor
+	 * Basic constructor, private to prevent more than one instance of the map
 	 */
-	public Map() {
-		this.blocked = new HashSet<Node>();
+	private Map() {
+		this.gridSize = Configuration.GRID_SIZE;
 
 		this.populateMap();
-
+	}
+	
+	/**
+	 * Gets the singleton instance
+	 * @return
+	 */
+	public static Map getInstance(){
+		if(instance == null) instance = new Map();
+		return instance;
 	}
 
 	/**
 	 * Populates the map with Nodes and their respective coordinates
 	 */
 	public void populateMap() {	
-		nodes = new Node[12][12]; 
+		this.blocked = new HashSet<Node>();
 
-		for (int i = 0; i < 12; i++) {
-			for (int j = 0; j < 12; j++) {
+		nodes = new Node[gridSize][gridSize]; 
+
+		for (int i = 0; i < gridSize; i++) {
+			for (int j = 0; j < gridSize; j++) {
 				nodes[i][j] = new Node((30*i-15), (30*j-15));
 			}
 		}
@@ -47,17 +62,17 @@ public class Map {
 	 */
 	private void generateEdges() {
 		Node n = null;
-		for (int i = 0; i < 12; i++) { 
-			for (int j = 0; j < 12; j++) { 
+		for (int i = 0; i < gridSize; i++) { 
+			for (int j = 0; j < gridSize; j++) { 
 				n = nodes[i][j];
 
 				if (i != 0)
 					n.addNeighbor(nodes[i-1][j]);
 				if (j != 0)
 					n.addNeighbor(nodes[i][j-1]);
-				if (i != 11)
+				if (i != gridSize-1)
 					n.addNeighbor(nodes[i+1][j]);
-				if (j != 11)
+				if (j != gridSize-1)
 					n.addNeighbor(nodes[i][j+1]);			
 			}
 		}
@@ -70,10 +85,12 @@ public class Map {
 	 * @return Node
 	 */
 	public Node getClosestNode(double x, double y) {
+		//TODO: does this really give the closest node?
 		int xInt = (int) x;
 		int yInt = (int) y;
 		int xDiv = ((xInt + 30) / 30);
 		int yDiv = ((yInt + 30) / 30);
+		
 
 		return nodes[xDiv][yDiv];
 	}
@@ -94,7 +111,7 @@ public class Map {
 	 * @param y
 	 */
 	public void blockNodeAt(double x, double y) {
-		if (x > -25 && x < 325 && y > -25 && y < 325) {
+		if (x > -25 && x < gridSize*30-5 && y > -25 && y < gridSize*30-5 ) {
 			Node n = this.getClosestNode(x,y);
 			if (!n.equals(null)) { 
 				this.removeNode(n);
@@ -120,8 +137,14 @@ public class Map {
 	 * @param n
 	 */
 	public void removeNode(Node n) {
-		HashSet<Node> c = (HashSet<Node>) n.getNeighbors();
+		ArrayList<Node> c = (ArrayList<Node>) n.getNeighbors();
+		
+		for(Node neighbor :  c){
+			neighbor.removeNeighbor(n);
+		}
+		
 		c.clear();
+		
 	}
 
 	/**
