@@ -24,7 +24,11 @@ public class Coordinate extends Point{
 	public double getTheta() {
 		return theta;
 	}
-
+	/**
+	 * Theta is in <b> RAD </b>
+	 * @param position
+	 * @return this object 
+	 */
 	public Coordinate setTheta(double position) {
 		this.theta = position;
 		return this;

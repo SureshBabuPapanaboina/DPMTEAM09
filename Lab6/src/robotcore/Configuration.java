@@ -25,6 +25,8 @@ public class Configuration {
 	public static final int GRID_SIZE = 8; //set to demo size
 	
 	//robot hardware
+
+	//TODO have the fixed values for the ports 
 	//motors 
 	public static final NXTRegulatedMotor LEFT_MOTOR = Motor.A;
 	public static final NXTRegulatedMotor RIGHT_MOTOR = Motor.B;
@@ -36,7 +38,7 @@ public class Configuration {
 	//sensors
 	public static final SensorPort ULTRASONIC_SENSOR_PORT = SensorPort.S1;
 	public static final SensorPort LINE_READER_LEFT = SensorPort.S1;
-	public static final SensorPort LINE_READER_RIGHT = SensorPort.S2;	//TODO
+	public static final SensorPort LINE_READER_RIGHT = SensorPort.S2;
 	public static final SensorPort COLOR_SENSOR_PORT = SensorPort.S2;	//TODO
 	
 	
@@ -228,7 +230,6 @@ public class Configuration {
 	
 	/** 
 	 * @return the current location set by the odometer 
-	 * @deprecated use the odometer 
 	 * {@code getX() getY() getTheata()}
 	 */
 	public Coordinate getCurrentLocation() {

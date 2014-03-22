@@ -11,6 +11,8 @@ import lejos.nxt.ColorSensor;
  *	@version 1.3
  */
 public class LineReader extends Thread{
+	private static final int SLEEP_TIME = 25;
+	private static final int IGNORE_INTERVAL = 300;	//how long to ignore after a line has seen to avoid over sensitive
 	/**
 	 * if this a left sensor then true 
 	 * else false 
@@ -74,11 +76,13 @@ public class LineReader extends Thread{
 			if (hasPassedLine(currentSensedValue, previousSensedValue)){
 				passedLine = true ;
 				callBack();
-				try{Thread.sleep(100);} catch (Exception e){};
+				try{Thread.sleep(SLEEP_TIME);} catch (Exception e){};
+				passedLine = false; //set it back to false 
+				try{Thread.sleep(IGNORE_INTERVAL);} catch (Exception e){};
 			}
 			else {
 				passedLine = false ;
-				try{Thread.sleep(25);} catch (Exception e){};
+				try{Thread.sleep(SLEEP_TIME);} catch (Exception e){};
 			}
 		}
 		

@@ -97,6 +97,7 @@ public final class Driver extends Thread{
 		
 	/**
 	 * move wheel forward at the same speed it was running at before 
+	 * only return once finished moving 
 	 * @param dist
 	 */
 	public void forward(double dist){
