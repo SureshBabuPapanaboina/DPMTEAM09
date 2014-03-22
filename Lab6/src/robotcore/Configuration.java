@@ -1,9 +1,12 @@
 package robotcore;
 
+import communication.RemoteConnection;
 import lejos.nxt.Motor;
 import lejos.nxt.NXTRegulatedMotor;
 import lejos.nxt.SensorPort;
 import lejos.nxt.comm.RConsole;
+import lejos.nxt.remote.RemoteMotor;
+import lejos.nxt.remote.RemoteSensorPort;
 import lejos.robotics.Color;
 
 /**
@@ -13,33 +16,37 @@ import lejos.robotics.Color;
  */
 public class Configuration {
 	private Coordinate startLocation;// starting location
-	
+
 	//TODO: Should current location really be kept in the config file?
 	private Coordinate currentLocation ; //current location ;
 	private boolean driveComplete  = false ;
-	
 	private int ROTATE_SPEED = 60 ;
 	private int FORWARD_SPEED = 200;
 	
 	//constants about the plying field
 	public static final int GRID_SIZE = 8; //set to demo size
 	
+	 //remote 
+	private static RemoteConnection rc = RemoteConnection.getInstance();
+	
 	//robot hardware
 
+	
+	
 	//TODO have the fixed values for the ports 
 	//motors 
 	public static final NXTRegulatedMotor LEFT_MOTOR = Motor.A;
 	public static final NXTRegulatedMotor RIGHT_MOTOR = Motor.B;
 	public static final NXTRegulatedMotor SENSOR_MOTOR= Motor.C;	
-	public static final NXTRegulatedMotor LEFT_ARM_MOTOR= Motor.C;	//TODO
-	public static final NXTRegulatedMotor RIGHT_ARM_MOTOR= Motor.C;	//TODO
-	
+	//remote motors 
+	public static final RemoteMotor LEFT_ARM_MOTOR = rc.getRemoteNXT().A;
+	public static final RemoteMotor RIGHT_ARM_MOTOR= rc.getRemoteNXT().B;
 	
 	//sensors
 	public static final SensorPort ULTRASONIC_SENSOR_PORT = SensorPort.S1;
-	public static final SensorPort LINE_READER_LEFT = SensorPort.S1;
-	public static final SensorPort LINE_READER_RIGHT = SensorPort.S2;
-	public static final SensorPort COLOR_SENSOR_PORT = SensorPort.S2;	//TODO
+	public static final SensorPort LINE_READER_LEFT = SensorPort.S2;
+	public static final SensorPort LINE_READER_RIGHT = SensorPort.S3;
+	public static final RemoteSensorPort COLOR_SENSOR_PORT = rc.getRemoteNXT().S1;
 	
 	
 	public static final double LEFT_RADIUS = 2.090 ;
@@ -48,8 +55,11 @@ public class Configuration {
 	/**
 	 * enable /disable debugging 
 	 */
-	public static final boolean DEBUG = false;
+	public static final boolean DEBUG = true;
 	
+	
+	
+	//instance
 	private static Configuration config = null ;
 	
 	
@@ -64,6 +74,7 @@ public class Configuration {
 	}
 	
 	private Configuration(){
+		
 		currentLocation = new Coordinate(15, 15, 0);
 		setStartLocation(new Coordinate(15, 15, 0));
 		RConsole.openUSB(1000);
