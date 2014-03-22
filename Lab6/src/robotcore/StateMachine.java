@@ -4,6 +4,7 @@ package robotcore;
  * This is the main state machine class, this will keep track of the current robot states
  * callbacks on this class will change the robot state and thus affect its actions in the core
  *
+ * @author Peter Henderson
  */
 public class StateMachine extends Thread{
 	

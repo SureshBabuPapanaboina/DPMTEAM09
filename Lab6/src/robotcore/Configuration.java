@@ -48,10 +48,15 @@ public class Configuration {
 	public static final SensorPort LINE_READER_RIGHT = SensorPort.S3;
 	public static final RemoteSensorPort COLOR_SENSOR_PORT = rc.getRemoteNXT().S1;
 	
-	
 	public static final double LEFT_RADIUS = 2.090 ;
 	public static final double RIGHT_RADIUS =2.090;
 	public static final double WIDTH = 22.5 ;
+
+	//temporarily changing to use smaller robot
+//	public static final double LEFT_RADIUS = 2.16 ;
+//	public static final double RIGHT_RADIUS = 2.16;
+//	public static final double WIDTH = 15.7 ;
+//	
 	/**
 	 * enable /disable debugging 
 	 */

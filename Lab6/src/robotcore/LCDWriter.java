@@ -17,7 +17,7 @@ public class LCDWriter extends Thread {
 	private static LCDWriter lcd ;
 
 	private LCDWriter(Configuration config){
-		lock = new Object();;
+		lock = new Object();
 		s = new String[8];
 		this.config = config;
 		for(int i = 0 ; i < 8 ; i++){

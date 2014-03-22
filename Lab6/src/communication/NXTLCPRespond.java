@@ -7,6 +7,7 @@ import lejos.nxt.comm.RS485;
 /**
  * Runs on the remote NXT to respond to LCP requests
  *
+ * @author Peter Henderson
  */
 public class NXTLCPRespond
 {

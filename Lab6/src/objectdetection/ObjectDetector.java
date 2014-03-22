@@ -6,6 +6,7 @@ import sensors.UltrasonicPoller;
  * This class uses the ColorPoller and the UltraSonicPoller to determine if an object is 
  * within a collision range, if it should be investigated and whether it is the correct
  * color block or not
+ * 
  * @author Peter Henderson
  *
  */

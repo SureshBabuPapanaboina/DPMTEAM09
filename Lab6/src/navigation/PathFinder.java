@@ -9,7 +9,12 @@ import lejos.robotics.pathfinding.Path;
 
 /**
  * This finds a path based on the Nodes determined in the map
+ * 
+ * TODO: Internal implementation of A* uses Euclidean distance, 
+ * might be better to override and use Manhattan distance to
+ * get the least amount of turns possible
  *
+ *	@author Peter Henderson
  */
 public class PathFinder {
 	

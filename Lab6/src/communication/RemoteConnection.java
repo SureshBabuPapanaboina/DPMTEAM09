@@ -15,6 +15,7 @@ import lejos.nxt.remote.RemoteNXT;
  * See Example for how to implement: 
  * http://fedora.cis.cau.edu/~pmolnar/CIS687F12/Programming-LEGO-Robots/samples/src/org/lejos/sample/remotenxttest/RemoteNXTTest.java
  *
+ * @author Peter Henderson
  */
 public class RemoteConnection {
 	

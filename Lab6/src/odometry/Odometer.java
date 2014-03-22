@@ -191,6 +191,23 @@ public class Odometer extends Thread {
 		}
 		return cCoord;
 	}
+
+	public Direction getDirection(){
+		double t = getTheta();
+		
+		if(t > 7*Math.PI/4 || t < Math.PI/4){
+			return Direction.NORTH;
+		}
+		else if(t > Math.PI/4 && t < Math.PI*3/4){
+			return Direction.EAST;
+		}
+		else if(t > Math.PI*3/4 && t < Math.PI*5/4){
+			return Direction.SOUTH;
+		}
+		else{
+			return Direction.WEST;
+		}	
+	}
 	
 	/*
 	 * =============================================================================

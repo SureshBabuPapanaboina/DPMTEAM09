@@ -6,6 +6,8 @@ import lejos.nxt.Button;
  * This class runs the main functionality of the robot,
  * it contains the main state machine and runs initial
  * setup
+ * 
+ * @author Peter Henderson
  *
  */
 public class Core {

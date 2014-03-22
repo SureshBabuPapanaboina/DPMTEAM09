@@ -10,8 +10,16 @@ import org.junit.Test;
 
 import robotcore.Configuration;
 
+/**
+ * Various unit tests for determining the integrity of the internal map representation
+ * @author Peter Henderson
+ *
+ */
 public class MapTest {
 
+	/**
+	 * Tests that the map of the correct size is created with proper node connectons
+	 */
 	@Test
 	public void correctSize() {
 		Map map = Map.getInstance();
@@ -24,6 +32,9 @@ public class MapTest {
 		
 	}
 	
+	/**
+	 * Tests that the nodes are blocked successfully
+	 */
 	@Test
 	public void nodeBlockedSuccessfully(){
 		Map map = Map.getInstance();
@@ -37,6 +48,9 @@ public class MapTest {
 				countNodes(start, new HashSet<Node>()));
 	}
 	
+	/**
+	 * Tests that the correct (closest) nodes are removed based on x and y coords
+	 */
 	@Test
 	public void correctNodesRemoved(){
 		Map map = Map.getInstance();
@@ -56,6 +70,9 @@ public class MapTest {
 				countNodes(start, new HashSet<Node>()));
 	}
 	
+	/**
+	 * Test that a blocked node has no neighbors
+	 */
 	@Test
 	public void blockedNodeHasNoNeighbors(){
 		Map map = Map.getInstance();

@@ -6,8 +6,16 @@ import lejos.robotics.pathfinding.Path;
 
 import org.junit.Test;
 
+/**
+ * Basic unit tests for pathfinding
+ *
+ */
 public class PathUnitTests {
 
+	/**
+	 * Tests that an optimal path is found and that the end zone is reached
+	 * with no obstacles
+	 */
 	@Test
 	public void basicPath() {
 		Map map = Map.getInstance();
@@ -18,14 +26,19 @@ public class PathUnitTests {
 		Path path = find.getPathBetweenNodes(map.getClosestNode(-15, -15), map.getClosestNode(45, 45));
 		
 		//this was to see the path
-//		for(Waypoint p : path){
-//			System.out.println("P: (" + p.x + ", " + p.y + ")");
-//		}
+		for(Waypoint p : path){
+			System.out.println("P: (" + p.x + ", " + p.y + ")");
+		}
 //		
 		assertEquals(path.get(path.size()-1).x, 45, 0);
 		assertEquals(path.get(path.size()-1).y, 45, 0);
 	}
 	
+	/**
+	 * Tests that an optimal path is found and that the end zone is reached
+	 * with one obstacles
+	 * 
+	 */
 	@Test
 	public void pathWithOneObstacle(){
 		Map map = Map.getInstance();
@@ -48,6 +61,10 @@ public class PathUnitTests {
 		assertEquals(path.get(path.size()-1).y, 75, 0);
 	}
 	
+	/**
+	 * Tests that an optimal path is found and that the end zone is reached
+	 * with 6 obstacles
+	 */
 	@Test
 	public void pathWithSeveralObstacles(){
 		Map map = Map.getInstance();

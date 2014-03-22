@@ -1,6 +1,7 @@
 package movement;
 
 import odometry.Odometer;
+import robotcore.Configuration;
 import lejos.nxt.Button;
 import lejos.nxt.LCD;
 import lejos.nxt.Motor;
@@ -20,7 +21,7 @@ import lejos.nxt.Motor;
  * 
  */
 public class BasicMovTest {
-	private static final double WHEEL_RADIUS = 2.3;
+	private static final double WHEEL_RADIUS = Configuration.LEFT_RADIUS;
 	private static final double WIDTH = 22.4;	//Also width between wheels
 		
 	/** 

@@ -4,6 +4,8 @@ package robotcore;
  * An interface for the states, all states should implement these 3 methods
  * The run method should actually have a check in a sort of while loop to make sure 
  * that there is no interrupt needed
+ * 
+ * @author Peter Henderson
  *
  */
 public interface State {

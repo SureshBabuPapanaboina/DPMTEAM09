@@ -23,6 +23,8 @@ import lejos.nxt.Sound;
  * 
  * TODO: I'm still debating whether to keep this in one file or split it up. If someone wants
  * weigh in and/or change it
+ * 
+ * @author Peter Henderson
  *
  */
 public enum States implements State{

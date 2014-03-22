@@ -12,6 +12,7 @@ import lejos.robotics.pathfinding.Node;
  * Note: parts of the following implementation were taken from: 
  * https://github.com/mvertescher/DPM-Winter-2013/blob/master/Final%20Software/Final%20Code/Final/src/pathfinding/GridMap.java
  *  
+ *  @author Peter Henderson
  */
 public class Map {
 	
