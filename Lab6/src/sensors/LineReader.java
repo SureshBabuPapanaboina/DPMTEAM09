@@ -88,6 +88,8 @@ public class LineReader extends Thread{
 		
 		//shuts off light to save the earth
 		colorSensor.setFloodlight(false);
+		//delete everything from the array list to release memory 
+		lrlistenerList.clear();
 	}
 	
 	

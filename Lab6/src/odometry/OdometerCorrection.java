@@ -13,7 +13,7 @@ import sensors.LineReaderListener;
  *
  */
 public class OdometerCorrection implements LineReaderListener{
-	private static OdometerCorrection instance = null ;
+	private static OdometerCorrection instance = new OdometerCorrection() ;
 	private NXTRegulatedMotor lMotor; 
 	private NXTRegulatedMotor rMotor;
 	
@@ -29,7 +29,7 @@ public class OdometerCorrection implements LineReaderListener{
 	private boolean flagPassLeft;  //decide if correction is needed
 	private boolean flagPassRight;
 	
-	public OdometerCorrection getInstance(){
+	public static OdometerCorrection getInstance(){
 		//TODO see an example of implementation in Odometer 
 		return instance;
 	}

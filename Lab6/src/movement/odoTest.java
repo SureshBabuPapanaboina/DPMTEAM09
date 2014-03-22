@@ -7,6 +7,7 @@ import lejos.nxt.NXTRegulatedMotor;
 import lejos.nxt.Sound;
 import lejos.nxt.comm.RConsole;
 import odometry.Odometer;
+import odometry.OdometerCorrection;
 import robotcore.Configuration;
 import robotcore.LCDWriter;
 import sensors.LineReader;
@@ -17,6 +18,9 @@ public class odoTest {
 	private static Configuration conf = Configuration.getInstance();
 	private static LineReader llr = LineReader.getLeftSensor();	//left + right line reader
 	private static LineReader rlr = LineReader.getRightSensor();
+	private static OdometerCorrection odoCorrect = OdometerCorrection.getInstance();
+	//pushed by Mike
+	private static Driver driver = Driver.getInstance();
 	
 	public static void main(String[] args)
 	{
@@ -56,14 +60,28 @@ public class odoTest {
 		lcd.start();
 		llr.start();
 		rlr.start();
+		driver.start();
 		//odometryCorrection.start();
 
+		//subscribe the odoCorrect to the line readers 
+		LineReader.subscribeToAll(odoCorrect);
+		
 		// spawn a new Thread to avoid SquareDriver.drive() from blocking
 		(new Thread() {
 			public void run() {
-				SquareDriver.drive(Motor.A, Motor.B, 2.090, 2.090, 22.5);//2.1,2.101,15.75
+				int k = 3* 30;	//distance to move 
+				conf.getCurrentLocation().setTheta(0).setX(0).setY(0);
+				driver.travelTo(k, 0);
+				driver.travelTo(k, k);
+				driver.travelTo(0, k);
+				driver.travelTo(0, 0);
+				//set drive to be complete !! this will finalize the machine (shuts off linereaders and odo )
+				Configuration.getInstance().setDriveComplete();
+				// do not use the below I don't think it uses the drivers correctly 
+//				SquareDriver.drive(Motor.A, Motor.B, 2.090, 2.090, 22.5);//2.1,2.101,15.75
 			}
 		}).start();
+		
 	}
 	
 	while (Button.waitForAnyPress() != Button.ID_ESCAPE);
