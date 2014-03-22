@@ -4,6 +4,7 @@
 package odometry;
 
 import lejos.nxt.NXTRegulatedMotor;
+import lejos.nxt.comm.RConsole;
 import robotcore.Configuration;
 import sensors.LineReaderListener;
 /**
@@ -13,7 +14,6 @@ import sensors.LineReaderListener;
  *
  */
 public class OdometerCorrection implements LineReaderListener{
-	private static OdometerCorrection instance = null ;
 	private NXTRegulatedMotor lMotor; 
 	private NXTRegulatedMotor rMotor;
 	
@@ -28,11 +28,7 @@ public class OdometerCorrection implements LineReaderListener{
 	private int count;  //determine the switch case for angle correction
 	private boolean flagPassLeft;  //decide if correction is needed
 	private boolean flagPassRight;
-	
-	public OdometerCorrection getInstance(){
-		//TODO see an example of implementation in Odometer 
-		return instance;
-	}
+	private double tempAngle;
 	
 	private OdometerCorrection(){
 		lMotor = Configuration.LEFT_MOTOR;
@@ -48,11 +44,13 @@ public class OdometerCorrection implements LineReaderListener{
 	{
 		//get angle from odometer in degrees
 		double angle = Odometer.getInstance().getTheta()*180/Math.PI;
-		
+		tempAngle = convertAngle(angle);
+		RConsole.println("angle: "+String.valueOf(angle));
+		RConsole.println("tempAngle: "+String.valueOf(tempAngle));
 		//face y axis case
-		if( 	(angle>0 && angle<20)		//
-				||(angle>340 && angle<360)
-				||(angle>160 && angle <200))
+		if( 	(tempAngle>0 && tempAngle<20)		//
+				||(tempAngle>340 && tempAngle<360)
+				||(tempAngle>160 && tempAngle <200))
 		{
 			//this condition determines which sensor detects the line first, and then set corresponding values
 			//for angle correction
@@ -85,7 +83,7 @@ public class OdometerCorrection implements LineReaderListener{
 			}
 		}
 		//face x axis case
-		else if((angle>70 && angle<110)|| (angle>250 && angle<290))
+		else if((tempAngle>70 && tempAngle<110)|| (tempAngle>250 && tempAngle<290))
 		{
 			//similar condition as mentioned above
 			if(isLeft)
@@ -112,6 +110,7 @@ public class OdometerCorrection implements LineReaderListener{
 			}
 		}
 		
+		angle = convertBack(angle,tempAngle);
 		//this condition determines which case it runs, left or right 
 		if(flagPassLeft)
 		{
@@ -201,5 +200,22 @@ public class OdometerCorrection implements LineReaderListener{
 		Odometer.getInstance().setTheta(correctedAngle);
 		//return the angle for x,y correction
 		return Math.atan(error/width);
+	}
+	
+	public double convertAngle(double angle)
+	{
+		if (angle < 0.0)
+			angle = 360.0 + (angle % 360.0);
+		
+		return angle % 360.0;
+	}
+	
+	public double convertBack(double angle, double tempAngle)
+	{
+		if(angle<0.0)
+		{
+			tempAngle = tempAngle % 360 - 360;
+		}
+		return tempAngle*Math.PI/180;
 	}
 }
