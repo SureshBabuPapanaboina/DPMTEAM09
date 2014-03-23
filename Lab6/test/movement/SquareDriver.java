@@ -19,7 +19,7 @@ public class SquareDriver {
 		// wait 5 seconds
 		try {
 			Thread.sleep(2000);
-		} catch (InterruptedException e) {
+		} catch (InterruptedException e) { 
 			// there is nothing to be done here because it is not expected that
 			// the odometer will be interrupted by another thread
 		}

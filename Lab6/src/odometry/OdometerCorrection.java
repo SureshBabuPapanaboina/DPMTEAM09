@@ -15,6 +15,7 @@ import sensors.LineReaderListener;
  */
 public class OdometerCorrection implements LineReaderListener{
 
+	private static OdometerCorrection instance;
 	private NXTRegulatedMotor lMotor; 
 	private NXTRegulatedMotor rMotor;
 	
@@ -31,6 +32,12 @@ public class OdometerCorrection implements LineReaderListener{
 	private boolean flagPassRight;
 
 	private double tempAngle;
+	
+	public static OdometerCorrection getInstance(){
+		if(instance == null) instance = new OdometerCorrection();
+		
+		return instance;
+	}
 
 	private OdometerCorrection(){
 		lMotor = Configuration.LEFT_MOTOR;
