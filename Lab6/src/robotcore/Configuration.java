@@ -27,7 +27,7 @@ public class Configuration {
 	public static final int GRID_SIZE = 8; //set to demo size
 	
 	 //remote 
-	private static RemoteConnection rc = RemoteConnection.getInstance();
+//	private static RemoteConnection rc = RemoteConnection.getInstance();
 	
 	//robot hardware
 
@@ -38,15 +38,19 @@ public class Configuration {
 	public static final NXTRegulatedMotor LEFT_MOTOR = Motor.A;
 	public static final NXTRegulatedMotor RIGHT_MOTOR = Motor.B;
 	public static final NXTRegulatedMotor SENSOR_MOTOR= Motor.C;	
-	//remote motors 
-	public static final RemoteMotor LEFT_ARM_MOTOR = rc.getRemoteNXT().A;
-	public static final RemoteMotor RIGHT_ARM_MOTOR= rc.getRemoteNXT().B;
 	
+	//remote motors 
+	//these should only be initiated when a connection CAN be made, it's causing
+	//	null pointers in tests currently
+	
+//	public static final RemoteMotor LEFT_ARM_MOTOR = rc.getLeftRemote();
+//	public static final RemoteMotor RIGHT_ARM_MOTOR= rc.getRightRemote();
+//	
 	//sensors
 	public static final SensorPort ULTRASONIC_SENSOR_PORT = SensorPort.S1;
 	public static final SensorPort LINE_READER_LEFT = SensorPort.S2;
 	public static final SensorPort LINE_READER_RIGHT = SensorPort.S3;
-	public static final RemoteSensorPort COLOR_SENSOR_PORT = rc.getRemoteNXT().S1;
+	public static final SensorPort COLOR_SENSOR_PORT = SensorPort.S4;
 	
 	public static final double LEFT_RADIUS = 2.090 ;
 	public static final double RIGHT_RADIUS =2.090;
@@ -57,6 +61,9 @@ public class Configuration {
 //	public static final double RIGHT_RADIUS = 2.16;
 //	public static final double WIDTH = 15.7 ;
 //	
+	
+	public static final CommunicationType INTERBRICK_COMM_METHOD = CommunicationType.Bluetooth;
+	
 	/**
 	 * enable /disable debugging 
 	 */

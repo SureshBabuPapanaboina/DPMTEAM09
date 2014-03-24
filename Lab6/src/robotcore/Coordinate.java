@@ -1,6 +1,7 @@
 package robotcore;
 
 import lejos.nxt.comm.RConsole;
+import lejos.robotics.navigation.Waypoint;
 
 
 /**
@@ -15,6 +16,11 @@ public class Coordinate extends Point{
 	public Coordinate(double x, double y , double d ){
 		super (x,y);
 		this.theta = d ;
+	}
+	
+	public Coordinate(Waypoint p){
+		super(p.x, p.y);
+		this.theta = 0;
 	}
 	
 	/**

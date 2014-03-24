@@ -2,10 +2,14 @@ package communication;
 
 import java.io.IOException;
 
+import robotcore.CommunicationType;
+import robotcore.Configuration;
 import lejos.nxt.LCD;
 import lejos.nxt.Sound;
+import lejos.nxt.comm.Bluetooth;
 import lejos.nxt.comm.NXTCommConnector;
 import lejos.nxt.comm.RS485;
+import lejos.nxt.remote.RemoteMotor;
 import lejos.nxt.remote.RemoteNXT;
 
 /**
@@ -52,6 +56,26 @@ public class RemoteConnection {
 	}
 	
 	/**
+	 * Returns the left remote motor, or null otherwise
+	 * @return
+	 */
+	public RemoteMotor getLeftRemote(){
+		if(getRemoteNXT() == null) return null;
+		
+		return remoteNXT.A;
+	}
+	
+	/**
+	 * Returns the right remote motor, or null otherwise
+	 * @return
+	 */
+	public RemoteMotor getRightRemote(){
+		if(getRemoteNXT() == null) return null;
+		
+		return remoteNXT.B;
+	}
+	
+	/**
 	 * Closes the remote brick connection
 	 */
 	public void closeConnection(){
@@ -63,10 +87,16 @@ public class RemoteConnection {
 	 * Sets up connection using RS485 connection over the two bricks
 	 */
 	public void setupConnection(){
-		NXTCommConnector rsconn = RS485.getConnector();
+		NXTCommConnector conn; 
+		Configuration.getInstance();
+		if(Configuration.INTERBRICK_COMM_METHOD == CommunicationType.RS485)
+			conn = RS485.getConnector();
+		else
+			conn = Bluetooth.getConnector();
 
 		try {
-			remoteNXT = new RemoteNXT("NXT", rsconn);
+			//TODO: need to change name of the two bricks to match the standards
+			remoteNXT = new RemoteNXT("NXT", conn);
 		} catch (IOException e) {
 			LCD.drawString(e.toString(), 0, 0);
 		}
