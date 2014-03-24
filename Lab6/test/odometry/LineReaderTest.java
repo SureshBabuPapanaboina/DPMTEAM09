@@ -1,4 +1,4 @@
-package movement;
+package odometry;
 import lejos.nxt.Button;
 import lejos.nxt.NXTRegulatedMotor;
 import lejos.nxt.Sound;

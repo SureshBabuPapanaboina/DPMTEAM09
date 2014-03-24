@@ -53,8 +53,6 @@ public class UltrasonicPoller extends Thread {
 	 * @return
 	 */
 	public static UltrasonicPoller getInstance(){
-		 // TODO: This doesn't really make sense... 
-		 //since you're not really making it a singleton if that's the intention
 		if (instance == null){
 			instance = new UltrasonicPoller();
 		}

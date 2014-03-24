@@ -1,5 +1,8 @@
 package communication;
 
+import robotcore.CommunicationType;
+import robotcore.Configuration;
+import lejos.nxt.comm.Bluetooth;
 import lejos.nxt.comm.LCPResponder;
 import lejos.nxt.comm.NXTCommConnector;
 import lejos.nxt.comm.RS485;
@@ -37,12 +40,18 @@ public class NXTLCPRespond
      */
     public static void main(String[] args) throws Exception
     {
-        NXTCommConnector conn = RS485.getConnector();
+    	NXTCommConnector conn;
+    	if(Configuration.INTERBRICK_COMM_METHOD == CommunicationType.RS485)
+    		conn = RS485.getConnector();
+    	else 
+    		conn = Bluetooth.getConnector();
 
         Responder resp = new Responder(conn);
+        
         resp.start();
         resp.join();
         
-        //shouldn't exit until complete, might need to add fault tolerant behaviour
+        //shouldn't exit until complete, might need to add fault tolerant behaviour in
+        //case connection is dropped
     }
 }

@@ -209,6 +209,10 @@ public class Odometer extends Thread {
 		}	
 	}
 	
+	public Coordinate getCurrentCoordinate(){
+		return new Coordinate(getX(), getY(), getTheta());
+	}
+	
 	/*
 	 * =============================================================================
 	 * END OF ACCESSORS and SETTERS
