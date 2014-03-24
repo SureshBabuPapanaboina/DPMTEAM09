@@ -4,7 +4,8 @@ import sensors.UltrasonicListener;
 
 /**
  * This class listens for a possible collision and calls a callback in the object detector 
- * if one is eminent
+ * if one is eminent. This should be pretty much used for only if there is some dynamic
+ * obstacle in the way
  *
  *	@author Peter Henderson
  */
