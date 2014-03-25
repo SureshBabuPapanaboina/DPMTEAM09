@@ -205,7 +205,10 @@ public class OdometerCorrection implements LineReaderListener{
 	{
 		//use reminder (odometer value divided by 30) to determine how much to correct
 		double x = (int)(Odometer.getInstance().getX()/30)*30.48;
-		Odometer.getInstance().setX(x+offset); 
+		if(Math.abs(x+offset-Odometer.getInstance().getX())<12)
+		{
+			Odometer.getInstance().setX(x+offset);
+		}
 	}
 	
 	//correct y
@@ -214,7 +217,10 @@ public class OdometerCorrection implements LineReaderListener{
 		//use reminder (odometer value divided by 30) to determine how much to correct
 		double y = (int)(Odometer.getInstance().getY()/30)*30.48;
 		RConsole.println("correctedY: "+y);
-		Odometer.getInstance().setY(y+offset);
+		if(Math.abs(y+offset-Odometer.getInstance().getY())<12)
+		{
+			Odometer.getInstance().setY(y+offset);
+		}
 	}
 	
 	//this method will return a double angle for correcting x,y values. Also, it will correct the angle based on
@@ -252,6 +258,7 @@ public class OdometerCorrection implements LineReaderListener{
 		correctedAngle = convertBack(angle,correctedAngle);
 		//set the corrected angle to the odometer
 		RConsole.println("convertBack: "+correctedAngle);
+
 		Odometer.getInstance().setTheta(correctedAngle);
 		//return the angle for x,y correction
 		return Math.atan(error/width);
@@ -271,6 +278,7 @@ public class OdometerCorrection implements LineReaderListener{
 		{
 			correctedAngle = correctedAngle % 360 - 360;
 		}
+		RConsole.println("Degree: "+correctedAngle);
 		return Math.toRadians(correctedAngle);
 	}
 }
