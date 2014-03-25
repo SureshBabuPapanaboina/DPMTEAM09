@@ -89,7 +89,7 @@ public class Configuration {
 		
 		currentLocation = new Coordinate(15, 15, 0);
 		setStartLocation(new Coordinate(15, 15, 0));
-		RConsole.openUSB(1000);
+		RConsole.openUSB(3000);
 	}
 	
 	/**
