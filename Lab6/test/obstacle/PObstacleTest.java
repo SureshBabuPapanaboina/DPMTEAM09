@@ -16,6 +16,8 @@ import sensors.UltrasonicPoller;
  * Place obstacle at different points in the tile and see if the scanner picks up
  * the obstacle correctly
  * 
+ * NOTE: This is without odometry correction and pretty slow.
+ * 
  * @author Peter Henderson
  *
  */

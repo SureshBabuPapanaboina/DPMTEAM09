@@ -54,6 +54,7 @@ public class PathTraveller {
 		LCDWriter.getInstance().writeToScreen("n" + n.x + "," + n.y, 0);
 		path = finder.getPathBetweenNodes(n,  map.getClosestNode(x, y));
 		pathIter = path.listIterator();
+		pathIter.next(); //remove the first node so it doesn't go back to it
 	}
 	
 	/**
