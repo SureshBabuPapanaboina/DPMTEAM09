@@ -14,30 +14,25 @@ import sensors.LineReaderListener;
  *
  */
 public class OdometerCorrection implements LineReaderListener{
-
-	private static OdometerCorrection instance;
 	private NXTRegulatedMotor lMotor; 
 	private NXTRegulatedMotor rMotor;
 	
 	private double offset;
-	private final double distFromColorSensorToOdo = 12.5; //distance from colorsensors to odometer
+	private final double distFromColorSensorToOdo = 12.09; //distance from colorsensors to odometer
 	private boolean leftLineSeen = false;	//return true if left colorsensor detects the line
 	private boolean rightLineSeen = false;	//return truen if right colorsensor detects the line
 	private double[] tachl = new double[2];	//collect tachocounts for left motors
 	private double[] tachr = new double[2];	//colleect tachocounts for right motors
 	private double angleForXY;	//angle for correcting x,y coordinates
-	private final double cSensorWidth = 10.7; //distance between two colorsensors
+	private final double cSensorWidth = 10.85; //distance between two colorsensors
 	private int count;  //determine the switch case for angle correction
 	private boolean flagPassLeft;  //decide if correction is needed
 	private boolean flagPassRight;
-
 	private double tempAngle;
 	
-	public static OdometerCorrection getInstance(){
-		if(instance == null) instance = new OdometerCorrection();
-		
-		return instance;
-	}
+	private static OdometerCorrection instance = new OdometerCorrection();
+	
+	public static OdometerCorrection getInstance(){ return instance ;}
 
 	private OdometerCorrection(){
 		lMotor = Configuration.LEFT_MOTOR;
@@ -69,11 +64,19 @@ public class OdometerCorrection implements LineReaderListener{
 				//store the tachocount at this time
 				tachl[0] = lMotor.getTachoCount();
 				leftLineSeen = true;
+				RConsole.println("Tachleft0: "+String.valueOf(tachl[0]));
 				//check if the right sensor also saw the line. If it did, set the count value to prepare for angle correction
 				if(leftLineSeen && rightLineSeen)
 				{
 					tachr[1] = rMotor.getTachoCount();
-					count = 1;
+					if((tempAngle>0 && tempAngle<20)||(tempAngle>340 && tempAngle<360))
+					{
+						count = 3;
+					}
+					else if(tempAngle>160 && tempAngle <200)
+					{
+						count = 4;
+					}
 					//choose to pass right motor tachocount into angle correction method
 					flagPassRight = true;
 				}
@@ -83,10 +86,19 @@ public class OdometerCorrection implements LineReaderListener{
 			{
 				tachr[0] = rMotor.getTachoCount();
 				rightLineSeen = true;
+				//RConsole.println("leftLineSeen: "+String.valueOf(leftLineSeen));
 				if(leftLineSeen && rightLineSeen)
 				{
 					tachl[1] = lMotor.getTachoCount();
-					count = 2;
+					RConsole.println("Tachleft1: "+String.valueOf(tachl[1]));
+					if((tempAngle>0 && tempAngle<20)||(tempAngle>340 && tempAngle<360))
+					{
+						count = 1;
+					}
+					else if(tempAngle>160 && tempAngle <200)
+					{
+						count = 2;
+					}
 					flagPassLeft = true;
 				}
 			}
@@ -101,37 +113,58 @@ public class OdometerCorrection implements LineReaderListener{
 				leftLineSeen = true;
 				if(leftLineSeen && rightLineSeen)
 				{
-					tachr[1] = lMotor.getTachoCount();
-					count = 3;
+					tachr[1] = rMotor.getTachoCount();
+					RConsole.println("Tachoright1: "+String.valueOf(tachr[1]));
+					if(tempAngle>70 && tempAngle<110)
+					{
+						count = 5;
+					}
+					else if(tempAngle>250 && tempAngle<290)
+					{
+						count = 6;
+					}
 					flagPassRight = true;
 				}
 			}
 			else
 			{
 				tachr[0] = rMotor.getTachoCount();
+				RConsole.println("Tachoright0: "+String.valueOf(tachr[0]));
 				rightLineSeen = true;
+				RConsole.println("leftLineSeen: "+String.valueOf(leftLineSeen));
 				if(leftLineSeen && rightLineSeen)
 				{
 					tachl[1] = lMotor.getTachoCount();
-					count = 4;
+					if(tempAngle>70 && tempAngle<110)
+					{
+						count = 7;
+					}
+					else if(tempAngle>250 && tempAngle<290)
+					{
+						count = 8;
+					}
 					flagPassLeft = true;
 				}
 			}
 		}
 		
-		angle = convertBack(angle,tempAngle);
+		//angle = convertBack(angle,tempAngle);
 		//this condition determines which case it runs, left or right 
 		if(flagPassLeft)
 		{
-			angleForXY = tCorrect(cSensorWidth,Configuration.LEFT_RADIUS,tachl[1],tachl[0],angle,count);
-			coordinateCorrection(angleForXY,angle);
+			angleForXY = tCorrect(cSensorWidth,Configuration.LEFT_RADIUS,tachl[1],tachl[0],tempAngle, angle, count);
+			coordinateCorrection(angleForXY,tempAngle);
 			flagPassLeft = false;
+			leftLineSeen = false;
+			rightLineSeen = false;
 		}
 		else if(flagPassRight)
 		{
-			angleForXY = tCorrect(cSensorWidth,Configuration.LEFT_RADIUS,tachr[1],tachr[0],angle,count);
-			coordinateCorrection(angleForXY,angle);
+			angleForXY = tCorrect(cSensorWidth,Configuration.LEFT_RADIUS,tachr[1],tachr[0],tempAngle, angle, count);
+			coordinateCorrection(angleForXY,tempAngle);
 			flagPassRight = false;
+			leftLineSeen = false;
+			rightLineSeen = false;
 		}
 	}
 	
@@ -140,7 +173,7 @@ public class OdometerCorrection implements LineReaderListener{
 	public void coordinateCorrection(double angleForXY, double angle)
 	{
 		offset = cSensorWidth/2*Math.sin(angleForXY)+distFromColorSensorToOdo*Math.cos(angleForXY);
-		
+		RConsole.println("offset: "+offset);
 		if((angle>0 && angle<20)||(angle>340 && angle<360)||(angle>160 && angle <200))
 		{
 			if((angle>0 && angle<20)||(angle>340 && angle<360))
@@ -180,37 +213,50 @@ public class OdometerCorrection implements LineReaderListener{
 	{
 		//use reminder (odometer value divided by 30) to determine how much to correct
 		double y = (int)(Odometer.getInstance().getY()/30)*30.48;
+		RConsole.println("correctedY: "+y);
 		Odometer.getInstance().setY(y+offset);
 	}
 	
 	//this method will return a double angle for correcting x,y values. Also, it will correct the angle based on
 	//the signal passing by the method above. It will correct in different cases
-	public double tCorrect(double width, double radius, double tach1, double tach2, double angle, int count) 
+	public double tCorrect(double width, double radius, double tach1, double tach2, double tempAngle,double angle, int count) 
 	{	
 		//use the difference of tachometer to calculate the error used to calculate the angle to be corrected
 		double error = Math.abs(tach1-tach2)/180*Math.PI*radius;
+		RConsole.println("error: "+String.valueOf(error));
 		double correctedAngle = 0;
 		//set a reminder to minimize the correction cases
-		int reminder = (int)(angle/160);
+		//int reminder = (int)(tempAngle/160);
+		//RConsole.println("reminder of eangle: "+reminder);
 		//do the correction
 		switch(count)
 		{
-			case 1: correctedAngle = reminder*180-Math.atan(error/width)*180/Math.PI;  //face y, right first
+			case 1: correctedAngle = Math.atan(error/width)*180/Math.PI;  //face y, right first
 					break;
-			case 2: correctedAngle = reminder*180+Math.atan(error/width)*180/Math.PI;	//face y, left first
+			case 2: correctedAngle = 180+Math.atan(error/width)*180/Math.PI;
 					break;
-			case 3: correctedAngle = reminder*180+Math.atan(width/error)*180/Math.PI;	//face x, right first
+			case 3: correctedAngle = 360-Math.atan(error/width)*180/Math.PI;	//face y, left first
 					break;
-			case 4: correctedAngle = reminder*180-Math.atan(width/error)*180/Math.PI;	//face x, left first
+			case 4: correctedAngle = 180-Math.atan(error/width)*180/Math.PI;
+					break;
+			case 5: correctedAngle = Math.atan(width/error)*180/Math.PI;
+					break;
+			case 6: correctedAngle = 180+Math.atan(width/error)*180/Math.PI;	//face x, right first
+					break;
+			case 7: correctedAngle = 180-Math.atan(width/error)*180/Math.PI;
+					break;
+			case 8: correctedAngle = 360-Math.atan(width/error)*180/Math.PI;	//face x, left first
 					break;
 		}
-		
+		RConsole.println("correctedAngle: "+correctedAngle);
+		correctedAngle = convertBack(angle,correctedAngle);
 		//set the corrected angle to the odometer
+		RConsole.println("convertBack: "+correctedAngle);
 		Odometer.getInstance().setTheta(correctedAngle);
 		//return the angle for x,y correction
 		return Math.atan(error/width);
 	}
-	
+	//convert the angle in odometer (-2pi to 2pi) to the range of 0 to 360 degrees
 	public double convertAngle(double angle)
 	{
 		if (angle < 0.0)
@@ -218,13 +264,13 @@ public class OdometerCorrection implements LineReaderListener{
 		
 		return angle % 360.0;
 	}
-	
-	public double convertBack(double angle, double tempAngle)
+	//convert the corrected angle back to the range of -2pi to 2pi, to match the odometer
+	public double convertBack(double angle, double correctedAngle)
 	{
 		if(angle<0.0)
 		{
-			tempAngle = tempAngle % 360 - 360;
+			correctedAngle = correctedAngle % 360 - 360;
 		}
-		return tempAngle*Math.PI/180;
+		return Math.toRadians(correctedAngle);
 	}
 }

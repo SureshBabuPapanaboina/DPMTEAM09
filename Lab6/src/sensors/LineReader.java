@@ -5,14 +5,13 @@ import java.util.ArrayList;
 
 import robotcore.Configuration;
 import lejos.nxt.ColorSensor;
+import lejos.nxt.Sound;
 /**
  * this is used to read line from the grund with the colorReader
  * @author yuechuan
  *	@version 1.3
  */
 public class LineReader extends Thread{
-	private static final int SLEEP_TIME = 25;
-	private static final int IGNORE_INTERVAL = 300;	//how long to ignore after a line has seen to avoid over sensitive
 	/**
 	 * if this a left sensor then true 
 	 * else false 
@@ -23,8 +22,16 @@ public class LineReader extends Thread{
 	private int previousSensedValue , currentSensedValue ;
 	private boolean passedLine = false ;
 	private long sensorStartTime;
-	 
+	private static boolean beginReading;
 	
+	public static boolean isBeginReading() {
+		return beginReading;
+	}
+
+	public static void setBeginReading(boolean beginReading) {
+		LineReader.beginReading = beginReading;
+	}
+
 	private static LineReader leftLineReader ;
 	private static LineReader rightLineReader ;
 
@@ -50,6 +57,7 @@ public class LineReader extends Thread{
 		colorSensor  = left? new ColorSensor(Configuration.LINE_READER_LEFT) : new ColorSensor(Configuration.LINE_READER_RIGHT);
 		isLeft = left;
 		this.config = config;
+		colorSensor.setFloodlight(true);
 	}
 	
 	public static LineReader getLeftSensor(){
@@ -63,7 +71,7 @@ public class LineReader extends Thread{
 	
 	
 	public void run (){
-		colorSensor.setFloodlight(true);
+		//colorSensor.setFloodlight(true);
 		
 		previousSensedValue = currentSensedValue = colorSensor.getLightValue();
 		sensorStartTime = System.currentTimeMillis(); //mark the start time 
@@ -74,22 +82,27 @@ public class LineReader extends Thread{
 			currentSensedValue = colorSensor.getLightValue();
 			
 			if (hasPassedLine(currentSensedValue, previousSensedValue)){
-				passedLine = true ;
-				callBack();
-				try{Thread.sleep(SLEEP_TIME);} catch (Exception e){};
-				passedLine = false; //set it back to false 
-				try{Thread.sleep(IGNORE_INTERVAL);} catch (Exception e){};
+				if(isBeginReading())
+				{
+					Sound.beep();
+					passedLine = true ;
+					callBack();
+					try{Thread.sleep(100);} catch (Exception e){};
+				}
+				else
+				{
+					passedLine = false ;
+					try{Thread.sleep(25);} catch (Exception e){};
+				}
 			}
 			else {
 				passedLine = false ;
-				try{Thread.sleep(SLEEP_TIME);} catch (Exception e){};
+				try{Thread.sleep(25);} catch (Exception e){};
 			}
 		}
 		
 		//shuts off light to save the earth
 		colorSensor.setFloodlight(false);
-		//delete everything from the array list to release memory 
-		lrlistenerList.clear();
 	}
 	
 	
@@ -192,5 +205,4 @@ public class LineReader extends Thread{
 		
 		return result ; 
 	}
-
 }
