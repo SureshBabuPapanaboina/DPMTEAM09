@@ -16,8 +16,8 @@ import lejos.robotics.Color;
  */
 public class Configuration {
 	private Coordinate startLocation;// starting location
-
 	private Coordinate currentLocation ; //current location ;
+	
 	private boolean driveComplete  = false ;
 	private int ROTATE_SPEED = 60 ;
 	private int FORWARD_SPEED = 200;
@@ -52,6 +52,10 @@ public class Configuration {
 	public static final double LEFT_RADIUS = 2.090 ;
 	public static final double RIGHT_RADIUS =2.090;
 	public static final double WIDTH = 22.5 ;
+	/**
+	 * the distance between the lineReaders and the center of rotation 
+	 */
+	public static final double distFromLineReaderToCenterOfRot = 7 ; //TODO change to measured values
 
 	//temporarily changing to use smaller robot
 //	public static final double LEFT_RADIUS = 2.16 ;
@@ -163,6 +167,7 @@ public class Configuration {
 	 * @return
 	 */
 	public Coordinate getOpponentDropZone(){
+		//TODO
 		return null;
 	}
 	
@@ -171,6 +176,7 @@ public class Configuration {
 	 * @return
 	 */
 	public Coordinate getDropZone(){
+		//TODO
 		return null;
 	}
 	
@@ -179,6 +185,7 @@ public class Configuration {
 	 * @return
 	 */
 	public Color getFlagColor(){
+		//TODO
 		return null;
 	}
 	

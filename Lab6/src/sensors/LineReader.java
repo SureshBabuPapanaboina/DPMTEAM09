@@ -22,18 +22,43 @@ public class LineReader extends Thread{
 	private int previousSensedValue , currentSensedValue ;
 	private boolean passedLine = false ;
 	private long sensorStartTime;
-	private static boolean beginReading;
-	
-	public static boolean isBeginReading() {
-		return beginReading;
-	}
-
-	public static void setBeginReading(boolean beginReading) {
-		LineReader.beginReading = beginReading;
-	}
+	private boolean notPaused;// pause the execution of lineReaderListeners if paused 
 
 	private static LineReader leftLineReader ;
 	private static LineReader rightLineReader ;
+
+	
+	/**
+	 * check if the execution of LineReaderListener is temporarily paused or not 
+	 * @return
+	 */
+	public boolean notPaused() {
+		return notPaused;
+	}
+/**
+ * pause or unpause the execution of linsteners 
+ * @param pause
+ */
+	public void setNotPaused(boolean pause) {
+		notPaused = pause;
+	}
+	/**
+	 * pause all the line readers
+	 */
+	public static void pauseAll(){
+		//avoid uninitialized error 
+		LineReader.getLeftSensor().setNotPaused(false);
+		LineReader.getRightSensor().setNotPaused(false);
+	}
+	
+	/**
+	 * unpause all the line readers 
+	 */
+	public static void unpauseAll(){
+		LineReader.getLeftSensor().setNotPaused(true);
+		LineReader.getRightSensor().setNotPaused(true);
+	}
+	
 
 	/**
 	 * contains a list of classes to call when a line is detected. A
@@ -82,14 +107,14 @@ public class LineReader extends Thread{
 			currentSensedValue = colorSensor.getLightValue();
 			
 			if (hasPassedLine(currentSensedValue, previousSensedValue)){
-				if(isBeginReading())
+				if(notPaused())	//if not paused 
 				{
 					Sound.beep();
 					passedLine = true ;
 					callBack();
 					try{Thread.sleep(100);} catch (Exception e){};
 				}
-				else
+				else	//if paused 
 				{
 					passedLine = false ;
 					try{Thread.sleep(25);} catch (Exception e){};

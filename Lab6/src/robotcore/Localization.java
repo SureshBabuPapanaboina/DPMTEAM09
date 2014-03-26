@@ -1,8 +1,11 @@
 package robotcore;
 
 import odometry.Odometer;
+import sensors.LineReader;
+import sensors.LineReaderListener;
 import sensors.UltrasonicListener;
 import sensors.UltrasonicPoller;
+import lejos.nxt.NXTMotor;
 import lejos.nxt.comm.RConsole;
 import lejos.robotics.navigation.Waypoint;
 import lejos.robotics.pathfinding.Path;
@@ -13,28 +16,89 @@ import movement.Driver;
  * @author yuechuan
  *
  */
-public class Localization {
-	private static final boolean DEBUG = Configuration.DEBUG;
+public class Localization implements LineReaderListener {
+	
+	//used threads and initialized stuff 
 	private static Driver driver = Driver.getInstance();
 	private static Odometer odo = Odometer.getInstance();
 	private static LCDWriter lcd = LCDWriter.getInstance();
 	private static UltrasonicPoller usp = UltrasonicPoller.getInstance();
 	private static Configuration conf = Configuration.getInstance();
-	private static double angle1 , angle2 , middle ;
+	//line readers to run for aligning robot 
+	private static LineReader llr = LineReader.getLeftSensor();
+	private static LineReader rlr = LineReader.getRightSensor();
+	
+	//used to subscribe to lineReaders 
+	private static Localization localizer = new Localization();
+	
+	private static final boolean DEBUG = Configuration.DEBUG;
+	private static double angle1 , angle2 ;
 	static boolean secondAngle = false ;	// if this is called a second time then turn back 
+
+	
+
 	
 	public static void main(String[] args) {
 		startThread();
-//		driver.rotateToRelatively(-100);
 		
 		localize();
+		
+		LineReader.subscribeToAll(localizer);
+		
+		driver.forward(30);
+		//right now the robot is stopped with both line readers on the line 
+		int distFromCenterOfGrid = 5;
+		driver.forward(distFromCenterOfGrid);
+		LineReader.pauseAll();
+		driver.rotateToRelatively(-90);
+		LineReader.unpauseAll();
+		driver.forward(30);
+		driver.forward(distFromCenterOfGrid);
+		cleanUp();
+		
 	}
-	
+	/**
+	 * used exclusively in passedLine method 
+	 */
+	private static int lineNumberPassed = 0 ;
+	@Override
+	/**
+	 * stop corresponding motor once line is seen
+	 */
+	public void passedLine(boolean isLeft) {
+		if (isLeft) conf.LEFT_MOTOR.stop();
+		else Configuration.RIGHT_MOTOR.stop();
+		driver.motorStop();
+		lineNumberPassed++;
+		
+		//set the odometer 
+		if (lineNumberPassed == 1){ 	//first line passed 
+			conf.getCurrentLocation().setTheta(0).setY(conf.distFromLineReaderToCenterOfRot);
+		}
+		else { //second line passed 
+			conf.getCurrentLocation().setX(conf.distFromLineReaderToCenterOfRot);
+		}
+	}
+
+	/**
+	 * clean up method
+	 */
+	private static void cleanUp() {
+		//unregister the this class from lineReader 
+		LineReader.unsubscribeToAll(localizer);
+	}
+
+	/**
+	 * thread and things that need to be prepared 
+	 */
 	private static void startThread() {
 		driver.start();
 		odo.start();
 		lcd.start();
 		usp.start();
+		llr.start();
+		rlr.start();
+		
 		try {Thread.sleep(300);} catch(Exception e) {}
 	}
 	/**
@@ -45,10 +109,6 @@ public class Localization {
 	public static void localize() {
 		prepareForFallingEdge();	
 		performFallingEdge();
-//		
-		driver.forward(30);
-		driver.rotateToRelatively(-90);		//rotate and then correct Y coordinate 
-		driver.forward(30); 	//correct the y coordinant 
 	}
 	
 	/**
