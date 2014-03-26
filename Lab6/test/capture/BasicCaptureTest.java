@@ -1,7 +1,12 @@
 package capture;
 
+import communication.RemoteConnection;
+import odometry.Odometer;
 import lejos.nxt.Button;
+import movement.Driver;
 import robotcore.Configuration;
+import robotcore.LCDWriter;
+import sensors.UltrasonicPoller;
 
 /**
  * Basic test for a capture mechanism
@@ -14,45 +19,29 @@ public class BasicCaptureTest {
 		while(Button.waitForAnyPress() != Button.ID_LEFT);
 		
 		CaptureMechanism cm = CaptureMechanism.getInstance();
-		Configuration config = Configuration.getInstance();
+		UltrasonicPoller up = UltrasonicPoller.getInstance();
+		LCDWriter writer = LCDWriter.getInstance();
+		writer.start();
+		RemoteConnection rc = RemoteConnection.getInstance();
+		Driver driver = Driver.getInstance();
+		driver.start();
+		up.start();
+		Odometer.getInstance().start();
+//		Configuration config = Configuration.getInstance();
 		
-		cm.close();
+//		cm.close();
+		rc.setupConnection();
+
+		writer.writeToScreen("Connection passed.", 0);
+		int d = up.getDistance();
 		
 		cm.open();
-		config.LEFT_MOTOR.setSpeed(100);
-		config.RIGHT_MOTOR.setSpeed(100);
-		
-		config.LEFT_MOTOR.forward();
-		config.RIGHT_MOTOR.forward();
-		
-		try {
-			Thread.sleep(5000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		config.LEFT_MOTOR.stop();
-		config.RIGHT_MOTOR.stop();
+
+		driver.forward(Math.abs(d - 5));
 		
 		cm.align();
 		
-		config.LEFT_MOTOR.setSpeed(200);
-		config.RIGHT_MOTOR.setSpeed(200);
-		
-		config.LEFT_MOTOR.forward();
-		config.RIGHT_MOTOR.forward();
-		
-		try {
-			Thread.sleep(5000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		config.LEFT_MOTOR.stop();
-		config.RIGHT_MOTOR.stop();
-		
+		driver.forward(15);
 		
 		cm.close();
 		

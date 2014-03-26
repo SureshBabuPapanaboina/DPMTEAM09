@@ -98,8 +98,10 @@ public class RemoteConnection {
 			//TODO: need to change name of the two bricks to match the standards
 			remoteNXT = new RemoteNXT("NXT", conn);
 		} catch (IOException e) {
-			LCD.drawString(e.toString(), 0, 0);
+			LCD.drawString("Conn failed", 0, 0);
+			LCD.drawString(e.getMessage(), 0, 1);
 		}
+		
 		
 		try {
 			Thread.sleep(2000);

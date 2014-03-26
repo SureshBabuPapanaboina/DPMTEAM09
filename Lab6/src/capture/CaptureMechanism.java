@@ -5,7 +5,7 @@ import communication.RemoteConnection;
 import robotcore.Configuration;
 
 /**
- *TODO unimplemented class 
+ * Class for the basic capture mechanism, assumes that doors start off as closed
  * @author yuechuan
  *
  */
@@ -28,11 +28,11 @@ public class CaptureMechanism {
 	 * open the robotic arm / door 
 	 */
 	public void open(){
-		config.SENSOR_MOTOR.rotateTo(-90);
+		config.SENSOR_MOTOR.rotateTo(90);
 		RemoteConnection rc = RemoteConnection.getInstance();
 		
-		rc.getRemoteNXT().A.rotateTo(-45);
-		rc.getRemoteNXT().B.rotateTo(45);
+		rc.getRemoteNXT().A.rotateTo(-135);
+		rc.getRemoteNXT().B.rotateTo(-135);
 	}
 	
 	/**
@@ -41,8 +41,8 @@ public class CaptureMechanism {
 	public void close(){
 		RemoteConnection rc = RemoteConnection.getInstance();
 		
-		rc.getRemoteNXT().A.rotateTo(90);
-		rc.getRemoteNXT().B.rotateTo(-90);
+		rc.getRemoteNXT().A.rotateTo(15);
+		rc.getRemoteNXT().B.rotateTo(15);
 	}
 	
 	/**
@@ -51,8 +51,8 @@ public class CaptureMechanism {
 	public void align(){
 		RemoteConnection rc = RemoteConnection.getInstance();
 		
-		rc.getRemoteNXT().A.rotateTo(0);
-		rc.getRemoteNXT().B.rotateTo(0);
+		rc.getRemoteNXT().A.rotateTo(-75);
+		rc.getRemoteNXT().B.rotateTo(-75);
 	}
 	
 }

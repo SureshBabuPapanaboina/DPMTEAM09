@@ -25,7 +25,7 @@ public class BasicCommTest {
 		rc.setupConnection();
 
 		if(rc.getRemoteNXT() == null){
-//			Sound.beepSequence();
+			Sound.beepSequence();
 			return;
 		}
 		
