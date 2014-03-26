@@ -1,6 +1,5 @@
 package movement;
 
-import odometry.Odometer;
 import robotcore.Configuration;
 import robotcore.Coordinate;
 import lejos.nxt.NXTRegulatedMotor;
@@ -17,10 +16,11 @@ public final class Driver extends Thread{
 	
 	private static Driver instance = new Driver(Configuration.getInstance());
 	private static Configuration config = Configuration.getInstance();
-	//TODO remove dependency on odometer 
 	private static NXTRegulatedMotor leftMotor, rightMotor;
 	
 	private final static boolean DEBUG = Configuration.DEBUG;
+	
+	private static boolean isTurning = false ;
 
 	
 	/**
@@ -149,21 +149,30 @@ public final class Driver extends Thread{
 	/**
 	 * rotate to the angle wrt to the current robot angle.
 	 * the method will only finish after rotating is over.
-	 *	<br> this method is here only for comparability.
-	 *	<br> use rotateToRelatively (double degree , boolean returnRightAway);
-	 *	when ever possible 
 	 * @param degree
 	 */
 	public void rotateToRelatively(double degree){
+		isTurning = true ;
 		rotateToRelatively(degree, false);			
+		isTurning = false ;
+		motorStop();
 	}
 	/**
-	 * rotate to the angle wrt to the current robot angle.
+	 * <br>rotate to the angle wrt to the current robot angle.
 	 * the method will only finish after rotating is over.
 	 * this class will not set the motorStop flag !!! 
 	 * <b> make sure to call motor Stop after you use this method!!!</b>
+	 * <br><br><b> note this method will return right away and will not alter
+	 * the return value of {@link #isTurning()} !! </b> <br> 
 	 * @param degree 
 	 * @param returnRightAway should the function finish before finishing the turn 
+	 * @deprecated since this method will return right away and will not wait for the rotation to finish
+	 * we must manually call the {@link #motorStop()} method to ensure the motorStopped flag is set correctly.
+	 * also note that {@link #isTurning()} will never return true when this method is called also due to the 
+	 * return right away property. 
+	 * 
+	 * <b> use the single parameter {@link #rotateToRelatively(double)} if you do not need to return right away </b>
+	 * 
 	 */
 	public void rotateToRelatively(double degree, boolean returnRightAway){
 		motorStopped = false;
@@ -181,7 +190,22 @@ public final class Driver extends Thread{
 	        rightMotor.rotate(
 	        	-convertAngle(Configuration.RIGHT_RADIUS,Configuration.WIDTH , degree)
 	        	, returnRightAway);
-//	        motorStop();
+	}
+	
+	/**
+	 * check if the robot is making a turn 
+	 * @return true when the robot is making a turn through the rotateToRelatively() method 
+	 */
+	public boolean isTurning(){
+		return isTurning;
+	}
+	/**
+	 * set if the robot is making a turn, this should be used if you are using the 
+	 * 2 parametered version of rotateToRelatively()
+	 * @return 
+	 */
+	public void setTurning(boolean t){
+		isTurning = t;
 	}
 	
 	/**
@@ -189,19 +213,21 @@ public final class Driver extends Thread{
 	 * @param distance distance we want to cover 
 	 * @return angle the wheel need to rotate in degree
 	 */
-	private int convertDistance(double radius, double distance) {
+	private static int convertDistance(double radius, double distance) {
 		return (int) ((180.0 * distance) / (Math.PI * radius));
 	}
 
 	/**
 	 * convert angle the wheel need to turn (in deg) to the distance driven in cm
 	 */
-	private int convertAngle(double radius, double width, double angle) {
+	private static int convertAngle(double radius, double width, double angle) {
 		return convertDistance(radius, Math.PI * width * angle / 360.0);
 	}
 	/**
 	 * turn to angle wrt to the y axies
 	 * @param in degrees 
+	 * @deprecated same asrotateToRelatively(theata); use that instead, this is kept for 
+	 * backward comparability 
 	 */
 	public void turnTo(double theata) {
 		rotateToRelatively(theata);		
