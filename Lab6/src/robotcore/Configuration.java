@@ -19,7 +19,7 @@ public class Configuration {
 	private Coordinate currentLocation ; //current location ;
 	
 	private boolean driveComplete  = false ;
-	private int ROTATE_SPEED = 60 ;
+	private int ROTATE_SPEED = 120 ;
 	private int FORWARD_SPEED = 200;
 	private int USB_TIMEOUT = 1000;
 	//constants about the plying field
@@ -55,7 +55,7 @@ public class Configuration {
 	/**
 	 * the distance between the lineReaders and the center of rotation 
 	 */
-	public static final double distFromLineReaderToCenterOfRot = 7 ; //TODO change to measured values
+	public static final double distFromLineReaderToCenterOfRot = 0 ; //TODO change to measured values
 
 	//temporarily changing to use smaller robot
 //	public static final double LEFT_RADIUS = 2.16 ;

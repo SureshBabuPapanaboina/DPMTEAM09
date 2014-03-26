@@ -22,7 +22,7 @@ public class LineReader extends Thread{
 	private int previousSensedValue , currentSensedValue ;
 	private boolean passedLine = false ;
 	private long sensorStartTime;
-	private boolean notPaused;// pause the execution of lineReaderListeners if paused 
+	private boolean notPaused = true;// pause the execution of lineReaderListeners if paused 
 
 	private static LineReader leftLineReader ;
 	private static LineReader rightLineReader ;
@@ -39,8 +39,8 @@ public class LineReader extends Thread{
  * pause or unpause the execution of linsteners 
  * @param pause
  */
-	public void setNotPaused(boolean pause) {
-		notPaused = pause;
+	public void setNotPaused(boolean notPause) {
+		notPaused = notPause;
 	}
 	/**
 	 * pause all the line readers
