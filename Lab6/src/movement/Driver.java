@@ -16,7 +16,7 @@ import lejos.nxt.comm.RConsole;
 public final class Driver extends Thread{
 	
 	private static Driver instance = new Driver(Configuration.getInstance());
-	private static Configuration config ;
+	private static Configuration config = Configuration.getInstance();
 	//TODO remove dependency on odometer 
 	private static NXTRegulatedMotor leftMotor, rightMotor;
 	
@@ -38,10 +38,8 @@ public final class Driver extends Thread{
 	 */
 
 	private Driver(Configuration config){
-		this.config = config ;
-		leftMotor= config.LEFT_MOTOR; 
-		rightMotor = config.RIGHT_MOTOR;
-
+		leftMotor= Configuration.LEFT_MOTOR; 
+		rightMotor = Configuration.RIGHT_MOTOR;
 		config.getStartLocation();
 	}
 	
