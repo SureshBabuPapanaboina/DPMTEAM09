@@ -15,13 +15,13 @@ import lejos.nxt.comm.RConsole;
  */
 public final class Driver extends Thread{
 	
-	private final static boolean DEBUG = Configuration.DEBUG;
+	private static Driver instance = new Driver(Configuration.getInstance());
 	private static Configuration config ;
 	//TODO remove dependency on odometer 
-	private static Odometer odo;
 	private static NXTRegulatedMotor leftMotor, rightMotor;
+	
+	private final static boolean DEBUG = Configuration.DEBUG;
 
-	private static Driver instance = new Driver(Configuration.getInstance());
 	
 	/**
 	 * indicate if the motor is running or not.
@@ -39,7 +39,6 @@ public final class Driver extends Thread{
 
 	private Driver(Configuration config){
 		this.config = config ;
-		this.odo = Odometer.getInstance();
 		leftMotor= config.LEFT_MOTOR; 
 		rightMotor = config.RIGHT_MOTOR;
 
@@ -69,8 +68,10 @@ public final class Driver extends Thread{
 	 */
 	public void travelTo(Coordinate nextLocation) {
 		
-		//TODO remove dependency on odometer : see if we can get the coordinate from Configuration 
-		Coordinate currentLoc  = new Coordinate(odo.getX(), odo.getY(), odo.getTheta());
+		Coordinate currentLoc  = new Coordinate(config.getCurrentLocation().getX()
+				, config.getCurrentLocation().getY(), 
+				config.getCurrentLocation().getTheta());
+		
 		config.setStartLocation(currentLoc.copy());
 		
 		double distance = Coordinate.calculateDistance(currentLoc, nextLocation);
