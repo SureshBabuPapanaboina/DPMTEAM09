@@ -62,7 +62,8 @@ public class FullNavTest {
 		LineReader rlr = LineReader.getRightSensor();
 		Odometer odo = Odometer.getInstance();
 		OdometerCorrection oc = OdometerCorrection.getInstance();
-		
+		LineReader.subscribeToAll(oc);
+
 		Driver dr = Driver.getInstance();
 
 		up.start();
@@ -77,7 +78,7 @@ public class FullNavTest {
 		while(!done){
 			done = followPath();
 			try{
-			if(!done) traveller.recalculatePathToCoords(75, 75);
+			if(!done) traveller.recalculatePathToCoords(150, 150);
 			else break;
 			}
 			catch(Exception e){

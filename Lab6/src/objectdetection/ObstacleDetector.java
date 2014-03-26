@@ -49,25 +49,51 @@ public class ObstacleDetector {
 			nap(25);
 						
 			if(up.getDistance() < 45/Math.cos(Math.toRadians(Math.abs(sensorMotor.getPosition())))-15){
-//				LCDWriter.getInstance().writeToScreen("D: " + up.getDistance(), 0);
-//				LCDWriter.getInstance().writeToScreen("T: " + sensorMotor.getPosition() , 1);
-//				LCDWriter.getInstance().writeToScreen("P: " + 30/Math.cos(Math.toRadians(Math.abs(sensorMotor.getPosition()))) , 2);
+				LCDWriter.getInstance().writeToScreen("D: " + up.getDistance(), 0);
+				LCDWriter.getInstance().writeToScreen("T: " + sensorMotor.getPosition() , 1);
+				LCDWriter.getInstance().writeToScreen("P: " + 30/Math.cos(Math.toRadians(Math.abs(sensorMotor.getPosition()))) , 2);
 				Sound.beep();
 				obstacle = true;
 			}
 		}
 		//left section of square
-		while(sensorMotor.getPosition() > -45){
-			nap(25);
-
-			if(up.getDistance() < 15/Math.cos(Math.toRadians(90-sensorMotor.getPosition()))-15){
+//		while(sensorMotor.getPosition() > -45){
+//			nap(25);
+//			LCDWriter.getInstance().writeToScreen("P: " +  Math.abs(15/Math.sin(Math.toRadians(Math.abs(sensorMotor.getPosition())))-15), 2);
+//			LCDWriter.getInstance().writeToScreen("D: " + up.getDistance(), 0);
+//
+//			if(up.getDistance() < Math.abs(15/Math.sin(Math.toRadians(Math.abs(sensorMotor.getPosition())))-15)){
 //				LCDWriter.getInstance().writeToScreen("D: " + up.getDistance(), 0);
 //				LCDWriter.getInstance().writeToScreen("T: " + sensorMotor.getPosition() , 1);
-//				LCDWriter.getInstance().writeToScreen("P: " +  15/Math.cos(Math.toRadians(90-sensorMotor.getPosition())), 2);
+//				Sound.beep();
+//				obstacle = true;
+//			}
+//		}	
+		while(sensorMotor.getPosition() > -36){
+			nap(25);
+//			LCDWriter.getInstance().writeToScreen("P: " +  Math.abs(15/Math.sin(Math.toRadians(Math.abs(sensorMotor.getPosition())))-15), 2);
+//			LCDWriter.getInstance().writeToScreen("D: " + up.getDistance(), 0);
+
+			if(up.getDistance() < Math.abs(15/Math.sin(Math.toRadians(Math.abs(sensorMotor.getPosition())))-15)){
+//				LCDWriter.getInstance().writeToScreen("D: " + up.getDistance(), 0);
+//				LCDWriter.getInstance().writeToScreen("T: " + sensorMotor.getPosition() , 1);
 				Sound.beep();
 				obstacle = true;
 			}
 		}	
+		
+		//This is because at close ranges the up messes up the distance...
+		//TODO: Improve this hack
+		while(sensorMotor.getPosition() > -45){
+//			LCDWriter.getInstance().writeToScreen("D: " + up.getDistance(), 0);
+//			LCDWriter.getInstance().writeToScreen("T: " + sensorMotor.getPosition() , 1);
+
+			nap(25);
+			if(up.getDistance() < 15){
+				Sound.beep();
+				obstacle = true;
+			}
+		}
 		
 		if(obstacle){
 			sensorMotor.rotateTo(0, true);
@@ -91,13 +117,10 @@ public class ObstacleDetector {
 			}
 		}
 		
-		while(sensorMotor.getPosition() < 45){
+		while(sensorMotor.getPosition() < 36){
 			nap(25);
 			
-			if(sensorMotor.getPosition() < 33) continue;
-
-			
-			if(up.getDistance() < 15/Math.cos(Math.toRadians(90-sensorMotor.getPosition()))-15){
+			if(up.getDistance() < Math.abs(15/Math.sin(Math.toRadians(sensorMotor.getPosition()))-15)){
 //				LCDWriter.getInstance().writeToScreen("D: " + up.getDistance(), 0);
 //				LCDWriter.getInstance().writeToScreen("T: " + sensorMotor.getPosition() , 1);
 //				LCDWriter.getInstance().writeToScreen("P: " +  15/Math.cos(Math.toRadians(90-sensorMotor.getPosition())), 2);
@@ -106,6 +129,18 @@ public class ObstacleDetector {
 				obstacle = true;
 			}
 		}
+		
+		while(sensorMotor.getPosition() > 45){
+//			LCDWriter.getInstance().writeToScreen("D: " + up.getDistance(), 0);
+//			LCDWriter.getInstance().writeToScreen("T: " + sensorMotor.getPosition() , 1);
+
+			nap(25);
+			if(up.getDistance() < 15){
+				Sound.beep();
+				obstacle = true;
+			}
+		}
+		
 		
 		sensorMotor.rotateTo(0, true);
 		

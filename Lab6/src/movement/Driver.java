@@ -1,6 +1,5 @@
 package movement;
 
-import odometry.OdometerCorrection;
 import robotcore.Configuration;
 import robotcore.Coordinate;
 import sensors.LineReader;
