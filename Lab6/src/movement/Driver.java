@@ -1,7 +1,9 @@
 package movement;
 
+import odometry.OdometerCorrection;
 import robotcore.Configuration;
 import robotcore.Coordinate;
+import sensors.LineReader;
 import lejos.nxt.NXTRegulatedMotor;
 import lejos.nxt.comm.RConsole;
 
@@ -152,9 +154,9 @@ public final class Driver extends Thread{
 	 * @param degree
 	 */
 	public void rotateToRelatively(double degree){
-		isTurning = true ;
+		setTurning(true);
 		rotateToRelatively(degree, false);			
-		isTurning = false ;
+		setTurning(false);
 		motorStop();
 	}
 	/**
@@ -205,6 +207,8 @@ public final class Driver extends Thread{
 	 * @return 
 	 */
 	public void setTurning(boolean t){
+		LineReader.getLeftSensor().setNotPaused(!t);
+		LineReader.getRightSensor().setNotPaused(!t);
 		isTurning = t;
 	}
 	
