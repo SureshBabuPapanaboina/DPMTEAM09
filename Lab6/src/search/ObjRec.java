@@ -1,15 +1,17 @@
 
 
 package search;
+import java.util.ArrayList;
+
 import lejos.nxt.Button;
 import lejos.nxt.ColorSensor;
-import lejos.nxt.Sound;
 import lejos.nxt.comm.RConsole;
 import lejos.robotics.Color;
 import robotcore.Configuration;
 import robotcore.LCDWriter;
 
 /**
+ * the class provide the search for colored foams 
  * @author yuechuan
  *	
  */
@@ -65,13 +67,13 @@ public class ObjRec {
 			return result;
 		}
 
-		public static String toString(int i) {
+		public static String toString(int i) throws Exception {
 			for (blockColor bc : blockColor.values()){
 				if (bc.getCode() == i){
 					return bc.toString();
 				}
 			}
-			return "error toString in blockColor";
+			throw new Exception("toString error");
 			
 		}
 
@@ -106,66 +108,161 @@ public class ObjRec {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-//		int [][] rgb = {
-//				{180	,40	,55   }     ,
-//				{125	,20	,25   }     ,
-//				{80	,10	,13   }         ,
-//				{55	,7	,8    }
-//		};
-//		
-//		for (int [] i : rgb ){
-//			RConsole.println("================" + i[0] + "\t"+ i[1] + "\t"+ i[2] );
-//			blockColor bc = findBestMatch(i);
-//			RConsole.println("<"+bc.toString()+">");
-//		}
-		
 		Configuration config = Configuration.getInstance();
 		lcd.start();
 		ObjRec or = new ObjRec();
 		
 		while(true){
 			while (!(Button.waitForAnyPress() == Button.ID_ENTER)){}
-			blockColor bc ;
-			bc = or.detect();
-			RConsole.println(bc.toString());
+			or.detect();
+
 			or.cs.setFloodlight(false);
 			try{Thread.sleep(500);}catch(Exception e){};
 			
 		}
 	}
 
-	public blockColor detect(){
+/**
+*
+*return an array of blocks corresponding to the blocks that has passed the test 
+*if there are more than 1 element in the array then there is a porblem 
+*if there are none in the array then that means it has not detect any block so it should move and then redo test 
+*/
+	public blockColor[] detect(){
 		
 		int [] rgb = getRGB();
-		lcd.writeToScreen("r: " + rgb[0]+"", 0	); 
-		lcd.writeToScreen("g: "+ rgb[1]+"", 1	); 
-		lcd.writeToScreen("b: "+ rgb[2]+"", 2	); 
+		double [] ratios = {
+				(double) rgb[0] / rgb[1],
+				(double) rgb[1] / rgb[2],
+				(double) rgb[0] / rgb[2]
+		};
 		
-		lcd.writeToScreen("r/g: " + (double) rgb[0] / rgb[1],3);
-		lcd.writeToScreen("g/b: " + (double) rgb[1] / rgb[2],4);
-		lcd.writeToScreen("r/b: " + (double) rgb[0] / rgb[2],5);
-		lcd.writeToScreen("g/r: " + (double) rgb[1] / rgb[2],5);
+		ArrayList<blockColor> blkList = new ArrayList<blockColor>();
 		
-		RConsole.println("RGB---");
-		RConsole.println(rgb[0]+"");
-		RConsole.println(rgb[1]+"");
-		RConsole.println(rgb[2]+"");
-		RConsole.println("");
-		
-		RConsole.println("r/g: " + (double) rgb[0] / rgb[1]);
-		RConsole.println("g/b: " + (double) rgb[1] / rgb[2]);
-		RConsole.println("r/b: " + (double) rgb[0] / rgb[2]);
-		
-		return findBestMatch(rgb);
-		
-	}
+		if (testDarkBlue(rgb, ratios)) blkList.add(blockColor.DARK_BLUE);
+		if (testLightBlue(rgb, ratios)) blkList.add(blockColor.LIGHT_BLUE);
+		if (testRed(rgb, ratios)) blkList.add(blockColor.RED);
+		if (testWhite(rgb, ratios)) blkList.add(blockColor.WHITE);
+		if (testYellow(rgb, ratios)) blkList.add(blockColor.YELLOW);
 
+		return (blockColor[]) blkList.toArray();
+	}
 	
 	/**
-	 * center of the algorithm 
-	 * @param rgb
+	 * check if n2 is within eps of n 
+	 * @param n first number 
+	 * @param n2 2nd number 
+	 * @param eps small rage of aprox 
 	 * @return
 	 */
+	private static boolean doubleApprox(double n,double n2 , double eps){
+		return (Math.abs(n-n2) <= eps);
+	}
+	/**
+	 * 
+	 * @param rgb rgb raw values
+	 * @param ratios rg gb rb ratios
+	 * @return true if it it has passed the block test 
+	 */
+	private boolean testBlock(int [] rgb , double[] ratios ){
+		boolean c1 = ratios[2] > ratios[0]; //rb > rg 
+		boolean c2 = ratios[2] > ratios[1]; //rb > gb 
+		boolean c3 = ratios[2] > 1 && ratios[1] > 1 && ratios[0] > 1 ;// rg & gb & rb all > 1
+//		lcd.writeToScreen("c1" + c1 , 4);
+//		lcd.writeToScreen("c2" + c2 , 5);
+//		lcd.writeToScreen("c3" + c3 , 6);
+		return (c1&&c2&&c3);
+				
+	}
+	
+	/**
+	 * 
+	 * @param rgb rgb raw values
+	 * @param ratios rg gb rb ratios
+	 * @return true if it it has passed the block test 
+	 */
+	private boolean testLightBlue(int [] rgb , double[] ratios ){
+		//gb ratio is about .83 +-0.1 when the distance is around 5 cm if the dist 
+		boolean c1 = doubleApprox(ratios[1], 0.83, 0.17);
+		boolean c2 = ratios[0] > ratios[2]; //rg always > rb 
+		boolean c3 = rgb[0] < rgb[2]; //r< b  
+//		lcd.writeToScreen("c1" + c1 , 4);
+//		lcd.writeToScreen("c2" + c2 , 5);
+//		lcd.writeToScreen("c3" + c3 , 6);
+		return (c1 && c2 && c3);
+	}
+	
+	/**
+	 * 
+	 * @param rgb rgb raw values
+	 * @param ratios rg gb rb ratios
+	 * @return true if it it has passed the block test 
+	 */
+	private boolean testDarkBlue(int [] rgb , double[] ratios ){
+		boolean c1 ,c2 , c3 ;
+		c1 = (ratios[0] > .5)? true : false ;
+		c2 =  doubleApprox(ratios[2], .343, 0.15);
+		c3 = (ratios[2] < 1)? true : false ;
+		
+		lcd.writeToScreen("c1" + c1 , 4);
+		lcd.writeToScreen("c2" + c2 , 5);
+		lcd.writeToScreen("c3" + c3 , 6);
+		
+		return (c1&&c2&&c3);
+				
+	}
+	
+	/**
+	 * 
+	 * @param rgb rgb raw values
+	 * @param ratios rg gb rb ratios
+	 * @return true if it it has passed the block test 
+	 */
+	private boolean testRed(int [] rgb , double[] ratios ){
+		boolean c1 = ratios[0] > 3 && ratios[2] > 3; //rg > 3 and rb > 3
+		boolean c2 = ratios[1] < 1.5;
+		boolean c3 = rgb[0] > rgb[1] && rgb[0] > rgb[2];
+//		lcd.writeToScreen("c1" + c1 , 4);
+//		lcd.writeToScreen("c2" + c2 , 5);
+//		lcd.writeToScreen("c3" + c3 , 6);
+		return (c1 && c2 && c3);
+	}
+	
+	/**
+	 * 
+	 * @param rgb rgb raw values
+	 * @param ratios rg gb rb ratios
+	 * @return true if it it has passed the block test 
+	 */
+	private boolean testYellow(int [] rgb , double [] ratios ){
+		boolean c1 = ratios[0] > 0.9 && ratios[0] < 2.1;
+		boolean c2 = ratios[1] > 2 ;
+		boolean c3 = ratios[2] > 2.4;
+		boolean c4 = rgb[0] > rgb[1] && rgb[1] > rgb[2] ;
+//		lcd.writeToScreen("c1" + c1 , 4);
+//		lcd.writeToScreen("c2" + c2 , 5);
+//		lcd.writeToScreen("c3" + c3 , 6);
+//		lcd.writeToScreen("c4" + c4 , 7);
+		return (c1 && c2 && c3 && c4);
+	}
+	
+	/**
+	 * 
+	 * @param rgb rgb raw values
+	 * @param ratios rg gb rb ratios
+	 * @return true if it it has passed the block test 
+	 */
+	private boolean testWhite(int [] rgb , double[] ratios ){
+		boolean c1 = ratios[0] > 0.95 && ratios[0] < 2;
+		boolean c2 =doubleApprox(ratios[1], 1, 0.2) ;
+		boolean c3 = ratios[2] > 0.95 && ratios[2] < 2;
+//		lcd.writeToScreen("c1" + c1 , 4);
+//		lcd.writeToScreen("c2" + c2 , 5);
+//		lcd.writeToScreen("c3" + c3 , 6);
+		return (c1 && c2 && c3);
+	}
+	
+	
 
 	/**
 	 * center of the algorithm 

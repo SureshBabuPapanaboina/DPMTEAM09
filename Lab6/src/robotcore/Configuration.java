@@ -17,12 +17,11 @@ import lejos.robotics.Color;
 public class Configuration {
 	private Coordinate startLocation;// starting location
 
-	//TODO: Should current location really be kept in the config file?
 	private Coordinate currentLocation ; //current location ;
 	private boolean driveComplete  = false ;
 	private int ROTATE_SPEED = 60 ;
 	private int FORWARD_SPEED = 200;
-	
+	private int USB_TIMEOUT = 1000;
 	//constants about the plying field
 	public static final int GRID_SIZE = 8; //set to demo size
 	
@@ -32,8 +31,6 @@ public class Configuration {
 	//robot hardware
 
 	
-	
-	//TODO have the fixed values for the ports 
 	//motors 
 	public static final NXTRegulatedMotor LEFT_MOTOR = Motor.A;
 	public static final NXTRegulatedMotor RIGHT_MOTOR = Motor.B;
@@ -89,7 +86,7 @@ public class Configuration {
 		
 		currentLocation = new Coordinate(15, 15, 0);
 		setStartLocation(new Coordinate(15, 15, 0));
-		RConsole.openUSB(3000);
+		RConsole.openUSB(USB_TIMEOUT);
 	}
 	
 	/**

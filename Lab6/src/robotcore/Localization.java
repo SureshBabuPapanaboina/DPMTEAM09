@@ -43,14 +43,12 @@ public class Localization {
 	 * correct the actual (x y t )
 	 */
 	public static void localize() {
-//		prepareForFallingEdge();	
+		prepareForFallingEdge();	
 		performFallingEdge();
 //		
 		driver.forward(30);
 		driver.rotateToRelatively(-90);		//rotate and then correct Y coordinate 
 		driver.forward(30); 	//correct the y coordinant 
-		
-		while (true){ } //pause 
 	}
 	
 	/**
