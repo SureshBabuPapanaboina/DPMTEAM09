@@ -54,7 +54,7 @@ public class Odometer extends Thread {
 		double deltaY;
 		
 		while (true) {
-			if (DEBUG) LCDWriter.getInstance().writeToScreen("OdoT " + getTheta(), 5);
+			if (DEBUG) LCDWriter.getInstance().writeToScreen("OdoT " + getTheta(), 7);
 			updateStart = System.currentTimeMillis();
 				updateStart = System.currentTimeMillis();
 				//get the starting tacho count
@@ -90,7 +90,7 @@ public class Odometer extends Thread {
 					setTheta(currentTheta + deltaTheta);
 				}
 				
-				if (DEBUG) LCDWriter.getInstance().writeToScreen(cCoord.toString(), 2);
+				if (DEBUG) LCDWriter.getInstance().writeToScreen(cCoord.toString(), 6);
 				
 			// this ensures that the odometer only runs once every period
 			updateEnd = System.currentTimeMillis();

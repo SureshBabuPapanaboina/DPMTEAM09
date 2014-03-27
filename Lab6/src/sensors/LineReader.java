@@ -49,6 +49,8 @@ public class LineReader extends Thread{
 		//avoid uninitialized error 
 		LineReader.getLeftSensor().setNotPaused(false);
 		LineReader.getRightSensor().setNotPaused(false);
+		leftLineReader.colorSensor.setFloodlight(false);
+		rightLineReader.colorSensor.setFloodlight(false);
 	}
 	
 	/**
@@ -57,6 +59,8 @@ public class LineReader extends Thread{
 	public static void unpauseAll(){
 		LineReader.getLeftSensor().setNotPaused(true);
 		LineReader.getRightSensor().setNotPaused(true);
+		rightLineReader.colorSensor.setFloodlight(true);
+		leftLineReader.colorSensor.setFloodlight(true);
 	}
 	
 

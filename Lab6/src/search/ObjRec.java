@@ -19,7 +19,11 @@ public class ObjRec {
 	ColorSensor cs = new ColorSensor(Configuration.COLOR_SENSOR_PORT);
 	public static LCDWriter lcd = LCDWriter.getInstance();
 	private static final boolean DEBUG = false;
-	
+	/**
+	 * contains the block color information 
+	 * @author yuechuan
+	 *
+	 */
 	public static enum blockColor{
 		BLOCK(0),
 		LIGHT_BLUE(1),

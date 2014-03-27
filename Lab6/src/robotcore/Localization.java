@@ -46,9 +46,9 @@ public class Localization {
 		
 		localize();
 		
-		driver.forward(28);
+		driver.forward(25);
 		driver.rotateToRelatively(-90);
-		driver.forward(28);
+		driver.forward(25);
 		
 		conf.getCurrentLocation().setTheta(0).setX(15).setY(15);
 
@@ -58,10 +58,10 @@ public class Localization {
 	 * thread and things that need to be prepared 
 	 */
 	private static void startThread() {
-		driver.start();
-		odo.start();
-		lcd.start();
-		usp.start();
+		try{driver.start();    }catch(Exception e){}
+		try{odo.start();       }catch(Exception e){}
+		try{lcd.start();       }catch(Exception e){}
+		try{usp.start();       }catch(Exception e){}
 		
 		try {Thread.sleep(300);} catch(Exception e) {}
 	}
@@ -70,7 +70,7 @@ public class Localization {
 	 * assuming the current location is at (15,15) , then use odoCorrection to 
 	 * correct the actual (x y t )
 	 */
-	public static void localize() {
+	private static void localize() {
 		prepareForFallingEdge();	
 		performFallingEdge();
 	}
@@ -110,7 +110,7 @@ public class Localization {
 	 * make sure the robot is facing outward 
 	 */
 	private static void prepareForFallingEdge() {
-		
+		//TODO unimplemented
 	}
 
 	
