@@ -72,8 +72,9 @@ public class OdometerCorrection implements LineReaderListener{
 				//check if the right sensor also saw the line. If it did, set the count value to prepare for angle correction
 				if(leftLineSeen && rightLineSeen)
 				{
-					timeEndL = currentTimeMillis();
-					if(timeEndL-timeStartL<1000)
+					timeEndL = System.currentTimeMillis();
+					RConsole.println("Y:timeEndL-timeStartR: "+String.valueOf(timeEndL-timeStartR));
+					if(timeEndL-timeStartR<1000)
 					{
 						tachr[1] = rMotor.getTachoCount();
 						if((tempAngle>0 && tempAngle<20)||(tempAngle>340 && tempAngle<360))
@@ -89,11 +90,18 @@ public class OdometerCorrection implements LineReaderListener{
 					}
 					else
 					{
-						leftLineSeen = false;
-						
+						if((tempAngle>0 && tempAngle<20) || (tempAngle>180 && tempAngle<200))
+						{
+							rightLineSeen = false;
+						}
+						else if((tempAngle>340 && tempAngle<360)||(tempAngle>160 && tempAngle<180))
+						{
+							leftLineSeen = false;
+							rightLineSeen = false;
+						}
 					}
 				}
-				timeStartL = currentTimeMillis();
+				timeStartL = System.currentTimeMillis();
 			}
 			//here, the right sensor detects the line first
 			else
@@ -103,8 +111,9 @@ public class OdometerCorrection implements LineReaderListener{
 				//RConsole.println("leftLineSeen: "+String.valueOf(leftLineSeen));
 				if(leftLineSeen && rightLineSeen)
 				{
-					timeEndR = currentTimeMillis();
-					if(timeEndR-timeStartR<1000)
+					timeEndR = System.currentTimeMillis();
+					RConsole.println("Y:timeEndR-timeStartL: "+String.valueOf(timeEndR-timeStartL));
+					if(timeEndR-timeStartL<1000)
 					{
 						tachl[1] = lMotor.getTachoCount();
 						RConsole.println("Tachleft1: "+String.valueOf(tachl[1]));
@@ -120,10 +129,18 @@ public class OdometerCorrection implements LineReaderListener{
 					}
 					else
 					{
-						rightLineSeen = false;
+						if((tempAngle>0 && tempAngle<20) || (tempAngle>180 && tempAngle<200))
+						{
+							leftLineSeen = false;
+							rightLineSeen = false;
+						}
+						else if((tempAngle>340 && tempAngle<360)||(tempAngle>160 && tempAngle<180))
+						{
+							leftLineSeen = false;
+						}
 					}
 				}
-				timeStartR = currentTimeMillis();
+				timeStartR = System.currentTimeMillis();
 			}
 		}
 		//face x axis case
@@ -136,8 +153,9 @@ public class OdometerCorrection implements LineReaderListener{
 				leftLineSeen = true;
 				if(leftLineSeen && rightLineSeen)
 				{
-					timeEndL = currentTimeMillis();
-					if(timeEndL-timeStartL<1000)
+					timeEndL = System.currentTimeMillis();
+					RConsole.println("X: timeEndL-timeStartR: "+String.valueOf(timeEndL-timeStartR));
+					if(timeEndL-timeStartR<1000)
 					{
 						tachr[1] = rMotor.getTachoCount();
 						RConsole.println("Tachoright1: "+String.valueOf(tachr[1]));
@@ -153,10 +171,18 @@ public class OdometerCorrection implements LineReaderListener{
 					}
 					else
 					{
-						leftLineSeen = false;
+						if((tempAngle>90 && tempAngle<110)||(tempAngle>270 && tempAngle<290))
+						{
+							rightLineSeen = false;
+						}
+						else if((tempAngle>70 && tempAngle<90)||(tempAngle>250 && tempAngle<270))
+						{
+							leftLineSeen = false;
+							rightLineSeen = false;
+						}
 					}
 				}
-				timeStartL = currentTimeMillis();
+				timeStartL = System.currentTimeMillis();
 			}
 			else
 			{
@@ -166,8 +192,9 @@ public class OdometerCorrection implements LineReaderListener{
 				RConsole.println("leftLineSeen: "+String.valueOf(leftLineSeen));
 				if(leftLineSeen && rightLineSeen)
 				{
-					timeEndR = currentTimeMillis();
-					if(timeEndR-timeStartR<1000)
+					timeEndR = System.currentTimeMillis();
+					RConsole.println("X: timeEndR-timeStartL: "+String.valueOf(timeEndR-timeStartL));
+					if(timeEndR-timeStartL<1000)
 					{
 						tachl[1] = lMotor.getTachoCount();
 						if(tempAngle>70 && tempAngle<110)
@@ -182,10 +209,18 @@ public class OdometerCorrection implements LineReaderListener{
 					}
 					else
 					{
-						rightLineSeen = false;
+						if((tempAngle>90 && tempAngle<110)||(tempAngle>270 && tempAngle<290))
+						{
+							leftLineSeen = false;
+							rightLineSeen = false;
+						}
+						else if((tempAngle>70 && tempAngle<90)||(tempAngle>250 && tempAngle<270))
+						{
+							leftLineSeen = false;
+						}
 					}
 				}
-				timeStartR = currentTimeMillis();
+				timeStartR = System.currentTimeMillis();
 			}
 		}
 		
@@ -209,17 +244,13 @@ public class OdometerCorrection implements LineReaderListener{
 		}
 	}
 	
-	private double currentTimeMillis() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
 
 	//this method fixes the x and y coordinates depending on different cases, including two major cases, facing y case and
 	//facing x case, then it will set the proper offset value and the pass to actual correction method
 	public void coordinateCorrection(double angleForXY, double angle)
 	{
 		offset = cSensorWidth/2*Math.sin(angleForXY)+distFromColorSensorToOdo*Math.cos(angleForXY);
-		RConsole.println("offset: "+offset);
+		//RConsole.println("offset: "+offset);
 		if((angle>0 && angle<20)||(angle>340 && angle<360)||(angle>160 && angle <200))
 		{
 			if((angle>0 && angle<20)||(angle>340 && angle<360))
@@ -251,9 +282,12 @@ public class OdometerCorrection implements LineReaderListener{
 	{
 		//use reminder (odometer value divided by 30) to determine how much to correct
 		double x = (int)(Odometer.getInstance().getX()/30)*30.48;
+		RConsole.println("correctedX: "+x);
 		if(Math.abs(x+offset-Odometer.getInstance().getX())<12)
 		{
 			Odometer.getInstance().setX(x+offset);
+			Configuration.getInstance().getCurrentLocation().setX(x+offset);
+
 		}
 	}
 	
@@ -266,6 +300,7 @@ public class OdometerCorrection implements LineReaderListener{
 		if(Math.abs(y+offset-Odometer.getInstance().getY())<12)
 		{
 			Odometer.getInstance().setY(y+offset);
+			Configuration.getInstance().getCurrentLocation().setY(y+offset);
 		}
 	}
 	
@@ -302,10 +337,13 @@ public class OdometerCorrection implements LineReaderListener{
 		}
 		RConsole.println("correctedAngle: "+correctedAngle);
 		correctedAngle = convertBack(angle,correctedAngle);
+		//correctedAngle = Math.toRadians(correctedAngle);
 		//set the corrected angle to the odometer
 		RConsole.println("convertBack: "+correctedAngle);
 
 		Odometer.getInstance().setTheta(correctedAngle);
+		Configuration.getInstance().getCurrentLocation().setTheta(correctedAngle);
+
 		//return the angle for x,y correction
 		return Math.atan(error/width);
 	}
@@ -324,7 +362,7 @@ public class OdometerCorrection implements LineReaderListener{
 		{
 			correctedAngle = correctedAngle % 360 - 360;
 		}
-		RConsole.println("Degree: "+correctedAngle);
+		//RConsole.println("Degree: "+correctedAngle);
 		return Math.toRadians(correctedAngle);
 	}
 }
