@@ -1,5 +1,6 @@
 package robotcore;
 
+import odometry.Odometer;
 import communication.RemoteConnection;
 import lejos.nxt.Motor;
 import lejos.nxt.NXTRegulatedMotor;
@@ -255,12 +256,18 @@ public class Configuration {
 		this.startLocation = startLocation;
 	}
 	
+	static Object lock = new Object();
+	
 	/** 
 	 * @return the current location set by the odometer 
 	 * {@code getX() getY() getTheata()}
 	 */
 	public Coordinate getCurrentLocation() {
-		return currentLocation;
+		Coordinate loc;
+		synchronized(lock){
+			loc = currentLocation;
+		}
+		return loc;
 	}
 	
 

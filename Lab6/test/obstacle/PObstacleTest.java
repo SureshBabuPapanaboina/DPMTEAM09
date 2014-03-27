@@ -64,7 +64,7 @@ public class PObstacleTest {
 		odo.start();
 		dr.start();
 
-		traveller.recalculatePathToCoords(75, 75);
+		traveller.recalculatePathToCoords(135, 105);
 //		traveller.popNextWaypoint();
 //		lcd.writeToScreen(str, lineNumber);
 //		while(!traveller.followThePath()){
@@ -74,7 +74,7 @@ public class PObstacleTest {
 		while(!done){
 			done = followPath();
 			try{
-			if(!done) traveller.recalculatePathToCoords(75, 75);
+			if(!done) traveller.recalculatePathToCoords(135, 105);
 			else break;
 			}
 			catch(Exception e){

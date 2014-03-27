@@ -275,6 +275,7 @@ public final class Driver extends Thread{
 	 * All actions involving stopping the motor must call this method
 	 */
 	public void motorStop(){
+		//TODO: might need to put this in a synchronized block
 		motorStopped = true ;
 		if (DEBUG) RConsole.println("Motor Stopped");
 		leftMotor.stop();

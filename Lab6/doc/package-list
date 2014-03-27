@@ -1,4 +1,3 @@
-
 bluetooth
 bluetoothclient
 capture
@@ -7,10 +6,12 @@ interbrick
 movement
 navigation
 objectdetection
+obstacle
 odometry
 reference
 robotcore
 search
+searcher
 sensor
 sensors
 statemachine
