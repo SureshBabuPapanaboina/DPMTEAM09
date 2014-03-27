@@ -5,6 +5,7 @@ import java.util.Stack;
 
 import objectdetection.ObstacleDetector;
 import odometry.Odometer;
+import robotcore.Configuration;
 import robotcore.Coordinate;
 import robotcore.LCDWriter;
 import lejos.robotics.navigation.Waypoint;
@@ -77,7 +78,7 @@ public class PathTraveller {
 			Waypoint next = pathIter.next();
 			//Turn to the next tile
 			driver.turnTo(Coordinate.calculateRotationAngle(
-												Odometer.getInstance().getCurrentCoordinate(), 
+												Configuration.getInstance().getCurrentLocation(), 
 												new Coordinate(next)));
 			
 			//scan the next area

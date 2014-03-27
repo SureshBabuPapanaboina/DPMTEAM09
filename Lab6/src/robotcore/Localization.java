@@ -38,18 +38,10 @@ public class Localization {
 		
 	}
 	
-	 private static int X1 = 0    ;
-	 private static int X2 = 1    ;
-	 private static int X3 = 2    ;
-	 private static int X4 = 3    ;
-	
 	/**
 	 * 
 	 */
 	public static void localizeAndMoveToStartLoc() {
-		
-		startThread();
-		
 		localize();
 
 		driver.forward(25);
@@ -62,6 +54,7 @@ public class Localization {
 
 	/**
 	 * thread and things that need to be prepared 
+	 * @deprecated thread should be started at the main thread
 	 */
 	private static void startThread() {
 		try{driver.start();    }catch(Exception e){}

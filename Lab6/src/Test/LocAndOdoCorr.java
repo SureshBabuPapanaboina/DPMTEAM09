@@ -4,9 +4,11 @@ import lejos.nxt.Button;
 import movement.Driver;
 import odometry.Odometer;
 import odometry.OdometerCorrection;
+import robotcore.Configuration;
 import robotcore.LCDWriter;
 import robotcore.Localization;
 import sensors.LineReader;
+import sensors.UltrasonicPoller;
 
 public class LocAndOdoCorr {
 	
@@ -15,21 +17,21 @@ public class LocAndOdoCorr {
 	private static OdometerCorrection odoCorr = OdometerCorrection.getInstance();
 	private static LineReader llr = LineReader.getLeftSensor(), rlr = LineReader.getRightSensor();
 	private static LCDWriter lcd = LCDWriter.getInstance();
+	private static UltrasonicPoller usp = UltrasonicPoller.getInstance();
+	private static Configuration conf = Configuration.getInstance();
 	
 	public static void main(String[] args) {
+		init();	
 		lcd.writeToScreen("Enter!" , 0);
-		while (Button.waitForAnyPress() == Button.ID_ENTER){nap(25);};
-		
+		driver.setSpeed(150);
 		Localization.localizeAndMoveToStartLoc();
-//		nap (200);
-//		init();	//initialize thread if necessary
-//		nap(200);
-//		LineReader.subscribeToAll(odoCorr);	
-//		LineReader.unpauseAll();
-//		nap(200);
-//		driver.travelTo(45,15);
-//		driver.travelTo(75,15);
-//		driver.travelTo(75,45);
+		nap(200);
+		LineReader.subscribeToAll(odoCorr);	
+		LineReader.unpauseAll();
+		nap(200);
+		driver.travelTo(45,15);
+		driver.travelTo(75,15);
+		driver.travelTo(75,45);
 
 	}
 	
@@ -44,6 +46,7 @@ public class LocAndOdoCorr {
 		try{llr.start();          }catch(Exception e){};
 		try{rlr.start();          }catch(Exception e){};
 		try{lcd.start();          }catch(Exception e){};
+		try{usp.start();          }catch(Exception e){};
 		
 	}
 
