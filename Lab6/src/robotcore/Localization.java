@@ -37,19 +37,25 @@ public class Localization {
 		localizeAndMoveToStartLoc();
 		
 	}
-
+	
+	 private static int X1 = 0    ;
+	 private static int X2 = 1    ;
+	 private static int X3 = 2    ;
+	 private static int X4 = 3    ;
+	
 	/**
 	 * 
 	 */
 	public static void localizeAndMoveToStartLoc() {
+		
 		startThread();
 		
 		localize();
-		
+
 		driver.forward(25);
 		driver.rotateToRelatively(-90);
 		driver.forward(25);
-		
+
 		conf.getCurrentLocation().setTheta(0).setX(15).setY(15);
 
 	}

@@ -208,8 +208,12 @@ public class Odometer extends Thread {
 			return Direction.WEST;
 		}	
 	}
-	
-	public Coordinate getCurrentCoordinate(){
+	/**
+	 * @deprecated use Configuration instead. we should not directly access thing from here 
+	 * and Configuration is needed in every class
+	 * @return
+	 */
+	private Coordinate getCurrentCoordinate(){
 		return new Coordinate(getX(), getY(), getTheta());
 	}
 	

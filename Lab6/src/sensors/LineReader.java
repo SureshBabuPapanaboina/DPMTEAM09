@@ -152,6 +152,8 @@ public class LineReader extends Thread{
 	 * @param subscriber 
 	 */
 	public static void subscribeToAll(LineReaderListener subscriber){
+		Sound.beep();
+		Sound.beep();
 		if (rightLineReader == null || rightLineReader == null ) throw new NullPointerException("l/r LRdr uninitialized");
 		rightLineReader.subscribe(subscriber);
 		leftLineReader.subscribe(subscriber);
