@@ -20,7 +20,7 @@ public class Configuration {
 	private Coordinate currentLocation ; //current location ;
 	
 	private boolean driveComplete  = false ;
-	private int ROTATE_SPEED = 120 ;
+	private int ROTATE_SPEED = 160 ;
 	private int FORWARD_SPEED = 200;
 	private int USB_TIMEOUT = 3000;
 	//constants about the plying field
