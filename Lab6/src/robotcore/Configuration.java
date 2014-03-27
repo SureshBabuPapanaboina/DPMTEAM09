@@ -55,7 +55,7 @@ public class Configuration {
 	/**
 	 * the distance between the lineReaders and the center of rotation 
 	 */
-	public static final double distFromLineReaderToCenterOfRot = 0 ; //TODO change to measured values
+	public static final double distFromLineReaderToCenterOfRot = 12.6 ; //TODO change to measured values
 
 	//temporarily changing to use smaller robot
 //	public static final double LEFT_RADIUS = 2.16 ;
