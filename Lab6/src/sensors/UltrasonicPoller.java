@@ -31,7 +31,7 @@ public class UltrasonicPoller extends Thread {
 	private boolean distanceUpdated = false ;
 	private static UltrasonicPoller instance ;
 	private static boolean listenerExecutionDisabled = false ;	//true if we want to disable the ultrasonic listener and only allow passive pulling 
-	
+	private final int FLOATING_RANGE = 5;
 	/**
 	 * Private constructor
 	 */
@@ -40,11 +40,16 @@ public class UltrasonicPoller extends Thread {
 		uSensor.continuous();	//start the sensor 
 
 		//filter the distance and get 10 times polling avg
-		double mean = 0 ;
-		for (int i = 0 ; i < 10 ; i ++ ){
-			mean = ((mean*i) + uSensor.getDistance())/i;
+//		double mean = 0 ;
+		double sum = 0;
+		
+		for (int i = 0 ; i < FLOATING_RANGE ; i ++ ){
+			//what is this....
+			sum += uSensor.getDistance();
+//			mean = ((mean*i) + uSensor.getDistance())/i;
 		}
-		currentDist = (int) mean ;
+		sum /= FLOATING_RANGE;
+		currentDist = (int) sum ;
 	}
 	
 	/**

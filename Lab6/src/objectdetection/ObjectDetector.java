@@ -2,8 +2,10 @@ package objectdetection;
 import odometry.Odometer;
 import lejos.nxt.NXTRegulatedMotor;
 import lejos.nxt.Sound;
+import movement.Driver;
 import robotcore.Configuration;
 import robotcore.Coordinate;
+import robotcore.LCDWriter;
 import sensors.ColorPoller;
 import sensors.UltrasonicPoller;
 
@@ -15,12 +17,15 @@ import sensors.UltrasonicPoller;
  * @author Peter Henderson
  *
  */
-public class ObjectDetector{
+public class ObjectDetector extends Thread{
 	
 	private static ObjectDetector instance;
 	private UltrasonicPoller up;
 	private Configuration config;
 	private NXTRegulatedMotor sensorMotor;
+	private boolean objectFound = false;
+	private Trajectory currentObjectT;
+	private Object lock;
 	
 	/**
 	 * constructor
@@ -32,94 +37,94 @@ public class ObjectDetector{
 		config = Configuration.getInstance();
 		sensorMotor = config.SENSOR_MOTOR;
 		sensorMotor.setSpeed(45);
+		lock = new Object();
 	}
 	
 	/**
 	 * Returns the singleton objectDetector
 	 * @return
 	 */
-	public ObjectDetector getInstance(){
+	public static ObjectDetector getInstance(){
 		if(instance == null) instance = new ObjectDetector();
 		
 		return instance;
 	}
 	
+	public boolean objectFound(){
+		boolean t;
+//		synchronized(lock){
+			t = objectFound;
+//		}
+		return t;
+	}
+	
+	public Trajectory getTrajectory(){
+		Trajectory t;
+//		synchronized(lock){
+			t = currentObjectT;
+//		}
+		return t;
+	}
+	
+	@Override
+	public void run(){
+		Trajectory object = null;
+		while(object == null){
+			object = findObjectLocation();
+		}
+		
+		Driver.getInstance().motorStop();
+		Sound.beep();
+		Sound.beep();
+		objectFound = true;
+		currentObjectT = object;
+	
+	}
+	
+	/**
+	 * Rotates the sensorMotor and interrupts the driver if there is in fact
+	 * an object, raises a flag
+	 * 
+	 * @return
+	 */
 	public Trajectory findObjectLocation(){
-		
-		sensorMotor.rotateTo(-45, true);
-		
-		int t = 0;
-		int d = 0;
-		//top part of square
-		while(sensorMotor.getPosition() > -18){
-			nap(25);
-						
-			if(up.getDistance() < 45/Math.cos(Math.toRadians(Math.abs(sensorMotor.getPosition())))-15){
-//				LCDWriter.getInstance().writeToScreen("D: " + up.getDistance(), 0);
-//				LCDWriter.getInstance().writeToScreen("T: " + sensorMotor.getPosition() , 1);
-//				LCDWriter.getInstance().writeToScreen("P: " + 30/Math.cos(Math.toRadians(Math.abs(sensorMotor.getPosition()))) , 2);
-				Sound.beep();
-				t = sensorMotor.getPosition();
-				d = up.getDistance();
+		sensorMotor.rotateTo(-55, true);
+//		LCDWriter.getInstance().writeToScreen("D: " + up.getDistance(), 0);
+
+		//TODO: better algorithm
+		while(sensorMotor.getPosition() > -55){
+			nap(15);
+			LCDWriter.getInstance().writeToScreen("D: " + up.getDistance(), 0);
+
+			if(up.getDistance() < 25){
+				sensorMotor.stop();
+				return new Trajectory(sensorMotor.getPosition(), up.getDistance());
 			}
 		}
-		//left section of square
-		while(sensorMotor.getPosition() > -45){
-			nap(25);
+	
+		sensorMotor.rotateTo(55, true);
+		
+		while(sensorMotor.getPosition() < 55){
+			nap(15);
+			LCDWriter.getInstance().writeToScreen("D: " + up.getDistance(), 0);
 
-			if(up.getDistance() < 15/Math.cos(Math.toRadians(90-sensorMotor.getPosition()))-15){
-//				LCDWriter.getInstance().writeToScreen("D: " + up.getDistance(), 0);
-//				LCDWriter.getInstance().writeToScreen("T: " + sensorMotor.getPosition() , 1);
-//				LCDWriter.getInstance().writeToScreen("P: " +  15/Math.cos(Math.toRadians(90-sensorMotor.getPosition())), 2);
-				Sound.beep();
-				t = sensorMotor.getPosition();
-				d = up.getDistance();
+			if(up.getDistance() < 25){
+				sensorMotor.stop();
+				return new Trajectory(sensorMotor.getPosition(), up.getDistance());
 			}
 		}
-		
-		if(d != 0){
-			sensorMotor.rotateTo(0, true);
-//			return new Coordinate(Odometer.getInstance().getX() + 
-//					Math.sin(Math.toRadians(t))*(15+d), 
-//					Odometer.getInstance().getY() + 
-//					Math.cos(Math.toRadians(t))*(15+d), 0);
-		}
-		
-		sensorMotor.rotateTo(45, true);
-		
-		while(sensorMotor.getPosition() < 0); //wait
-		
-		while(sensorMotor.getPosition() < 18){
-			nap(25);
-					
-			if(up.getDistance() < 45/Math.cos(Math.toRadians(Math.abs(sensorMotor.getPosition())))-15){
-//				LCDWriter.getInstance().writeToScreen("D: " + up.getDistance(), 0);
-//				LCDWriter.getInstance().writeToScreen("T: " + sensorMotor.getPosition() , 1);
-//				LCDWriter.getInstance().writeToScreen("P: " + 30/Math.cos(Math.toRadians(Math.abs(sensorMotor.getPosition()))) , 2);
-
-				Sound.beep();
-			}
-		}
-		
-		while(sensorMotor.getPosition() < 45){
-			nap(25);
-			
-			if(sensorMotor.getPosition() < 33) continue;
-
-			
-			if(up.getDistance() < 15/Math.cos(Math.toRadians(90-sensorMotor.getPosition()))-15){
-//				LCDWriter.getInstance().writeToScreen("D: " + up.getDistance(), 0);
-//				LCDWriter.getInstance().writeToScreen("T: " + sensorMotor.getPosition() , 1);
-//				LCDWriter.getInstance().writeToScreen("P: " +  15/Math.cos(Math.toRadians(90-sensorMotor.getPosition())), 2);
-
-				Sound.beep();
-			}
-		}
-		
-		sensorMotor.rotateTo(0, true);
 		
 		return null;
-		
+	}
+	
+	/**
+	 * Checks if the flag is actually in the end zone
+	 * 
+	 * @param error
+	 * @return
+	 */
+	public boolean isInZoneWithError(int error){
+		return true;
 	}
 	
 	private void nap(int m){

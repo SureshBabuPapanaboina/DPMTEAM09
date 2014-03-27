@@ -23,7 +23,7 @@ public class ObstacleDetector {
 		up = UltrasonicPoller.getInstance();
 		config = Configuration.getInstance();
 		sensorMotor = config.SENSOR_MOTOR;
-		sensorMotor.setSpeed(40);
+		sensorMotor.setSpeed(38);
 	}
 	
 	public static ObstacleDetector getInstance(){
@@ -43,9 +43,9 @@ public class ObstacleDetector {
 		//check left side
 		boolean obstacle = false;
 		
-		sensorMotor.rotateTo(-55, true);
+		sensorMotor.rotateTo(-50, true);
 		//top part of square
-		while(sensorMotor.getPosition() > -18){
+		while(sensorMotor.getPosition() > -19){
 			nap(10);
 						
 			if(up.getDistance() < 45/Math.cos(Math.toRadians(Math.abs(sensorMotor.getPosition())))-15){
@@ -57,7 +57,7 @@ public class ObstacleDetector {
 			}
 		}
 		//left section of square
-		while(sensorMotor.getPosition() > -45){
+		while(sensorMotor.getPosition() > -40){
 			nap(10);
 			LCDWriter.getInstance().writeToScreen("P: " +  Math.abs(15/Math.sin(Math.toRadians(Math.abs(sensorMotor.getPosition())))-15), 2);
 			LCDWriter.getInstance().writeToScreen("D: " + up.getDistance(), 0);
@@ -70,12 +70,12 @@ public class ObstacleDetector {
 			}
 		}	
 		
-		while(sensorMotor.getPosition() > -55){
+		while(sensorMotor.getPosition() > -50){
 			nap(10);
 			LCDWriter.getInstance().writeToScreen("P: " +  Math.abs(15/Math.sin(Math.toRadians(Math.abs(sensorMotor.getPosition())))-15), 2);
 			LCDWriter.getInstance().writeToScreen("D: " + up.getDistance(), 0);
 
-			if(up.getDistance() < 12){
+			if(up.getDistance() < 15){
 				LCDWriter.getInstance().writeToScreen("D: " + up.getDistance(), 0);
 				LCDWriter.getInstance().writeToScreen("T: " + sensorMotor.getPosition() , 1);
 				Sound.beep();
@@ -114,17 +114,17 @@ public class ObstacleDetector {
 		}
 		
 		//NOTE: Once the sensor goes back to the center of the arm this need to change back
-		sensorMotor.rotateTo(55, true);
+		sensorMotor.rotateTo(50, true);
 		
 		while(sensorMotor.getPosition() < 0); //wait
 		
-		while(sensorMotor.getPosition() < 18){
+		while(sensorMotor.getPosition() < 19){
 			nap(10);
 					
 			if(up.getDistance() < 45/Math.cos(Math.toRadians(Math.abs(sensorMotor.getPosition())))-15){
-//				LCDWriter.getInstance().writeToScreen("D: " + up.getDistance(), 0);
-//				LCDWriter.getInstance().writeToScreen("T: " + sensorMotor.getPosition() , 1);
-//				LCDWriter.getInstance().writeToScreen("P: " + 30/Math.cos(Math.toRadians(Math.abs(sensorMotor.getPosition()))) , 2);
+				LCDWriter.getInstance().writeToScreen("D: " + up.getDistance(), 0);
+				LCDWriter.getInstance().writeToScreen("T: " + sensorMotor.getPosition() , 1);
+				LCDWriter.getInstance().writeToScreen("P: " + 30/Math.cos(Math.toRadians(Math.abs(sensorMotor.getPosition()))) , 2);
 
 				Sound.beep();
 				obstacle = true;
@@ -144,12 +144,12 @@ public class ObstacleDetector {
 			}
 		}	
 		
-		while(sensorMotor.getPosition() < 55){
+		while(sensorMotor.getPosition() < 50){
 			nap(10);
 //			LCDWriter.getInstance().writeToScreen("P: " +  Math.abs(15/Math.sin(Math.toRadians(Math.abs(sensorMotor.getPosition())))-15), 2);
 //			LCDWriter.getInstance().writeToScreen("D: " + up.getDistance(), 0);
 
-			if(up.getDistance() < 12){
+			if(up.getDistance() < 15){
 				LCDWriter.getInstance().writeToScreen("D: " + up.getDistance(), 0);
 				LCDWriter.getInstance().writeToScreen("T: " + sensorMotor.getPosition() , 1);
 				Sound.beep();

@@ -90,6 +90,7 @@ public class OdometerCorrection implements LineReaderListener{
 					else
 					{
 						leftLineSeen = false;
+						
 					}
 				}
 				timeStartL = currentTimeMillis();

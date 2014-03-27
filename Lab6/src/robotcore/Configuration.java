@@ -1,5 +1,6 @@
 package robotcore;
 
+import odometry.Odometer;
 import communication.RemoteConnection;
 import lejos.nxt.Motor;
 import lejos.nxt.NXTRegulatedMotor;
@@ -261,6 +262,8 @@ public class Configuration {
 	 */
 	public Coordinate getCurrentLocation() {
 		return currentLocation;
+//		return new Coordinate(Odometer.getInstance().getX(), Odometer.getInstance().getY())
+//		return currentLocation;
 	}
 	
 
