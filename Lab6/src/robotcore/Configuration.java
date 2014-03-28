@@ -14,6 +14,8 @@ import lejos.robotics.Color;
 public class Configuration {
 	private Coordinate startLocation;// starting location
 	private Coordinate currentLocation ; //current location ;
+	private Coordinate flagLowerLeft;  	//lower left corner of the flag zone 
+	private Coordinate flagUpperRight;	//upper right corner of flag zone 
 	
 	private boolean driveComplete  = false ;
 	private int ROTATE_SPEED = 160 ;
@@ -116,6 +118,8 @@ public class Configuration {
 	 */
 	public void setOpponentFlagZone(Coordinate lowerLeft, Coordinate upperRight){
 		//TODO: complete
+		this.flagLowerLeft = lowerLeft;
+		this.flagUpperRight = upperRight;
 	}
 	
 	/**
@@ -139,9 +143,9 @@ public class Configuration {
 	 * @param color
 	 */
 	public void setFlagColor(int color){
+		this.flagColor= color;
 		
 	}
-	
 	/**
 	 * Get the end flag zone
 	 * @return size-2 array containing bottom left coord, and top right coord

@@ -22,15 +22,24 @@ public class ObjRec {
 	/**
 	 * contains the block color information 
 	 * @author yuechuan
-	 *
+	 *1.
+	*2.
+	*3.
+	*4.
+	*5.
+	*light blue
+	*red
+	*yellow
+	*white
+	*dark blue
 	 */
 	public static enum blockColor{
 		BLOCK(0),
 		LIGHT_BLUE(1),
-		DARK_BLUE(2),
-		RED(3),
-		YELLOW(4),
-		WHITE(5),
+		RED(2),
+		YELLOW(3),
+		WHITE(4),
+		DARK_BLUE(5),
 		NO_BLOCK(6);
 		
 		private int blockCode;
@@ -52,16 +61,16 @@ public class ObjRec {
 				case 1 : 
 					result = "Light blue";
 					break ; 
-				case 2: 
+				case 5: 
 					result = "Dark blue";
 					break ;
-				case 3 : 
+				case 2 : 
 					result = "Red";
 					break ;
-				case 4:
+				case 3:
 					result = "Yellow";
 					break ;
-				case 5 :
+				case 4 :
 					result = "White";
 					break ;
 				case 6 :
@@ -339,16 +348,16 @@ public class ObjRec {
 				case 1 : 
 					result = blockColor.LIGHT_BLUE;
 					break ; 
-				case 2: 
+				case 5: 
 					result = blockColor.DARK_BLUE;
 					break ;
-				case 3 : 
+				case 2 : 
 					result = blockColor.RED;
 					break ;
-				case 4:
+				case 3:
 					result = blockColor.YELLOW;
 					break ;
-				case 5 :
+				case 4 :
 					result = blockColor.WHITE;
 					break ;
 				default :

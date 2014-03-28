@@ -90,7 +90,7 @@ public class Localization {
 		//forward rotation 
 		driver.rotateToRelatively(360, true);
 		while (usp.getDistance() > 40){try {
-			Thread.sleep(50);
+			Thread.sleep(25);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -104,7 +104,7 @@ public class Localization {
 		try {Thread.sleep(300);} catch ( Exception e ){}; 		//make it sleep a little to avoid miss read 
 		
 		while (usp.getDistance() > 40){try {
-			Thread.sleep(50);
+			Thread.sleep(25);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

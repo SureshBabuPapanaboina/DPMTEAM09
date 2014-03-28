@@ -6,6 +6,7 @@ import lejos.robotics.Color;
 /**
  * Intended to control the color polling and determine what kind of color
  * is being detected from custom calibration done
+ * @deprecated not used 
  * 
  * @author Peter Henderson
  *
