@@ -1,4 +1,8 @@
 package bluetoothclient;
+
+import robotcore.Configuration;
+import robotcore.Coordinate;
+
 /**
  * This class sets up a bluetooth listener 
  * and listens for the initial commands for the task given
@@ -7,7 +11,7 @@ package bluetoothclient;
  */
 public class BluetoothReceiver {
 
-	
+	Configuration config = Configuration.getInstance();
 	/**
 	 * Constructor, sets up the receiver
 	 */
@@ -29,6 +33,8 @@ public class BluetoothReceiver {
 		Transmission t = conn.getTransmission();
 		
 		//TODO: do otherstuff
+		config.setFlagZone(new Coordinate(t.redZoneLL_X,t.redZoneLL_Y,0),new Coordinate(t.redZoneUR_X,t.redZoneUR_Y,0));
+		config.setFlagColor(t.redFlag);
 	}
 	
 }

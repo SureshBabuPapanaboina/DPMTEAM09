@@ -34,6 +34,7 @@ public class Localization {
 
 	
 	public static void main(String[] args) {
+		startThread();
 		localizeAndMoveToStartLoc();
 		
 	}
@@ -43,10 +44,14 @@ public class Localization {
 	 */
 	public static void localizeAndMoveToStartLoc() {
 		int rotSpeed = conf.getRotationSpeed();
-		conf.setRotationSpeed(160);
+		conf.setRotationSpeed(120);
 		localize();
 		conf.setRotationSpeed(rotSpeed);
 		
+//		conf.getCurrentLocation().setTheta(Math.toRadians(90)).setX(0).setY(0);
+//		try{ Thread.sleep(100);} catch(Exception e){};
+//		driver.travelTo(30,30);
+
 		driver.forward(28);
 		driver.rotateToRelatively(-90);
 		driver.forward(28);
@@ -84,16 +89,26 @@ public class Localization {
 		
 		//forward rotation 
 		driver.rotateToRelatively(360, true);
-		while (usp.getDistance() > 40){} 
+		while (usp.getDistance() > 40){try {
+			Thread.sleep(50);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}} 
 		driver.motorStop();
 		angle1 = conf.getCurrentLocation().getTheta();
 		if (DEBUG) LCDWriter.getInstance().writeToScreen("ang1 " + Math.toDegrees(angle1) , 6);
 		
 		//start back rotation
 		driver.rotateToRelatively(-360, true);
-		try {Thread.sleep(400);} catch ( Exception e ){}; 		//make it sleep a little to avoid miss read 
+		try {Thread.sleep(300);} catch ( Exception e ){}; 		//make it sleep a little to avoid miss read 
 		
-		while (usp.getDistance() > 40){} 
+		while (usp.getDistance() > 40){try {
+			Thread.sleep(50);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}} 
 		
 		angle2 = conf.getCurrentLocation().getTheta();
 		if (DEBUG) LCDWriter.getInstance().writeToScreen("ang2 " + Math.toDegrees(angle2) , 5);

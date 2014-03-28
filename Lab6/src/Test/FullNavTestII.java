@@ -67,9 +67,6 @@ public class FullNavTestII {
 		OdometerCorrection oc = OdometerCorrection.getInstance();
 		Driver dr = Driver.getInstance();
 
-		LineReader.subscribeToAll(oc);
-		
-		
 		up.start();
 		odo.start();
 		dr.start();
@@ -80,14 +77,11 @@ public class FullNavTestII {
 		//=====================INIT END=========================
 		
 		//do localization 
-		LineReader.pauseAll(); //pause the line reader for now 
 		Localization.localizeAndMoveToStartLoc();
 		
 		
 		//====end of localization 
-//		conf.getCurrentLocation().setTheta(0).setX(15).setY(15);	// no need already set by Localization 
-		
-		LineReader.unpauseAll();
+		LineReader.subscribeToAll(oc);
 		
 		try {Thread.sleep(1000);}catch(Exception e){};
 		
