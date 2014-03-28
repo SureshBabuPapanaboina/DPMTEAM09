@@ -1,5 +1,5 @@
 package movement;
-
+/*
 import lejos.nxt.Button;
 import lejos.nxt.LCD;
 import lejos.nxt.Motor;
@@ -62,11 +62,8 @@ public class odoTest {
 		llr.start();
 		rlr.start();
 		driver.start();
-		//LineReader.subscribeToAll(odoCorrect);
-		/*driver.setSpeed(250);
-		l.forward();
-		r.forward();*/
-		//odometryCorrection.start();
+		LineReader.subscribeToAll(odoCorrect);
+
 
 		// spawn a new Thread to avoid SquareDriver.drive() from blockingt
 		// spawn a new Thread to avoid SquareDriver.drive() from blocking
@@ -87,4 +84,4 @@ public class odoTest {
 	while (Button.waitForAnyPress() != Button.ID_ESCAPE);
 	System.exit(0);
 	}
-}
+}*/

@@ -282,7 +282,7 @@ public class OdometerCorrection implements LineReaderListener{
 	public void xCorrect(double offset)
 	{
 		//use reminder (odometer value divided by 30) to determine how much to correct
-		double x = (int)(Odometer.getInstance().getX()/30)*30.48;
+		double x = (int)(Odometer.getInstance().getX()/30)*30.0;    //TODO this was 30.48 but it is inconsitant with driver's aproximation 
 		RConsole.println("correctedX: "+x);
 		if(Math.abs(x+offset-Odometer.getInstance().getX())<12)
 		{
@@ -296,7 +296,7 @@ public class OdometerCorrection implements LineReaderListener{
 	public void yCorrect(double offset)
 	{
 		//use reminder (odometer value divided by 30) to determine how much to correct
-		double y = (int)(Odometer.getInstance().getY()/30)*30.48;
+		double y = (int)(Odometer.getInstance().getY()/30)*30.0; //TODO this was 30.48 but it is inconsitant with driver's aproximation 
 		RConsole.println("correctedY: "+y);
 		if(Math.abs(y+offset-Odometer.getInstance().getY())<12)
 		{

@@ -213,7 +213,7 @@ public class Odometer extends Thread {
 	 * and Configuration is needed in every class
 	 * @return
 	 */
-	private Coordinate getCurrentCoordinate(){
+	public Coordinate getCurrentCoordinate(){
 		return new Coordinate(getX(), getY(), getTheta());
 	}
 	
