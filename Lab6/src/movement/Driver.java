@@ -240,6 +240,8 @@ public final class Driver extends Thread{
 	 * @param speed
 	 */
 	public static void setSpeed(int speed){
+		leftMotor.setAcceleration(Configuration.ACCELERATION);
+		rightMotor.setAcceleration(Configuration.ACCELERATION);
 		leftMotor.setSpeed(speed);
 		rightMotor.setSpeed(speed);
 		if (DEBUG) RConsole.println("Motor speed set to :" + speed);
@@ -270,13 +272,17 @@ public final class Driver extends Thread{
 	public static boolean isMotorStopped() {
 		return motorStopped;
 	}
+	
+	Object lock = new Object();
 	/**
 	 * stop motor
 	 * All actions involving stopping the motor must call this method
 	 */
 	public void motorStop(){
 		//TODO: might need to put this in a synchronized block
-		motorStopped = true ;
+		synchronized(lock){
+			motorStopped = true ;
+		}
 		if (DEBUG) RConsole.println("Motor Stopped");
 		leftMotor.stop();
 		rightMotor.stop();

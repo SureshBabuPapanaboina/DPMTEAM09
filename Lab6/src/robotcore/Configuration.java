@@ -22,6 +22,7 @@ public class Configuration {
 	private boolean driveComplete  = false ;
 	private int ROTATE_SPEED = 120 ;
 	private int FORWARD_SPEED = 200;
+	public static int ACCELERATION = 2000;
 	private int USB_TIMEOUT = 1000;
 	//constants about the plying field
 	public static final int GRID_SIZE = 8; //set to demo size
