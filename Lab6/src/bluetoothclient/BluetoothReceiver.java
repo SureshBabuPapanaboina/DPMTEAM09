@@ -2,6 +2,7 @@ package bluetoothclient;
 
 import robotcore.Configuration;
 import robotcore.Coordinate;
+import robotcore.LCDWriter;
 
 /**
  * This class sets up a bluetooth listener 
@@ -12,11 +13,13 @@ import robotcore.Coordinate;
 public class BluetoothReceiver {
 
 	Configuration config = Configuration.getInstance();
+	BluetoothConnection conn ; 
 	/**
 	 * Constructor, sets up the receiver
 	 */
 	public BluetoothReceiver(){
-		//TODO: Setup bluetooth
+		conn = new BluetoothConnection();
+		
 	}
 	
 	/**
@@ -24,17 +27,12 @@ public class BluetoothReceiver {
 	 * It sets the configuration file
 	 */
 	public void listenForStartCommand(){
-		//TODO: complete
-		BluetoothConnection conn = new BluetoothConnection();
-		
-		// as of this point the bluetooth connection is closed again, and you can pair to another NXT (or PC) if you wish
-		
 		// example usage of Tranmission class
 		Transmission t = conn.getTransmission();
-		
-		//TODO: do otherstuff
+
 		config.setFlagZone(new Coordinate(t.redZoneLL_X,t.redZoneLL_Y,0),new Coordinate(t.redZoneUR_X,t.redZoneUR_Y,0));
 		config.setFlagColor(t.redFlag);
+		//TODO more for the final 
 	}
 	
 }

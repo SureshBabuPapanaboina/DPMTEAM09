@@ -1,5 +1,6 @@
 package movement;
-/*
+
+import bluetoothclient.BluetoothReceiver;
 import lejos.nxt.Button;
 import lejos.nxt.LCD;
 import lejos.nxt.Motor;
@@ -9,6 +10,7 @@ import lejos.nxt.comm.RConsole;
 import odometry.Odometer;
 import odometry.OdometerCorrection;
 import robotcore.Configuration;
+import robotcore.Coordinate;
 import robotcore.LCDWriter;
 import sensors.LineReader;
 
@@ -20,10 +22,13 @@ public class odoTest {
 	private static LineReader rlr = LineReader.getRightSensor();
 	private static Driver driver = Driver.getInstance();
 	private static OdometerCorrection odoCorrect = OdometerCorrection.getInstance();
+	private static Coordinate[] flagZone;
+	private static BluetoothReceiver receiver= new BluetoothReceiver();
 	
 	public static void main(String[] args)
 	{
-		RConsole.open();
+		
+		//RConsole.open();
 		int buttonChoice;
 		do {
 			// clear the display
@@ -55,15 +60,16 @@ public class odoTest {
 		//odometryCorrection = new OdometryCorrection(odometer,colorSensor);
 		// start the odometer, the odometry display and (possibly) the
 		// odometry correction
-		NXTRegulatedMotor l = Configuration.LEFT_MOTOR;
-		NXTRegulatedMotor r = Configuration.RIGHT_MOTOR;
+		//NXTRegulatedMotor l = Configuration.LEFT_MOTOR;
+		//NXTRegulatedMotor r = Configuration.RIGHT_MOTOR;
+		receiver.listenForStartCommand();
 		odo.start();
 		lcd.start();
 		llr.start();
 		rlr.start();
 		driver.start();
 		LineReader.subscribeToAll(odoCorrect);
-
+		flagZone=conf.getFlagZone();
 
 		// spawn a new Thread to avoid SquareDriver.drive() from blockingt
 		// spawn a new Thread to avoid SquareDriver.drive() from blocking
@@ -71,10 +77,10 @@ public class odoTest {
 					public void run() {
 						//int k = 3* 30;	//distance to move 
 						conf.getCurrentLocation().setTheta(0).setX(0).setY(0);
-						driver.travelTo(0,30);
-						driver.travelTo(-30, 30);
-						driver.travelTo(-30, 0);
-						driver.travelTo(0, 0);
+						driver.travelTo(flagZone[0]);
+						//driver.travelTo(-30, 30);
+						//driver.travelTo(-30, 0);
+						//driver.travelTo(0, 0);
 						//set drive to be complete !! this will finalize the machine (shuts off linereaders and odo )
 						Configuration.getInstance().setDriveComplete();
 					}
@@ -84,4 +90,4 @@ public class odoTest {
 	while (Button.waitForAnyPress() != Button.ID_ESCAPE);
 	System.exit(0);
 	}
-}*/
+}

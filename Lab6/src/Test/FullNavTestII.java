@@ -1,5 +1,6 @@
 package Test;
 
+import bluetoothclient.BluetoothReceiver;
 import movement.Driver;
 import navigation.Map;
 import navigation.PathTraveller;
@@ -56,7 +57,14 @@ public class FullNavTestII {
 	}
 	
 	public static void main(String[] args){
-		//=================INIT START==========================
+		//===============get info from blue tooth ========\
+		
+		BluetoothReceiver br = new BluetoothReceiver(); 
+		br.listenForStartCommand();// info in Config should be set 
+		
+		
+		
+		//=================INIT THREADS==========================
 		LCDWriter lcd = LCDWriter.getInstance();
 		Configuration conf = Configuration.getInstance();		
 		UltrasonicPoller up = UltrasonicPoller.getInstance();
@@ -74,6 +82,8 @@ public class FullNavTestII {
 		rlr.start();
 		lcd.start();
 		
+		//=================INIT var ==========================
+		Coordinate [] flagZone = conf.getFlagZone();
 		//=====================INIT END=========================
 		
 		//do localization 
@@ -85,7 +95,7 @@ public class FullNavTestII {
 		
 		try {Thread.sleep(1000);}catch(Exception e){};
 		
-		traveller.recalculatePathToCoords(150, 150);
+		traveller.recalculatePathToCoords((int)flagZone[0].getX(),(int) flagZone[0].getY());
 
 		boolean done  = false;
 		while(!done){
