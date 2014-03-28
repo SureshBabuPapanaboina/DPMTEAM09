@@ -49,6 +49,8 @@ public class LineReader extends Thread{
 		//avoid uninitialized error 
 		LineReader.getLeftSensor().setNotPaused(false);
 		LineReader.getRightSensor().setNotPaused(false);
+		leftLineReader.colorSensor.setFloodlight(false);
+		rightLineReader.colorSensor.setFloodlight(false);
 	}
 	
 	/**
@@ -57,6 +59,8 @@ public class LineReader extends Thread{
 	public static void unpauseAll(){
 		LineReader.getLeftSensor().setNotPaused(true);
 		LineReader.getRightSensor().setNotPaused(true);
+		rightLineReader.colorSensor.setFloodlight(true);
+		leftLineReader.colorSensor.setFloodlight(true);
 	}
 	
 
@@ -148,6 +152,8 @@ public class LineReader extends Thread{
 	 * @param subscriber 
 	 */
 	public static void subscribeToAll(LineReaderListener subscriber){
+		Sound.beep();
+		Sound.beep();
 		if (rightLineReader == null || rightLineReader == null ) throw new NullPointerException("l/r LRdr uninitialized");
 		rightLineReader.subscribe(subscriber);
 		leftLineReader.subscribe(subscriber);

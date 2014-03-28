@@ -1,0 +1,31 @@
+purpose:
+ test the algorithm and math formula I have derived from the "Color Sensor Testing" and see if the formula can be applied to the real life example. See if the detection rate of this implementation is acceptable or not.
+
+Algorithm:
+rgb[3] = rgb measured of a foam ;
+RGRatio[3] = {r/g , g/b , r/b};
+Mean = precalculated mean from a list of measured data (see "Color Sensor Testing" document for the values and "color sensor characterization document expanded" spreadsheet for the calculated mean, standard diviation and median.
+
+for each possible foam, do  : 
+   ScoreOfFoam =  
+   	  (Mean_RGRatio - RGRatio_measured)/StandardDivationOfRGRatio 
+    	  + 
+	      (Mean_GBRatio - GBRatio_measured)/StandardDivationOfGBRatio
+	          +
+		      (Mean_RBRatio - RBRatio_measured)/StandardDivationOfRBRatio
+	 ;
+end for;
+
+ResultBlock = Min(ScoreOfFoam);
+
+Test :
+place a block in front of the robot and run this algorithm and see if the display displays the corresponding color.
+
+Hypothesis :
+depending on the success rate of the algorithm, there can be different approaches. If the algorithm success more than 50 % of the times, then I should look and see if there are any flows in my algorithm. If the rate is hight , then I should make small adjustments to the mean and standard diviation. If the rate is lower than 50% it is best to find a brand new approach to the problem.(possibly a simpler approach). 
+
+Conclusion: 
+after 10 trials on various different colored block I have decided to abbandon this method completely and look in to another approach. This algorithm barly works, since it is too strict on the data and the statistical approach are not correct. The weight contribution on each of the color ratios should not be equal but I could not find an Ideal ratio that work on all 7 blocks. Bonan has suggested to use different cases for different blocks and only consider the most siginificant (lest standard div) properties of each foam. I will continue to test in Color Sensor Test III .
+
+Next step : 
+Have another different algorithm and do similar tests 

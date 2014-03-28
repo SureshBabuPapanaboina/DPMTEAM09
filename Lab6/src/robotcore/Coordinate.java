@@ -14,7 +14,7 @@ public class Coordinate extends Point{
 	double theta;
 	
 	public Coordinate(double x, double y , double d ){
-		super (x,y);
+		super(x,y);
 		this.theta = d ;
 	}
 	

@@ -33,9 +33,10 @@ public class OdometerCorrection implements LineReaderListener{
 	private double timeEndL,timeEndR;
 	
 	private static OdometerCorrection instance = new OdometerCorrection();
-	
 	public static OdometerCorrection getInstance(){ return instance ;}
 
+	private boolean DEBUG = false ;
+	
 	private OdometerCorrection(){
 		lMotor = Configuration.LEFT_MOTOR;
 		rMotor = Configuration.RIGHT_MOTOR;

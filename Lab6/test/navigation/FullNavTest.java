@@ -8,6 +8,7 @@ import lejos.robotics.navigation.Waypoint;
 import objectdetection.ObstacleDetector;
 import odometry.Odometer;
 import odometry.OdometerCorrection;
+import robotcore.Configuration;
 import robotcore.Coordinate;
 import robotcore.LCDWriter;
 import sensors.LineReader;
@@ -30,12 +31,13 @@ public class FullNavTest {
 		Driver driver = Driver.getInstance();
 		ObstacleDetector detector = ObstacleDetector.getInstance();
 		Map map = Map.getInstance();
+		Configuration conf = Configuration.getInstance();
 		
 		while(!t.pathIsEmpty()){
 			Waypoint next = t.popNextWaypoint();
 			//Turn to the next tile
 			driver.turnTo(Coordinate.calculateRotationAngle(
-												Odometer.getInstance().getCurrentCoordinate(), 
+												conf.getCurrentLocation(), 
 												new Coordinate(next)));
 			
 			//scan the next area
@@ -63,6 +65,7 @@ public class FullNavTest {
 		Odometer odo = Odometer.getInstance();
 		OdometerCorrection oc = OdometerCorrection.getInstance();
 		LineReader.subscribeToAll(oc);
+		Configuration conf = Configuration.getInstance();
 
 		Driver dr = Driver.getInstance();
 
@@ -71,7 +74,11 @@ public class FullNavTest {
 		dr.start();
 		llr.start();
 		rlr.start();
-
+		
+		conf.getCurrentLocation().setTheta(0).setX(0).setY(0);
+		
+		try {Thread.sleep(1000);}catch(Exception e){};
+		
 		traveller.recalculatePathToCoords(150, 150);
 
 		boolean done  = false;
