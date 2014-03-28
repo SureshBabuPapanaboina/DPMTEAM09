@@ -36,5 +36,4 @@ public enum Corners {
 		}
 		return "error";
 	}
-
 }

@@ -1,13 +1,9 @@
 package robotcore;
 
-import odometry.Odometer;
-import communication.RemoteConnection;
 import lejos.nxt.Motor;
 import lejos.nxt.NXTRegulatedMotor;
 import lejos.nxt.SensorPort;
 import lejos.nxt.comm.RConsole;
-import lejos.nxt.remote.RemoteMotor;
-import lejos.nxt.remote.RemoteSensorPort;
 import lejos.robotics.Color;
 
 /**
@@ -57,7 +53,7 @@ public class Configuration {
 	/**
 	 * the distance between the lineReaders and the center of rotation 
 	 */
-	public static final double distFromLineReaderToCenterOfRot = 0 ; //TODO change to measured values
+	public static final double distFromLineReaderToCenterOfRot = 0 ;
 
 	//temporarily changing to use smaller robot
 //	public static final double LEFT_RADIUS = 2.16 ;
