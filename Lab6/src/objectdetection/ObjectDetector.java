@@ -97,8 +97,8 @@ public class ObjectDetector extends Thread{
 			LCDWriter.getInstance().writeToScreen("D: " + up.getDistance(), 0);
 
 			if(up.getDistance() < 25){
-				sensorMotor.stop();
-				return new Trajectory(sensorMotor.getPosition(), up.getDistance());
+				sensorMotor.rotateTo(0);
+				return new Trajectory(-sensorMotor.getPosition()+5, up.getDistance());
 			}
 		}
 	
@@ -109,8 +109,9 @@ public class ObjectDetector extends Thread{
 			LCDWriter.getInstance().writeToScreen("D: " + up.getDistance(), 0);
 
 			if(up.getDistance() < 25){
-				sensorMotor.stop();
-				return new Trajectory(sensorMotor.getPosition(), up.getDistance());
+//				sensorMotor.stop();
+				sensorMotor.rotateTo(0);
+				return new Trajectory(-sensorMotor.getPosition()-5, up.getDistance());
 			}
 		}
 		

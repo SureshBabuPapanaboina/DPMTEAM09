@@ -153,6 +153,32 @@ public class ObjRec {
 	}
 	
 	/**
+	*
+	*return an array of blocks corresponding to the blocks that has passed the test 
+	*if there are more than 1 element in the array then there is a porblem 
+	*if there are none in the array then that means it has not detect any block so it should move and then redo test 
+	*/
+		public ArrayList<blockColor> detectA(){
+			
+			int [] rgb = getRGB();
+			double [] ratios = {
+					(double) rgb[0] / rgb[1],
+					(double) rgb[1] / rgb[2],
+					(double) rgb[0] / rgb[2]
+			};
+			
+			ArrayList<blockColor> blkList = new ArrayList<blockColor>();
+			
+			if (testDarkBlue(rgb, ratios)) blkList.add(blockColor.DARK_BLUE);
+			if (testLightBlue(rgb, ratios)) blkList.add(blockColor.LIGHT_BLUE);
+			if (testRed(rgb, ratios)) blkList.add(blockColor.RED);
+			if (testWhite(rgb, ratios)) blkList.add(blockColor.WHITE);
+			if (testYellow(rgb, ratios)) blkList.add(blockColor.YELLOW);
+
+			return blkList;
+		}
+	
+	/**
 	 * check if n2 is within eps of n 
 	 * @param n first number 
 	 * @param n2 2nd number 
@@ -208,9 +234,9 @@ public class ObjRec {
 		c2 =  doubleApprox(ratios[2], .343, 0.15);
 		c3 = (ratios[2] < 1)? true : false ;
 		
-		lcd.writeToScreen("c1" + c1 , 4);
-		lcd.writeToScreen("c2" + c2 , 5);
-		lcd.writeToScreen("c3" + c3 , 6);
+//		lcd.writeToScreen("c1" + c1 , 4);
+//		lcd.writeToScreen("c2" + c2 , 5);
+//		lcd.writeToScreen("c3" + c3 , 6);
 		
 		return (c1&&c2&&c3);
 				

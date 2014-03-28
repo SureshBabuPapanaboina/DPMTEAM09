@@ -26,7 +26,7 @@ import sensors.UltrasonicPoller;
  * @author Peter Henderson
  *
  */
-public class BasicSearchTest {
+public class SearchAndCapture {
 
 	private static Trajectory searchTile(){
 		UltrasonicPoller up = UltrasonicPoller.getInstance();

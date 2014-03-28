@@ -20,10 +20,14 @@ public class Configuration {
 	private Coordinate currentLocation ; //current location ;
 	
 	private boolean driveComplete  = false ;
-	private int ROTATE_SPEED = 160 ;
+	private int ROTATE_SPEED = 120 ;
 	private int FORWARD_SPEED = 200;
+<<<<<<< HEAD
 	public static int ACCELERATION = 2000;
+	private int USB_TIMEOUT = 1000;
+=======
 	private int USB_TIMEOUT = 3000;
+>>>>>>> FETCH_HEAD
 	//constants about the plying field
 	public static final int GRID_SIZE = 8; //set to demo size
 	
@@ -101,7 +105,7 @@ public class Configuration {
 	 * @param corner
 	 */
 	public void setStartLocation(int corner){
-		
+		//TODO: Complete
 	}
 	
 	/**
