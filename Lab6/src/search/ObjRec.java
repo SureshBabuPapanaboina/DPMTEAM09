@@ -47,7 +47,26 @@ public class ObjRec {
 		public int getCode(){
 			return blockCode;
 		}
-		
+		public static blockColor getInstance(int id){
+			switch (id ){
+			case 0 : 
+				return BLOCK;
+			case 1 : 
+				return LIGHT_BLUE;
+			case 2 : 
+				return RED;
+			case 3 : 
+				return YELLOW;
+			case 4 : 
+				return WHITE;
+			case 5 : 
+				return DARK_BLUE;
+			default: 
+				return NO_BLOCK;
+				
+			}
+			
+		}
 		blockColor(int code) {
 			blockCode = code;
 		}

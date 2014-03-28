@@ -1,5 +1,6 @@
 package robotcore;
 
+import search.ObjRec.blockColor;
 import lejos.nxt.Motor;
 import lejos.nxt.NXTRegulatedMotor;
 import lejos.nxt.SensorPort;
@@ -22,6 +23,25 @@ public class Configuration {
 	private int FORWARD_SPEED = 200;
 	public static int ACCELERATION = 2000;
 	private int USB_TIMEOUT = 5000;
+	//block to look for 
+	private blockColor block;
+	/**
+	 * opponent's flag zone  lower left corner 
+	 */
+	private Coordinate opponentFlagLowerLeft;
+	/**
+	 * opponent's flag zone upper right corner 
+	 */
+	private Coordinate opponentFlagUpperRight;
+	/**
+	 * opponent's dropZone 
+	 */
+	private Coordinate opponentDropZone;
+	/**
+	 * our drop zone
+	 */
+	private Coordinate dropZone;
+	
 	//constants about the plying field
 	public static final int GRID_SIZE = 8; //set to demo size
 	
@@ -108,7 +128,8 @@ public class Configuration {
 	 * @param upperRight
 	 */
 	public void setFlagZone(Coordinate lowerLeft, Coordinate upperRight){
-		//TODO: Complete
+		this.flagLowerLeft = lowerLeft;
+		this.flagUpperRight = upperRight;
 	}
 	
 	/**
@@ -117,9 +138,8 @@ public class Configuration {
 	 * @param upperRight
 	 */
 	public void setOpponentFlagZone(Coordinate lowerLeft, Coordinate upperRight){
-		//TODO: complete
-		this.flagLowerLeft = lowerLeft;
-		this.flagUpperRight = upperRight;
+		this.opponentFlagLowerLeft = lowerLeft;
+		this.opponentFlagUpperRight = upperRight;
 	}
 	
 	/**
@@ -127,7 +147,7 @@ public class Configuration {
 	 * @param lowerLeft
 	 */
 	public void setOpponentDropZone(Coordinate lowerLeft){
-		
+		opponentDropZone = lowerLeft;
 	}
 	
 	/**
@@ -135,7 +155,7 @@ public class Configuration {
 	 * @param lowerLeft
 	 */
 	public void setDropZone(Coordinate lowerLeft){
-		
+		dropZone = lowerLeft;
 	}
 	
 	/**
@@ -143,16 +163,18 @@ public class Configuration {
 	 * @param color
 	 */
 	public void setFlagColor(int color){
-		this.flagColor= color;
-		
+		this.block= blockColor.getInstance(color);;
+	}
+	
+	public blockColor getBlockColor (){
+		return block;
 	}
 	/**
 	 * Get the end flag zone
 	 * @return size-2 array containing bottom left coord, and top right coord
 	 */
 	public Coordinate[] getFlagZone(){
-		//TODO: Complete
-		return null;
+		return new Coordinate [] {flagLowerLeft , flagUpperRight};
 	}
 	
 	/**
@@ -160,8 +182,7 @@ public class Configuration {
 	 * @return size-2 array containing bottom left coord, and top right coord
 	 */
 	public Coordinate[] getOpponentFlagZone(){
-		//TODO: complete
-		return null;
+		return new Coordinate [] {opponentFlagLowerLeft , opponentFlagUpperRight};
 	}
 	
 	/**
@@ -169,8 +190,7 @@ public class Configuration {
 	 * @return
 	 */
 	public Coordinate getOpponentDropZone(){
-		//TODO
-		return null;
+		return opponentDropZone;
 	}
 	
 	/**
@@ -178,17 +198,7 @@ public class Configuration {
 	 * @return
 	 */
 	public Coordinate getDropZone(){
-		//TODO
-		return null;
-	}
-	
-	/**
-	 * Returns the flag color the robot should be looking for
-	 * @return
-	 */
-	public Color getFlagColor(){
-		//TODO
-		return null;
+		return dropZone;
 	}
 	
 	/**
