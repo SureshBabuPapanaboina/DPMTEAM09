@@ -11,6 +11,7 @@ import odometry.OdometerCorrection;
 import robotcore.Configuration;
 import robotcore.Coordinate;
 import robotcore.LCDWriter;
+import robotcore.Localization;
 import sensors.LineReader;
 import sensors.UltrasonicPoller;
 
@@ -55,27 +56,38 @@ public class FullNavTestII {
 	}
 	
 	public static void main(String[] args){
+		//=================INIT START==========================
 		LCDWriter lcd = LCDWriter.getInstance();
-		lcd.start();
-		
+		Configuration conf = Configuration.getInstance();		
 		UltrasonicPoller up = UltrasonicPoller.getInstance();
 		PathTraveller traveller = PathTraveller.getInstance();
 		LineReader llr = LineReader.getLeftSensor();	//left + right line reader
 		LineReader rlr = LineReader.getRightSensor();
 		Odometer odo = Odometer.getInstance();
 		OdometerCorrection oc = OdometerCorrection.getInstance();
-		LineReader.subscribeToAll(oc);
-		Configuration conf = Configuration.getInstance();
-
 		Driver dr = Driver.getInstance();
 
+		LineReader.subscribeToAll(oc);
+		
+		
 		up.start();
 		odo.start();
 		dr.start();
 		llr.start();
 		rlr.start();
+		lcd.start();
 		
-		conf.getCurrentLocation().setTheta(0).setX(15).setY(15);
+		//=====================INIT END=========================
+		
+		//do localization 
+		LineReader.pauseAll(); //pause the line reader for now 
+		Localization.localizeAndMoveToStartLoc();
+		
+		
+		//====end of localization 
+//		conf.getCurrentLocation().setTheta(0).setX(15).setY(15);	// no need already set by Localization 
+		
+		LineReader.unpauseAll();
 		
 		try {Thread.sleep(1000);}catch(Exception e){};
 		

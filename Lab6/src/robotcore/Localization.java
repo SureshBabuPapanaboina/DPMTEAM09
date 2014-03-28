@@ -42,11 +42,14 @@ public class Localization {
 	 * 
 	 */
 	public static void localizeAndMoveToStartLoc() {
+		int rotSpeed = conf.getRotationSpeed();
+		conf.setRotationSpeed(160);
 		localize();
-
-		driver.forward(25);
+		conf.setRotationSpeed(rotSpeed);
+		
+		driver.forward(28);
 		driver.rotateToRelatively(-90);
-		driver.forward(25);
+		driver.forward(28);
 
 		conf.getCurrentLocation().setTheta(0).setX(15).setY(15);
 
