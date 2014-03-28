@@ -23,7 +23,7 @@ public class Configuration {
 	private int ROTATE_SPEED = 120 ;
 	private int FORWARD_SPEED = 200;
 	public static int ACCELERATION = 2000;
-	private int USB_TIMEOUT = 3000;
+	private int USB_TIMEOUT = 5000;
 	//constants about the plying field
 	public static final int GRID_SIZE = 8; //set to demo size
 	
@@ -90,8 +90,8 @@ public class Configuration {
 	
 	private Configuration(){
 		
-		currentLocation = new Coordinate(15, 15, 0);
-		setStartLocation(new Coordinate(15, 15, 0));
+		currentLocation = new Coordinate(0, 0, 0);
+		setStartLocation(new Coordinate(0, 0, 0));
 		RConsole.openUSB(USB_TIMEOUT);
 	}
 	

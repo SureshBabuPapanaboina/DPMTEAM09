@@ -19,7 +19,7 @@ public final class Driver extends Thread{
 	private static Configuration config = Configuration.getInstance();
 	private static NXTRegulatedMotor leftMotor, rightMotor;
 	
-	private final static boolean DEBUG = Configuration.DEBUG;
+	private final static boolean DEBUG = false;
 	
 	private static boolean isTurning = false ;
 
@@ -280,12 +280,14 @@ public final class Driver extends Thread{
 	 */
 	public void motorStop(){
 		//TODO: might need to put this in a synchronized block
-		synchronized(lock){
-			motorStopped = true ;
-		}
+
 		if (DEBUG) RConsole.println("Motor Stopped");
 		leftMotor.stop();
 		rightMotor.stop();
+		
+		synchronized(lock){
+			motorStopped = true ;
+		}
 	}
 
 }
