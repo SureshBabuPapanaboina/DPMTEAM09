@@ -40,6 +40,7 @@ public class Odometer extends Thread {
 		cCoord = config.getCurrentLocation();
 	}
 	
+	
 	/**
 	 * begin the odometer 
 	 */
@@ -178,7 +179,7 @@ public class Odometer extends Thread {
 	 * @param theta
 	 * @return
 	 */
-	Coordinate setTheta(double theta) {
+	public Coordinate setTheta(double theta) {
 		if (Math.abs(theta) >= 2*Math.PI){
 			if (theta < 0 ) 
 				theta = theta + 2*Math.PI;

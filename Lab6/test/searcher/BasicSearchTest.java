@@ -103,7 +103,7 @@ public class BasicSearchTest {
 			try{
 //				if(or == null) lcd.writeToScreen("NO!", 1);
 				
-				ArrayList<ObjRec.blockColor> color = or.detectA();
+				ArrayList<ObjRec.blockColor> color = or.detect();
 			
 //		
 			if(color == null || color.size() == 0)

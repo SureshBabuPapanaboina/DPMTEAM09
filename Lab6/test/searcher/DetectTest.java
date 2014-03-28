@@ -46,7 +46,7 @@ public class DetectTest {
 			
 			try{
 				
-				ArrayList<ObjRec.blockColor> color = or.detectA();
+				ArrayList<ObjRec.blockColor> color = or.detect();
 			
 			if(color == null || color.size() == 0)
 				lcd.writeToScreen("EMPTY", 1);

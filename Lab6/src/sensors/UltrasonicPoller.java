@@ -186,6 +186,18 @@ public class UltrasonicPoller extends Thread {
 		return currentDist;
 	}
 	
+	public int getFilteredDistance(){
+		int[] distances = getFloatingRange();
+		int sum = 0;
+		for(int i = 0; i< distances.length;i++){
+			sum+=distances[i];
+		}
+		
+		sum /= distances.length;
+		return sum;
+	}
+
+	
 	/**
 	 * @return true when the distance is updated since the last time
 	 * getDistance is called.

@@ -146,7 +146,7 @@ public class PeakSearcher {
 
 				dr.forward(Math.abs(block.distance-5));
 
-				ArrayList<ObjRec.blockColor> color = or.detectA();
+				ArrayList<ObjRec.blockColor> color = or.detect();
 
 				//		
 				if(color == null || color.size() == 0)
@@ -192,7 +192,7 @@ public class PeakSearcher {
 
 				dr.forward(Math.abs(block.distance-5));
 
-				ArrayList<ObjRec.blockColor> color = or.detectA();
+				ArrayList<ObjRec.blockColor> color = or.detect();
 
 				//		
 				if(color == null || color.size() == 0){

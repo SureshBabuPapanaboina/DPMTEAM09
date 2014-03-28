@@ -34,8 +34,20 @@ public class Localization implements LineReaderListener{
 
 	
 	public static void main(String[] args) {
-		startThread();
-		localizeAndMoveToStartLoc();
+
+//		startThread();
+		conf = Configuration.getInstance();
+		driver = Driver.getInstance();
+		 odo = Odometer.getInstance();
+		lcd = LCDWriter.getInstance();
+		 usp = UltrasonicPoller.getInstance();
+		
+		try{driver.start();    }catch(Exception e){}
+		try{odo.start();       }catch(Exception e){}
+		try{lcd.start();       }catch(Exception e){}
+		try{usp.start();       }catch(Exception e){}
+		
+		localize();
 		
 	}
 	
@@ -59,7 +71,7 @@ public class Localization implements LineReaderListener{
 		
 		LineReader.getLeftSensor().unsubscribe(loc);
 		try{ Thread.sleep(100);} catch(Exception e){};
-//		conf.getCurrentLocation().setTheta(0).setX(15).setY(15);
+		conf.getCurrentLocation().setTheta(0).setX(15).setY(15);
 
 	}
 
@@ -93,7 +105,7 @@ public class Localization implements LineReaderListener{
 		//forward rotation 
 		driver.rotateToRelatively(360, true);
 		int DistOnInvok = 50;
-		while (usp.getDistance() > DistOnInvok){try {
+		while (usp.getFilteredDistance() > DistOnInvok){try {
 			Thread.sleep(25);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
@@ -106,11 +118,13 @@ public class Localization implements LineReaderListener{
 		driver.rotateToRelatively(-360, true);
 		try {Thread.sleep(1300);} catch ( Exception e ){}; 		//make it sleep a little to avoid miss read 
 		
-		while (usp.getDistance() > DistOnInvok){try {
+		while (usp.getFilteredDistance() > DistOnInvok){try {
 			Thread.sleep(25);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}} 
+		
+		driver.motorStop();
 		
 		angle2 = conf.getCurrentLocation().getTheta();
 		if (DEBUG) LCDWriter.getInstance().writeToScreen("ang2 " + Math.toDegrees(angle2) , 5);
@@ -122,14 +136,26 @@ public class Localization implements LineReaderListener{
 		
 		driver.rotateToRelatively(45);
 		
-		
+		odo.setTheta(Math.toRadians(90));
 		
 	}
 	/**
 	 * make sure the robot is facing outward 
 	 */
 	private static void prepareForFallingEdge() {
-		//TODO unimplemented
+		driver.rotateToRelatively(360, true);
+
+		while(usp.getFilteredDistance() < 50){
+			try {
+				Thread.sleep(15);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		driver.motorStop();
+
 	}
 
 	private static int lnNumb = 0 ;
