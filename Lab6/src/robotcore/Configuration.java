@@ -100,7 +100,7 @@ public class Configuration {
 	 * @param corner
 	 */
 	public void setStartLocation(int corner){
-		//TODO: Complete
+		
 	}
 	
 	/**
