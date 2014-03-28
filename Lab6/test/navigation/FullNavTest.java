@@ -79,13 +79,13 @@ public class FullNavTest {
 		
 		try {Thread.sleep(1000);}catch(Exception e){};
 		
-		traveller.recalculatePathToCoords(150, 150);
+		traveller.recalculatePathToCoords(135, 105);
 
 		boolean done  = false;
 		while(!done){
 			done = followPath();
 			try{
-			if(!done) traveller.recalculatePathToCoords(150, 150);
+			if(!done) traveller.recalculatePathToCoords(135, 105);
 			else break;
 			}
 			catch(Exception e){

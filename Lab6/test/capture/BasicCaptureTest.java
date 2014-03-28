@@ -22,7 +22,6 @@ public class BasicCaptureTest {
 		UltrasonicPoller up = UltrasonicPoller.getInstance();
 		LCDWriter writer = LCDWriter.getInstance();
 		writer.start();
-		RemoteConnection rc = RemoteConnection.getInstance();
 		Driver driver = Driver.getInstance();
 		driver.start();
 		up.start();
@@ -30,6 +29,8 @@ public class BasicCaptureTest {
 //		Configuration config = Configuration.getInstance();
 		
 //		cm.close();
+		RemoteConnection rc = RemoteConnection.getInstance();
+
 		rc.setupConnection();
 
 		writer.writeToScreen("Connection passed.", 0);
