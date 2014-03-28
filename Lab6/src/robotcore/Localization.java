@@ -53,9 +53,9 @@ public class Localization implements LineReaderListener{
 //		conf.getCurrentLocation().setTheta(Math.toRadians(90)).setX(0).setY(0);
 		try{ Thread.sleep(100);} catch(Exception e){};
 
-		driver.forward(30);
+		driver.forward(25);
 		driver.rotateToRelatively(-90);
-		driver.forward(30);
+		driver.forward(28);
 		
 		LineReader.getLeftSensor().unsubscribe(loc);
 		try{ Thread.sleep(100);} catch(Exception e){};
@@ -92,7 +92,8 @@ public class Localization implements LineReaderListener{
 		
 		//forward rotation 
 		driver.rotateToRelatively(360, true);
-		while (usp.getDistance() > 40){try {
+		int DistOnInvok = 50;
+		while (usp.getDistance() > DistOnInvok){try {
 			Thread.sleep(25);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
@@ -105,7 +106,7 @@ public class Localization implements LineReaderListener{
 		driver.rotateToRelatively(-360, true);
 		try {Thread.sleep(1300);} catch ( Exception e ){}; 		//make it sleep a little to avoid miss read 
 		
-		while (usp.getDistance() > 40){try {
+		while (usp.getDistance() > DistOnInvok){try {
 			Thread.sleep(25);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
@@ -134,14 +135,14 @@ public class Localization implements LineReaderListener{
 	private static int lnNumb = 0 ;
 	@Override
 	public void passedLine(boolean isLeft) {
-		if (isLeft){
+		if (!isLeft){
 			if (lnNumb++  == 0 ){ //first line : correct X 
 				conf.getCurrentLocation().setX(Configuration.DIST_FROM_LINE_READER);
 			}
 			if (lnNumb == 1 ){
 				driver.motorStop();
 				conf.getCurrentLocation().setY(Configuration.DIST_FROM_LINE_READER);
-				driver.forward(2);
+				driver.forward(4);
 			}
 		}
 		
