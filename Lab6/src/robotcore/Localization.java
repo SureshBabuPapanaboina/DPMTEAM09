@@ -17,7 +17,7 @@ import movement.Driver;
  * @author yuechuan
  *
  */
-public class Localization {
+public class Localization implements LineReaderListener{
 	
 	//used threads and initialized stuff 
 	private static Driver driver = Driver.getInstance();
@@ -48,15 +48,18 @@ public class Localization {
 		localize();
 		conf.setRotationSpeed(rotSpeed);
 		
+		Localization loc = new Localization();
+		LineReader.getLeftSensor().subscribe(loc);
 //		conf.getCurrentLocation().setTheta(Math.toRadians(90)).setX(0).setY(0);
-//		try{ Thread.sleep(100);} catch(Exception e){};
-//		driver.travelTo(30,30);
+		try{ Thread.sleep(100);} catch(Exception e){};
 
-		driver.forward(28);
+		driver.forward(30);
 		driver.rotateToRelatively(-90);
-		driver.forward(28);
-
-		conf.getCurrentLocation().setTheta(0).setX(15).setY(15);
+		driver.forward(30);
+		
+		LineReader.getLeftSensor().unsubscribe(loc);
+		try{ Thread.sleep(100);} catch(Exception e){};
+//		conf.getCurrentLocation().setTheta(0).setX(15).setY(15);
 
 	}
 
@@ -92,7 +95,6 @@ public class Localization {
 		while (usp.getDistance() > 40){try {
 			Thread.sleep(25);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}} 
 		driver.motorStop();
@@ -101,12 +103,11 @@ public class Localization {
 		
 		//start back rotation
 		driver.rotateToRelatively(-360, true);
-		try {Thread.sleep(300);} catch ( Exception e ){}; 		//make it sleep a little to avoid miss read 
+		try {Thread.sleep(1300);} catch ( Exception e ){}; 		//make it sleep a little to avoid miss read 
 		
 		while (usp.getDistance() > 40){try {
 			Thread.sleep(25);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}} 
 		
@@ -130,6 +131,21 @@ public class Localization {
 		//TODO unimplemented
 	}
 
-	
+	private static int lnNumb = 0 ;
+	@Override
+	public void passedLine(boolean isLeft) {
+		if (isLeft){
+			if (lnNumb++  == 0 ){ //first line : correct X 
+				conf.getCurrentLocation().setX(Configuration.DIST_FROM_LINE_READER);
+			}
+			if (lnNumb == 1 ){
+				driver.motorStop();
+				conf.getCurrentLocation().setY(Configuration.DIST_FROM_LINE_READER);
+				driver.forward(2);
+			}
+		}
+		
+	}
+
 
 }

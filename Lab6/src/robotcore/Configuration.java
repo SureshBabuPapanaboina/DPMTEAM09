@@ -69,6 +69,7 @@ public class Configuration {
 	public static final SensorPort LINE_READER_RIGHT = SensorPort.S3;
 	public static final SensorPort COLOR_SENSOR_PORT = SensorPort.S4;
 	
+	public static final double DIST_FROM_LINE_READER= 12 ;
 	public static final double LEFT_RADIUS = 2.090 ;
 	public static final double RIGHT_RADIUS =2.090;
 	public static final double WIDTH = 22.5 ;

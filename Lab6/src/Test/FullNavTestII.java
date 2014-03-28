@@ -59,8 +59,8 @@ public class FullNavTestII {
 	public static void main(String[] args){
 		//===============get info from blue tooth ========\
 		
-		BluetoothReceiver br = new BluetoothReceiver(); 
-		br.listenForStartCommand();// info in Config should be set 
+//		BluetoothReceiver br = new BluetoothReceiver(); 
+//		br.listenForStartCommand();// info in Config should be set 
 		
 		
 		
@@ -94,14 +94,16 @@ public class FullNavTestII {
 		LineReader.subscribeToAll(oc);
 		
 		try {Thread.sleep(1000);}catch(Exception e){};
-		
-		traveller.recalculatePathToCoords((int)flagZone[0].getX(),(int) flagZone[0].getY());
+		traveller.recalculatePathToCoords(105,105);
+//		traveller.recalculatePathToCoords((int)flagZone[0].getX(),(int) flagZone[0].getY());
 
 		boolean done  = false;
 		while(!done){
 			done = followPath();
 			try{
-			if(!done) traveller.recalculatePathToCoords(150, 150);
+			if(!done)
+				traveller.recalculatePathToCoords(105,105);
+//				traveller.recalculatePathToCoords((int)flagZone[0].getX(),(int) flagZone[0].getY());
 			else break;
 			}
 			catch(Exception e){

@@ -154,39 +154,13 @@ public class ObjRec {
 		}
 	}
 
-/**
-*
-*return an array of blocks corresponding to the blocks that has passed the test 
-*if there are more than 1 element in the array then there is a porblem 
-*if there are none in the array then that means it has not detect any block so it should move and then redo test 
-*/
-	public blockColor[] detect(){
-		
-		int [] rgb = getRGB();
-		double [] ratios = {
-				(double) rgb[0] / rgb[1],
-				(double) rgb[1] / rgb[2],
-				(double) rgb[0] / rgb[2]
-		};
-		
-		ArrayList<blockColor> blkList = new ArrayList<blockColor>();
-		
-		if (testDarkBlue(rgb, ratios)) blkList.add(blockColor.DARK_BLUE);
-		if (testLightBlue(rgb, ratios)) blkList.add(blockColor.LIGHT_BLUE);
-		if (testRed(rgb, ratios)) blkList.add(blockColor.RED);
-		if (testWhite(rgb, ratios)) blkList.add(blockColor.WHITE);
-		if (testYellow(rgb, ratios)) blkList.add(blockColor.YELLOW);
-
-		return (blockColor[]) blkList.toArray();
-	}
-	
 	/**
 	*
 	*return an array of blocks corresponding to the blocks that has passed the test 
 	*if there are more than 1 element in the array then there is a porblem 
 	*if there are none in the array then that means it has not detect any block so it should move and then redo test 
 	*/
-		public ArrayList<blockColor> detectA(){
+		public ArrayList<blockColor> detect(){
 			
 			int [] rgb = getRGB();
 			double [] ratios = {
@@ -202,6 +176,7 @@ public class ObjRec {
 			if (testRed(rgb, ratios)) blkList.add(blockColor.RED);
 			if (testWhite(rgb, ratios)) blkList.add(blockColor.WHITE);
 			if (testYellow(rgb, ratios)) blkList.add(blockColor.YELLOW);
+			//TODO block recognization is not turned on 
 
 			return blkList;
 		}
