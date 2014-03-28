@@ -28,10 +28,12 @@ public class UltrasonicPoller extends Thread {
 	 * the previous distance stored
 	 */
 	private int prevDist = currentDist;
+	private int[] prevFloatDist;
 	private boolean distanceUpdated = false ;
 	private static UltrasonicPoller instance ;
 	private static boolean listenerExecutionDisabled = false ;	//true if we want to disable the ultrasonic listener and only allow passive pulling 
 	private final int FLOATING_RANGE = 5;
+	private int count;
 	/**
 	 * Private constructor
 	 */
@@ -42,8 +44,12 @@ public class UltrasonicPoller extends Thread {
 		//filter the distance and get 10 times polling avg
 //		double mean = 0 ;
 		double sum = 0;
+		count = 0;
+		prevFloatDist = new int[FLOATING_RANGE];
 		
 		for (int i = 0 ; i < FLOATING_RANGE ; i ++ ){
+			prevFloatDist[count++%5] = uSensor.getDistance();
+			count%=5;
 			//what is this....
 			sum += uSensor.getDistance();
 //			mean = ((mean*i) + uSensor.getDistance())/i;
@@ -64,6 +70,10 @@ public class UltrasonicPoller extends Thread {
 		return instance;
 	}
 	
+	public int[] getFloatingRange(){
+		return prevFloatDist;
+	}
+	
 	/**
 	 * Runs the poller thread
 	 */
@@ -71,6 +81,8 @@ public class UltrasonicPoller extends Thread {
 		while (!config.isDriveComplete()){
 			prevDist = currentDist;
 			currentDist = uSensor.getDistance();
+			prevFloatDist[count++%5] = currentDist;
+			count%=5;
 			distanceUpdated = true ;
 
 			LCDWriter.getInstance().writeToScreen("Dist " + currentDist, 7);
