@@ -10,7 +10,7 @@ import lejos.nxt.comm.RConsole;
  * Driver class that has the control of motor, not open to extension
  * because we do not want two instance of this running at the same time.
  * @author yuechuan
- * @version 1.9 
+ * @version 2.0  Apr 01 
  *
  */
 public final class Driver extends Thread{
@@ -19,9 +19,9 @@ public final class Driver extends Thread{
 	private static Configuration config = Configuration.getInstance();
 	private static NXTRegulatedMotor leftMotor, rightMotor;
 	
-	private final static boolean DEBUG = false;
+	private final static boolean DEBUG = false;	
 	
-	private static boolean isTurning = false ;
+	private static boolean isTurning = false ;		//true if robot is turning 
 
 	
 	/**
@@ -76,10 +76,10 @@ public final class Driver extends Thread{
 		double distance = Coordinate.calculateDistance(currentLoc, nextLocation);
 		double turningAngle = Coordinate.calculateRotationAngle(currentLoc, nextLocation);
 		
-		if (DEBUG) RConsole.println("Driver:travelTo:CurrentCoord: " + currentLoc.toString2());
-		if (DEBUG) RConsole.println("Driver:travelTo:NxtCoord: " + nextLocation.toString2());
-		if (DEBUG) RConsole.println("Driver:travelTo:traveling dist: " + distance);
-		if (DEBUG) RConsole.println("Driver:travelTo:turning Angle: " + turningAngle);
+//		if (DEBUG) RConsole.println("Driver:travelTo:CurrentCoord: " + currentLoc.toString2());
+//		if (DEBUG) RConsole.println("Driver:travelTo:NxtCoord: " + nextLocation.toString2());
+//		if (DEBUG) RConsole.println("Driver:travelTo:traveling dist: " + distance);
+//		if (DEBUG) RConsole.println("Driver:travelTo:turning Angle: " + turningAngle);
 		//make turn
 		rotateToRelatively(turningAngle);
 
@@ -87,10 +87,10 @@ public final class Driver extends Thread{
 		
 		forward(distance);
 		
-		if (DEBUG) RConsole.println("Driver:travelTo:currentCoordinate : x " + config.getCurrentLocation().getX()
-			+"\ty " + config.getCurrentLocation().getY() 
-			+ "\ttheata " +config.getCurrentLocation().getTheta());
-			if (DEBUG) RConsole.println("=======");
+//		if (DEBUG) RConsole.println("Driver:travelTo:currentCoordinate : x " + config.getCurrentLocation().getX()
+//			+"\ty " + config.getCurrentLocation().getY() 
+//			+ "\ttheata " +config.getCurrentLocation().getTheta());
+//		if (DEBUG) RConsole.println("=======");
 		
 			
 		}
@@ -105,13 +105,13 @@ public final class Driver extends Thread{
 		
 		int currentT = Configuration.LEFT_MOTOR.getTachoCount();
 		double rotations = dist/ (2*Math.PI*(+ Configuration.RIGHT_RADIUS)) ;
-		if (DEBUG) RConsole.println("rotations" + rotations );
+//		if (DEBUG) RConsole.println("rotations" + rotations );
 		
 		int finalTachoCount =  currentT+ (int) (rotations * 360 );
-		if (DEBUG) RConsole.println("current Tacho " + Configuration.LEFT_MOTOR.getTachoCount() + "\t\tfinal Tacho"  + finalTachoCount );
+//		if (DEBUG) RConsole.println("current Tacho " + Configuration.LEFT_MOTOR.getTachoCount() + "\t\tfinal Tacho"  + finalTachoCount );
 		motorForward();
 		while(!motorStopped && finalTachoCount- leftMotor.getTachoCount() > 0 ){
-			if (DEBUG) RConsole.println("current Tacho " + Configuration.LEFT_MOTOR.getTachoCount() );
+//			if (DEBUG) RConsole.println("current Tacho " + Configuration.LEFT_MOTOR.getTachoCount() );
 			try{Thread.sleep(20);} catch (Exception e){};
 		}
 		
@@ -128,18 +128,18 @@ public final class Driver extends Thread{
 	 */
 	public void backward(double dist){
 		
-		if (DEBUG) RConsole.println("BackWard" );
+//		if (DEBUG) RConsole.println("BackWard" );
 		int currentT = Configuration.LEFT_MOTOR.getTachoCount();
 		double rotations = dist/ (2*Math.PI*(+ Configuration.RIGHT_RADIUS)) ;
-		if (DEBUG) RConsole.println("rotations" + rotations );
+//		if (DEBUG) RConsole.println("rotations" + rotations );
 		
 		int finalTachoCount =  currentT- (int) (rotations * 360 );
-		if (DEBUG) RConsole.println("current Tacho " + Configuration.LEFT_MOTOR.getTachoCount() + "\t\tfinal Tacho"  + finalTachoCount );
+//		if (DEBUG) RConsole.println("current Tacho " + Configuration.LEFT_MOTOR.getTachoCount() + "\t\tfinal Tacho"  + finalTachoCount );
 		motorBackward();
 		//check if the motor has reached the given distance
 		int sleepIntv = 20 ;		//how long the loop should wait before checking 
 		while(!motorStopped && leftMotor.getTachoCount() - finalTachoCount > 0 ){
-			if (DEBUG) RConsole.println("current Tacho " + Configuration.LEFT_MOTOR.getTachoCount() );
+//			if (DEBUG) RConsole.println("current Tacho " + Configuration.LEFT_MOTOR.getTachoCount() );
 			//if the motor still have lots to rotate then sleep longer 
 			sleepIntv = (leftMotor.getTachoCount() - finalTachoCount > 50) ? 50 : 20 ;
 			try{Thread.sleep(sleepIntv);} catch (Exception e){};
@@ -244,7 +244,7 @@ public final class Driver extends Thread{
 		rightMotor.setAcceleration(Configuration.ACCELERATION);
 		leftMotor.setSpeed(speed);
 		rightMotor.setSpeed(speed);
-		if (DEBUG) RConsole.println("Motor speed set to :" + speed);
+//		if (DEBUG) RConsole.println("Motor speed set to :" + speed);
 	}
 	/**
 	 * set motor to go forward till motorStop() or flt() 
