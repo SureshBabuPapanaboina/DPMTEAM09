@@ -112,7 +112,7 @@ public final class Driver extends Thread{
 		motorForward();
 		while(!motorStopped && finalTachoCount- leftMotor.getTachoCount() > 0 ){
 //			if (DEBUG) RConsole.println("current Tacho " + Configuration.LEFT_MOTOR.getTachoCount() );
-			try{Thread.sleep(20);} catch (Exception e){};
+			try{Thread.sleep(25);} catch (Exception e){};
 		}
 		
 		motorStop();
