@@ -173,13 +173,18 @@ public class FullNavTestIII {
 		Localization.localizeAndMoveToStartLoc();
 		
 		
-		//====end of localization 
+		//===============end of localization==================== 
+		
+		//start odometer correction
 		LineReader.subscribeToAll(oc);
 		
 		try {Thread.sleep(1000);}catch(Exception e){};
-//		traveller.recalculatePathToCoords(135,105);
-		traveller.recalculatePathToCoords((int)flagZone[0].getX()+15,(int) flagZone[0].getY()-15);
 
+		//set  destination
+		//		traveller.recalculatePathToCoords(135,105);
+		traveller.recalculatePathToCoords((int)flagZone[0].getX()+15,(int) flagZone[0].getY()-15);
+		
+		//movement loop
 		boolean done  = false;
 		while(!done){
 			done = followPath();
@@ -194,12 +199,11 @@ public class FullNavTestIII {
 			}
 		}
 		
-		//==========searched path============
+		//==========Foam looing and grabbing init  ============
 		
 		//indicate finish
 		Sound.beepSequenceUp();	
-		
-		ObjRec or = new ObjRec();
+
 		RemoteConnection rc = RemoteConnection.getInstance();
 		CaptureMechanism cm = CaptureMechanism.getInstance();
 		Stack<Coordinate> path = new Stack<Coordinate>();
@@ -213,11 +217,12 @@ public class FullNavTestIII {
 		path.push(new Coordinate((int)flagZone[0].getX()+15, (int)flagZone[1].getY()-15, 0)); //move forward
 		path.push(new Coordinate((int)flagZone[0].getX()+15, (int)flagZone[0].getY()+15, 0)); //enter the zone;
 		
+		ObjRec or = new ObjRec();
 		
-		//=================block color ============
-		blockColor BLOCK_COLOR = Configuration.getInstance().getBlockColor(); //yellows
+		//=================block Rec ============
+		blockColor BLOCK_COLOR = conf.getBlockColor(); //yellows
+		
 		boolean blockFound  = false;
-
 		while(!blockFound && !path.isEmpty()){
 			Coordinate p = path.pop();
 			dr.turnTo(Coordinate.calculateRotationAngle(Configuration.getInstance().getCurrentLocation(), p));
@@ -230,7 +235,6 @@ public class FullNavTestIII {
 				dr.forward(Math.abs(block.distance-5));
 
 				ArrayList<ObjRec.blockColor> color = or.detect();
-
 				//		
 				if(color == null || color.size() == 0)
 					lcd.writeToScreen("EMPTY", 1);

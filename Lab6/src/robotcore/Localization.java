@@ -165,7 +165,7 @@ public class Localization implements LineReaderListener{
 			if (lnNumb++  == 0 ){ //first line : correct X 
 				conf.getCurrentLocation().setX(Configuration.DIST_FROM_LINE_READER);
 			}
-			if (lnNumb == 1 ){
+			if (false){//lnNumb == 1 ){
 				driver.motorStop();
 				conf.getCurrentLocation().setY(Configuration.DIST_FROM_LINE_READER);
 				driver.forward(4);
