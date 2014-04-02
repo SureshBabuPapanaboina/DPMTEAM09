@@ -57,25 +57,25 @@ public class FullNavTest {
 	public static void main(String[] args){
 		LCDWriter lcd = LCDWriter.getInstance();
 		lcd.start();
-		
+				
 		UltrasonicPoller up = UltrasonicPoller.getInstance();
 		PathTraveller traveller = PathTraveller.getInstance();
 		LineReader llr = LineReader.getLeftSensor();	//left + right line reader
 		LineReader rlr = LineReader.getRightSensor();
 		Odometer odo = Odometer.getInstance();
 		OdometerCorrection oc = OdometerCorrection.getInstance();
-		LineReader.subscribeToAll(oc);
 		Configuration conf = Configuration.getInstance();
-
-		Driver dr = Driver.getInstance();
-
+		
 		up.start();
 		odo.start();
-		dr.start();
 		llr.start();
 		rlr.start();
 		
-		conf.getCurrentLocation().setTheta(0).setX(15).setY(15);
+		LineReader.subscribeToAll(oc);
+		
+		odo.setTheta(0);
+		odo.setX(15);
+		odo.setY(15);
 		
 		try {Thread.sleep(1000);}catch(Exception e){};
 		
@@ -83,8 +83,8 @@ public class FullNavTest {
 
 		boolean done  = false;
 		while(!done){
-			done = followPath();
 			try{
+			done = followPath();
 			if(!done) traveller.recalculatePathToCoords(150, 150);
 			else break;
 			}

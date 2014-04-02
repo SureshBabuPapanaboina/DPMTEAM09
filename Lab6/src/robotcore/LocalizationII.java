@@ -39,7 +39,7 @@ public class LocalizationII implements LineReaderListener{
 	private final static int UP_LEFT= 2; 
 	private final static int UP_RIGHT = 3; 
 	
-	public void main(String [] args){
+	public static void main(String [] args){
 		init();
 		nap(100);
 		localizeAndMoveToStartLoc(LOW_LEFT);
@@ -53,8 +53,7 @@ public class LocalizationII implements LineReaderListener{
 		LineReader.unsubscribeToAll(localization);
 	}
 	
-	private void init(){
-		driver.start();
+	private static void init(){
 		odo.start();
 		usp.start();
 		LineReader.getLeftSensor().start();
@@ -78,10 +77,10 @@ public class LocalizationII implements LineReaderListener{
 		//==============correct x and y =========================
 		LineReader.subscribeToAll(localization );
 		driver.motorForward();		
-		nap(5000);		
+		nap(10000);		
 		driver.rotateToRelatively(-90);	//this will turn parallel to the y axies for case 1 , for other cases see fig 1 in notebook
 		driver.motorForward();		
-		nap(5000);	
+		nap(10000);	
 		//==========SET X AND Y ================== 
 		switch(startingCorner){
 		case LOW_LEFT:

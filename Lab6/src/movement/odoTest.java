@@ -67,7 +67,6 @@ public class odoTest {
 		lcd.start();
 		llr.start();
 		rlr.start();
-		driver.start();
 		LineReader.subscribeToAll(odoCorrect);
 		flagZone=conf.getFlagZone();
 

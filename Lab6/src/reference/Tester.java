@@ -30,7 +30,6 @@ public class Tester {
 		lcd.start();
 		odo.start();
 		usp.start();
-		driver.start();
 		
 		while(Button.waitForAnyPress() != Button.ID_ENTER){}
 		lcd.writeToScreen("started", 0);

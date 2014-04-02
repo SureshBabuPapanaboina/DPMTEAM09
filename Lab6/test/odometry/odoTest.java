@@ -24,7 +24,7 @@ public class odoTest {
 	
 	public static void main(String[] args)
 	{
-		RConsole.open();
+//		RConsole.open();
 		int buttonChoice;
 		do {
 			// clear the display
@@ -62,7 +62,6 @@ public class odoTest {
 		lcd.start();
 		llr.start();
 		rlr.start();
-		driver.start();
 		//LineReader.subscribeToAll(odoCorrect);
 		/*driver.setSpeed(250);
 		l.forward();

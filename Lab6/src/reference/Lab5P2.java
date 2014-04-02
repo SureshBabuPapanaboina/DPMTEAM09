@@ -41,7 +41,6 @@ public class Lab5P2 {
 		BlockAvoidanceLab5 bifi = new BlockAvoidanceLab5();
 		bifi.setCalled(false).setContinuous(true);
 		//start the threads NOTE : do not start twice 
-		driver.start();
 		lcd.start();
 		odo.start();
 		usp.start();

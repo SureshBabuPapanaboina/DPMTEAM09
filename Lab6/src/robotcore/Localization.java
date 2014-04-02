@@ -40,7 +40,6 @@ public class Localization implements LineReaderListener{
 		lcd = LCDWriter.getInstance();
 		 usp = UltrasonicPoller.getInstance();
 		
-		try{driver.start();    }catch(Exception e){}
 		try{odo.start();       }catch(Exception e){}
 		try{lcd.start();       }catch(Exception e){}
 		try{usp.start();       }catch(Exception e){}
@@ -78,7 +77,6 @@ public class Localization implements LineReaderListener{
 	 * @deprecated thread should be started at the main thread
 	 */
 	private static void startThread() {
-		try{driver.start();    }catch(Exception e){}
 		try{odo.start();       }catch(Exception e){}
 		try{lcd.start();       }catch(Exception e){}
 		try{usp.start();       }catch(Exception e){}

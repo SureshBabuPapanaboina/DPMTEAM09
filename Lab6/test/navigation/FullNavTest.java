@@ -71,7 +71,6 @@ public class FullNavTest {
 
 		up.start();
 		odo.start();
-		dr.start();
 		llr.start();
 		rlr.start();
 		

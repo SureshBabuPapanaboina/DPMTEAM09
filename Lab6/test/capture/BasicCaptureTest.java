@@ -23,7 +23,6 @@ public class BasicCaptureTest {
 		LCDWriter writer = LCDWriter.getInstance();
 		writer.start();
 		Driver driver = Driver.getInstance();
-		driver.start();
 		up.start();
 		Odometer.getInstance().start();
 //		Configuration config = Configuration.getInstance();

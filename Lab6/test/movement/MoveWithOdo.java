@@ -34,7 +34,6 @@ public class MoveWithOdo {
 
 	public static void startThreads() {
 		odo.start();
-		driver.start();
 		lcd.start();
 		
 		

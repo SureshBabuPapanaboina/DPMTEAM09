@@ -80,7 +80,6 @@ public class BasicSearchTest {
 		
 		up.start();
 		odo.start();
-		dr.start();
 //		llr.start();
 //		rlr.start();
 

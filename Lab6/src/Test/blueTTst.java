@@ -46,6 +46,5 @@ public class blueTTst {
 	 */
 	private static void init() {
 		LCDWriter.getInstance().start();
-		driver.start();
 	}
 }

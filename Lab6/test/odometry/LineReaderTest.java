@@ -90,7 +90,6 @@ public class LineReaderTest {
 	}
 	private static void startThreads(){
 		try{odo.start();      } catch (Exception e){}
-		try{driver.start();   } catch (Exception e){}
 		try{lcd.start();      } catch (Exception e){}
 		try{llr.start();      } catch (Exception e){}
 		try{rlr.start();      } catch (Exception e){}

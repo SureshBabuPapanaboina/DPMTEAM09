@@ -160,7 +160,6 @@ public class FullNavTestIII {
 
 		up.start();
 		odo.start();
-		dr.start();
 		llr.start();
 		rlr.start();
 		lcd.start();

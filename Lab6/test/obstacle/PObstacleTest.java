@@ -62,7 +62,6 @@ public class PObstacleTest {
 
 		up.start();
 		odo.start();
-		dr.start();
 
 		traveller.recalculatePathToCoords(135, 105);
 //		traveller.popNextWaypoint();

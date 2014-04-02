@@ -34,7 +34,6 @@ public class LineReaderTest implements LineReaderListener {
 		odo.start();
 		llr.start();
 		rlr.start();
-		drive.start();
 		
 		LineReader.subscribeToAll(lrt);
 	}

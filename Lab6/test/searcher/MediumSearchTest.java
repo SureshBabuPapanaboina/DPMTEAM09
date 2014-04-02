@@ -80,7 +80,6 @@ public class MediumSearchTest {
 
 		up.start();
 		odo.start();
-		dr.start();
 		
 		Stack<Coordinate> path = new Stack<Coordinate>();
 		path.push(new Coordinate(45, 45, 0)); //last point

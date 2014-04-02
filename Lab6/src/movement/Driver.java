@@ -1,9 +1,12 @@
 package movement;
 
+import odometry.Odometer;
 import robotcore.Configuration;
 import robotcore.Coordinate;
+import robotcore.LCDWriter;
 import sensors.LineReader;
 import lejos.nxt.NXTRegulatedMotor;
+import lejos.nxt.Sound;
 import lejos.nxt.comm.RConsole;
 
 /**
@@ -13,10 +16,11 @@ import lejos.nxt.comm.RConsole;
  * @version 2.0  Apr 01 
  *
  */
-public final class Driver extends Thread{
+public final class Driver{
 	
-	private static Driver instance = new Driver(Configuration.getInstance());
+	private static Driver instance;
 	private static Configuration config = Configuration.getInstance();
+	private static Odometer odo = Odometer.getInstance();
 	private static NXTRegulatedMotor leftMotor, rightMotor;
 	
 	private final static boolean DEBUG = false;	
@@ -45,6 +49,7 @@ public final class Driver extends Thread{
 	}
 	
 	public static Driver getInstance(){
+		if(instance == null) instance = new Driver(Configuration.getInstance());
 		return instance;
 	}
 	
@@ -57,6 +62,10 @@ public final class Driver extends Thread{
 		travelTo(new Coordinate(x, y, 0));			
 	}
 	
+	private boolean withinRange(double d, double e, int error){
+		return Math.abs(e - d) < error;
+	}
+	
 	/**
 	 * travel to wrt to the global (0,0) coordinate
 	 * . Since this method use currentCoordinate which is \
@@ -66,10 +75,9 @@ public final class Driver extends Thread{
 	 * @param nextLocationg
 	 */
 	public void travelTo(Coordinate nextLocation) {
-		
-		Coordinate currentLoc  = new Coordinate(config.getCurrentLocation().getX()
-				, config.getCurrentLocation().getY(), 
-				config.getCurrentLocation().getTheta());
+		LCDWriter.getInstance().writeToScreen("Dest:" + nextLocation.toString(), 3);
+
+		Coordinate currentLoc  = odo.getCurrentCoordinate();
 		
 		config.setStartLocation(currentLoc.copy());
 		
@@ -85,11 +93,32 @@ public final class Driver extends Thread{
 
 		setSpeed(config.getForwardSpeed());
 		
-		forward(distance);
 		
-//		if (DEBUG) RConsole.println("Driver:travelTo:currentCoordinate : x " + config.getCurrentLocation().getX()
-//			+"\ty " + config.getCurrentLocation().getY() 
-//			+ "\ttheata " +config.getCurrentLocation().getTheta());
+		int currentT = Configuration.LEFT_MOTOR.getTachoCount();
+		double rotations = distance/ (2*Math.PI*(+ Configuration.RIGHT_RADIUS)) ;
+//		if (DEBUG) RConsole.println("rotations" + rotations );
+		
+		int finalTachoCount =  currentT+ (int) (rotations * 360 );
+//		if (DEBUG) RConsole.println("current Tacho " + Configuration.LEFT_MOTOR.getTachoCount() + "\t\tfinal Tacho"  + finalTachoCount );
+		motorForward();
+		while(!motorStopped && (!withinRange(odo.getX(), nextLocation.getX(), 3) || !withinRange(odo.getY(), nextLocation.getY(), 3))){
+			double desiredAngle = Coordinate.calculateRotationAngle(odo.getCurrentCoordinate(), nextLocation);
+			if(Math.abs(odo.getTheta() - desiredAngle) > 20 ){
+				Sound.beepSequence();
+				motorStop();
+				LCDWriter.getInstance().writeToScreen("dangle:" + desiredAngle, 3);
+				rotateToRelatively(desiredAngle);
+				setSpeed(config.getForwardSpeed());
+				motorForward();
+			}
+//			if (DEBUG) RConsole.println("current Tacho " + Configuration.LEFT_MOTOR.getTachoCount() );
+			try{Thread.sleep(25);} catch (Exception e){};
+		}
+		
+		motorStop();		
+//		if (DEBUG) RConsole.println("Driver:travelTo:currentCoordinate : x " + odo.getX()
+//			+"\ty " + odo.getY() 
+//			+ "\ttheata " +odo.getTheta());
 //		if (DEBUG) RConsole.println("=======");
 		
 			
@@ -285,9 +314,8 @@ public final class Driver extends Thread{
 		leftMotor.stop();
 		rightMotor.stop();
 		
-		synchronized(lock){
-			motorStopped = true ;
-		}
+		motorStopped = true ;
+		
 	}
 
 }

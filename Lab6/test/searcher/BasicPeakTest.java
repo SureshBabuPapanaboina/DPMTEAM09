@@ -109,7 +109,6 @@ public class BasicPeakTest {
 		
 		up.start();
 		odo.start();
-		dr.start();
 //		llr.start();
 //		rlr.start();
 		

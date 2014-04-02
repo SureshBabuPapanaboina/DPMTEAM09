@@ -156,7 +156,7 @@ public class Odometer extends Thread {
 	 * @param x
 	 * @return
 	 */
-	Coordinate setX(double x) {
+	public Coordinate setX(double x) {
 		synchronized (lock) {
 			cCoord.setX(x);
 		}
@@ -167,7 +167,7 @@ public class Odometer extends Thread {
  * @param y
  * @return
  */
-	Coordinate setY(double y) {
+	public Coordinate setY(double y) {
 		synchronized (lock) {
 			cCoord.setY(y);
 		}

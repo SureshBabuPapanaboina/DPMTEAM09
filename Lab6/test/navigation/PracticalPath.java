@@ -40,7 +40,6 @@ public class PracticalPath {
 		odo.start();
 
 		Driver dr = Driver.getInstance();
-		dr.start();
 		Node start = map.getClosestNode(odo.getX(), odo.getY());
 		Node end = map.getClosestNode(75, 75);
 		Path path = finder.getPathBetweenNodes(start, end);
