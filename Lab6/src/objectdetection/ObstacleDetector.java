@@ -23,7 +23,7 @@ public class ObstacleDetector {
 		up = UltrasonicPoller.getInstance();
 		config = Configuration.getInstance();
 		sensorMotor = config.SENSOR_MOTOR;
-		sensorMotor.setSpeed(38);
+		sensorMotor.setSpeed(45);
 	}
 	
 	public static ObstacleDetector getInstance(){

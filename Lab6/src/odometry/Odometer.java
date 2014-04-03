@@ -193,21 +193,52 @@ public class Odometer extends Thread {
 		return cCoord;
 	}
 
-	public Direction getDirection(){
-		double t = getTheta();
+	/**
+	 * convert the angle in odometer (-2pi to 2pi) to the range of 0 to 360 degrees
+	 * @param angle
+	 * @return
+	 */
+	
+	private double convertAngle(double angle)
+	{
+		if (angle < 0.0)
+			angle = 360.0 + (angle % 360.0);
 		
-		if(t > 7*Math.PI/4 || t < Math.PI/4){
+		return angle % 360.0;
+	}
+	
+	/**
+	 * Gets the direction the robot is facing.
+	 * @return
+	 */
+	public Direction getDirection(){
+		double t = convertAngle(Math.toDegrees(getTheta()));
+		
+		if(t > 315 || t<45){
 			return Direction.NORTH;
 		}
-		else if(t > Math.PI/4 && t < Math.PI*3/4){
+		else if(t> 45 && t<135){
 			return Direction.EAST;
 		}
-		else if(t > Math.PI*3/4 && t < Math.PI*5/4){
+		else if(t>135 && t<225){
 			return Direction.SOUTH;
 		}
 		else{
 			return Direction.WEST;
-		}	
+		}
+		
+//		if(t > 7*Math.PI/4 || t < Math.PI/4){
+//			return Direction.NORTH;
+//		}
+//		else if(t > Math.PI/4 && t < Math.PI*3/4){
+//			return Direction.EAST;
+//		}
+//		else if(t > Math.PI*3/4 && t < Math.PI*5/4){
+//			return Direction.SOUTH;
+//		}
+//		else{
+//			return Direction.WEST;
+//		}	
 	}
 	/**
 	 * @deprecated use Configuration instead. we should not directly access thing from here 

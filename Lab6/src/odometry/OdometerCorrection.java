@@ -246,8 +246,12 @@ public class OdometerCorrection implements LineReaderListener{
 	}
 	
 
-	//this method fixes the x and y coordinates depending on different cases, including two major cases, facing y case and
-	//facing x case, then it will set the proper offset value and the pass to actual correction method
+	/**
+	 * this method fixes the x and y coordinates depending on different cases, including two major cases, facing y case and
+	 * 	facing x case, then it will set the proper offset value and the pass to actual correction method
+	 * @param angleForXY
+	 * @param angle
+	 */
 	public void coordinateCorrection(double angleForXY, double angle)
 	{
 		offset = cSensorWidth/2*Math.sin(angleForXY)+distFromColorSensorToOdo*Math.cos(angleForXY);
@@ -278,7 +282,10 @@ public class OdometerCorrection implements LineReaderListener{
 		}
 	}
 	
-	//correct x
+	/**
+	 * correct x
+	 * @param offset
+	 */
 	public void xCorrect(double offset)
 	{
 		//use reminder (odometer value divided by 30) to determine how much to correct
@@ -292,7 +299,10 @@ public class OdometerCorrection implements LineReaderListener{
 		}
 	}
 	
-	//correct y
+	/**
+	 * correct y
+	 * @param offset
+	 */
 	public void yCorrect(double offset)
 	{
 		//use reminder (odometer value divided by 30) to determine how much to correct
@@ -305,8 +315,18 @@ public class OdometerCorrection implements LineReaderListener{
 		}
 	}
 	
-	//this method will return a double angle for correcting x,y values. Also, it will correct the angle based on
-	//the signal passing by the method above. It will correct in different cases
+	/**
+	 * this method will return a double angle for correcting x,y values. Also, it will correct the angle based on
+	 * 	the signal passing by the method above. It will correct in different cases
+	 * @param width
+	 * @param radius
+	 * @param tach1
+	 * @param tach2
+	 * @param tempAngle
+	 * @param angle
+	 * @param count
+	 * @return
+	 */
 	public double tCorrect(double width, double radius, double tach1, double tach2, double tempAngle,double angle, int count) 
 	{	
 		//use the difference of tachometer to calculate the error used to calculate the angle to be corrected
@@ -348,7 +368,13 @@ public class OdometerCorrection implements LineReaderListener{
 		//return the angle for x,y correction
 		return Math.atan(error/width);
 	}
-	//convert the angle in odometer (-2pi to 2pi) to the range of 0 to 360 degrees
+	
+	/**
+	 * convert the angle in odometer (-2pi to 2pi) to the range of 0 to 360 degrees
+	 * @param angle
+	 * @return
+	 */
+	
 	public double convertAngle(double angle)
 	{
 		if (angle < 0.0)
@@ -356,7 +382,12 @@ public class OdometerCorrection implements LineReaderListener{
 		
 		return angle % 360.0;
 	}
-	//convert the corrected angle back to the range of -2pi to 2pi, to match the odometer
+	/**
+	 * convert the corrected angle back to the range of -2pi to 2pi, to match the odometer
+	 * @param angle
+	 * @param correctedAngle
+	 * @return
+	 */
 	public double convertBack(double angle, double correctedAngle)
 	{
 		if(angle<0.0)

@@ -46,8 +46,22 @@ public class FullNavTest {
 				map.blockNodeAt(next.x, next.y);
 				return false;
 			}
-			
-			driver.travelTo(new Coordinate(next));
+			Coordinate n = new Coordinate(next);
+			switch(Odometer.getInstance().getDirection()){
+			case NORTH:
+				n.setY(n.getY()+3);
+				break;
+			case WEST:
+				n.setX(n.getX()-3);
+				break;
+			case EAST:
+				n.setX(n.getX()+3);
+				break;	
+			case SOUTH:
+				n.setY(n.getY()-3);
+				break;
+			}
+			driver.travelTo(n);
 		}
 		
 		return true;
@@ -73,19 +87,19 @@ public class FullNavTest {
 		
 		LineReader.subscribeToAll(oc);
 		
-		odo.setTheta(0);
-		odo.setX(15);
-		odo.setY(15);
+		odo.setTheta(Math.PI);
+		odo.setX(165);
+		odo.setY(165);
 		
 		try {Thread.sleep(1000);}catch(Exception e){};
 		
-		traveller.recalculatePathToCoords(150, 150);
+		traveller.recalculatePathToCoords(0, 0);
 
 		boolean done  = false;
 		while(!done){
 			try{
 			done = followPath();
-			if(!done) traveller.recalculatePathToCoords(150, 150);
+			if(!done) traveller.recalculatePathToCoords(0, 0);
 			else break;
 			}
 			catch(Exception e){

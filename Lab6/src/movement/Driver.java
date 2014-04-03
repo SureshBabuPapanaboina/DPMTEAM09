@@ -62,8 +62,8 @@ public final class Driver{
 		travelTo(new Coordinate(x, y, 0));			
 	}
 	
-	private boolean withinRange(double d, double e, int error){
-		return Math.abs(e - d) < error;
+	private boolean withinRange(double d, double e, double f){
+		return Math.abs(e - d) < f;
 	}
 	
 	/**
@@ -101,7 +101,7 @@ public final class Driver{
 		int finalTachoCount =  currentT+ (int) (rotations * 360 );
 //		if (DEBUG) RConsole.println("current Tacho " + Configuration.LEFT_MOTOR.getTachoCount() + "\t\tfinal Tacho"  + finalTachoCount );
 		motorForward();
-		while(!motorStopped && (!withinRange(odo.getX(), nextLocation.getX(), 3) || !withinRange(odo.getY(), nextLocation.getY(), 3))){
+		while(!motorStopped && (!withinRange(odo.getX(), nextLocation.getX(), 3.25) || !withinRange(odo.getY(), nextLocation.getY(), 3.25))){
 			double desiredAngle = Coordinate.calculateRotationAngle(odo.getCurrentCoordinate(), nextLocation);
 			if(Math.abs(odo.getTheta() - desiredAngle) > 20 ){
 				Sound.beepSequence();
