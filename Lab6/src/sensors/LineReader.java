@@ -199,6 +199,10 @@ public class LineReader extends Thread{
 			return passedLine;			
 	}
 	
+	
+	private static int leftTreshold = 6;
+	private static int rightTreshold = 6;
+	private static int lightSensorThreshold ;
 	/**
 	 * derivative method to determine if the robot has passed a line 
 	 * @param currentSensedValue
@@ -208,8 +212,8 @@ public class LineReader extends Thread{
 	private boolean hasPassedLine(int currentSensedValue, int previousSensedValue) {
 		//TIME TO AVOID false positive at the beginning of the robot movement 
 		long waitTimeBeforeStart =50;
-		int lightSensorThreshold = 5 ;// how sensitive sensor should be when it detects changes
-		int ignorePeriod = 500 ; //time in ms to ignore further input 
+		lightSensorThreshold = isLeft ? leftTreshold : rightTreshold ; 
+		int ignorePeriod = 700 ; //time in ms to ignore further input 
 		boolean hasDetected = ((previousSensedValue - currentSensedValue ) > lightSensorThreshold) ;
 		boolean result;
 		long diffInDectectionTime ; // time between positive feedbacks from sensor 
