@@ -200,7 +200,7 @@ public class LineReader extends Thread{
 	}
 	
 	
-	private static int leftTreshold = 6;
+	private static int leftTreshold = 7;
 	private static int rightTreshold = 6;
 	private static int lightSensorThreshold ;
 	/**

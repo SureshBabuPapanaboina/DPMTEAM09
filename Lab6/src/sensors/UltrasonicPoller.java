@@ -42,7 +42,6 @@ public class UltrasonicPoller extends Thread {
 		uSensor.continuous();	//start the sensor 
 
 		//filter the distance and get 10 times polling avg
-//		double mean = 0 ;
 		double sum = 0;
 		count = 0;
 		prevFloatDist = new int[FLOATING_RANGE];
@@ -52,7 +51,6 @@ public class UltrasonicPoller extends Thread {
 			count%=FLOATING_RANGE;
 			//what is this.... //take the moving average without using an extra array.
 			sum += uSensor.getDistance();
-//			mean = ((mean*i) + uSensor.getDistance())/i;
 		}
 		sum /= FLOATING_RANGE;
 		currentDist = (int) sum ;
@@ -221,6 +219,15 @@ public class UltrasonicPoller extends Thread {
 		}
 		return result;
 		
+	}
+	/**
+	 * return the chipped distance where the range lies between 0 - maxDist 
+	 * @param maxDist the maximum distance allowed, any value bigger than this is set to this value
+	 * @return
+	 */
+	public int getChippedDistance(int maxDist){
+		int d = getDistance();
+		return (d > maxDist) ? maxDist : d;
 	}
 
 }

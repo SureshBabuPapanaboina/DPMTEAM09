@@ -15,11 +15,11 @@ import lejos.robotics.pathfinding.Path;
 import movement.Driver;
 
 /**
- * The second revision of Localization 
+ * The third revision of Localization 
  * @author yuechuan
  *
  */
-public class LocalizationII implements LineReaderListener{
+public class LocalizationIII implements LineReaderListener{
 	
 	//used threads and initialized stuff 
 	private static Driver driver = Driver.getInstance();
@@ -27,12 +27,9 @@ public class LocalizationII implements LineReaderListener{
 	private static UltrasonicPoller usp = UltrasonicPoller.getInstance();
 	private static Configuration conf = Configuration.getInstance();
 	private static final boolean DEBUG = Configuration.DEBUG;
-	//motors 
-	private static NXTRegulatedMotor lMotor = Configuration.LEFT_MOTOR;
-	private static NXTRegulatedMotor rMotor= Configuration.RIGHT_MOTOR;
 	//falling edge angles 
 	private static double angle1 , angle2 ;
-	private static LocalizationII localization = new LocalizationII();		//for subscribing to lin readers 
+	private static LocalizationIII localization = new LocalizationIII();		//for subscribing to lin readers 
 	//starting position
 	private final static int LOW_LEFT = 0; 
 	private final static int LOW_RIGHT = 1; 
@@ -64,23 +61,18 @@ public class LocalizationII implements LineReaderListener{
 	 * perform localization and move to start location depending on the given corner 
 	 */
 	public static void localizeAndMoveToStartLoc(int startingCorner) {
-		//assume at this location 
-		conf.getCurrentLocation().setTheta(0).setX(15).setY(15);
 		int rotSpeed = conf.getRotationSpeed();
 		conf.setRotationSpeed(120);
 		localize();		//this will turn the robot head to the field see [figure 1] in notebook 
 		driver.rotateToRelatively(45);	//this will turn parallel to the x axies for case 1 , for other cases see fig 1 in notebook
-		odo.setTheta(Math.toRadians(90));
-		conf.setRotationSpeed(rotSpeed);
-		driver.motorStop();
+		conf.getCurrentLocation().setTheta(Math.toRadians(90)).setX(0).setY(0);
+		
+		LineReader.subscribeToAll(localization);
+		
 		nap(100);
-		//==============correct x and y =========================
-		LineReader.subscribeToAll(localization );
-		driver.motorForward();		
-		nap(10000);		
-		driver.rotateToRelatively(-90);	//this will turn parallel to the y axies for case 1 , for other cases see fig 1 in notebook
-		driver.motorForward();		
-		nap(10000);	
+		driver.travelTo(30, 0);
+		driver.travelTo(30, 30);
+		nap(100);
 		//==========SET X AND Y ================== 
 		switch(startingCorner){
 		case LOW_LEFT:
@@ -147,28 +139,26 @@ public class LocalizationII implements LineReaderListener{
 		try {Thread.sleep(t);} catch (InterruptedException e) {}
 	}
 	
-	private static int lnNumb = 0 ; //how many lines was passes since the beginning of the localization
-	private static boolean lPassed1 = false, rPassed1 = false , lPassed2 = false, rPassed2 = false;	//indicate which of the line is passed and how many times 
+	private static boolean rPassed1 = false , rPassed2 = false;	//indicate which of the line is passed and how many times 
 	/**
 	 * stop the corresponding motor when the corresponding line reader has sensed the line 
 	 * @param isLeft
 	 */
 	@Override
 	public void passedLine(boolean isLeft) {
-		if (!isLeft){  //only increment when right motor passes
-			rMotor.stop();
-			if (lnNumb == 0)	rPassed1 = true ;
-			else rPassed2 = true ;
-			lnNumb++;
-		}
-		else {
-			lMotor.stop();
-			if (lnNumb == 0) lPassed1 = true ;
-			else lPassed2 = true ;
-		}
-		//if first line is crossed by two sensors or 2nd line crossed by 2 sensors 
-		if ((lPassed1 && rPassed1) || (lPassed2 && rPassed2)){
-			driver.forward(3);
+		if(isLeft){
+			rPassed2 = rPassed1;
+			rPassed1 = true ;
+			if (rPassed1 && !rPassed2){ //if the first line is passed
+				odo.getCurrentCoordinate().setX(12);
+				
+			}
+			else {	//2nd line passes
+				odo.getCurrentCoordinate().setY(12);
+				driver.motorStop();
+				driver.forward(3);
+				LineReader.unsubscribeToAll(localization);
+			}
 		}
 	}
 
