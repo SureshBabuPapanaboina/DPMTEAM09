@@ -28,12 +28,16 @@ public class UltrasonicPoller extends Thread {
 	 * the previous distance stored
 	 */
 	private int prevDist = currentDist;
+	private boolean rotate;
+	private boolean goingRight= false;
+	private boolean rotationStarted;
 	private int[] prevFloatDist;
 	private boolean distanceUpdated = false ;
 	private static UltrasonicPoller instance ;
 	private static boolean listenerExecutionDisabled = false ;	//true if we want to disable the ultrasonic listener and only allow passive pulling 
 	private final int FLOATING_RANGE = 5;		//number of readings to take before returning the average of the results //reduced from 5 to 3 to save ressources 
 	private int count;
+	private Object lock = new Object();
 	/**
 	 * Private constructor
 	 */
@@ -68,6 +72,13 @@ public class UltrasonicPoller extends Thread {
 		return instance;
 	}
 	
+	public void setRotating(boolean yes){
+		synchronized(lock){
+			this.rotate = yes;
+			this.rotationStarted = false;
+		}
+	}
+	
 	public int[] getFloatingRange(){
 		return prevFloatDist;
 	}
@@ -77,13 +88,14 @@ public class UltrasonicPoller extends Thread {
 	 */
 	public void run (){
 		while (!config.isDriveComplete()){
+			
 			prevDist = currentDist;
 			currentDist = uSensor.getDistance();
 			prevFloatDist[count++%5] = currentDist;
 			count%=5;
 			distanceUpdated = true ;
 
-			LCDWriter.getInstance().writeToScreen("Dist " + currentDist, 7);
+			LCDWriter.getInstance().writeToScreen("Dist " + currentDist, 3);
 			if (!listenerExecutionDisabled){
 				for (final UltrasonicListener usw : usListenerList){
 					//if the distance is within range.

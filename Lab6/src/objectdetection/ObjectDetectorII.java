@@ -20,6 +20,8 @@ import movement.Driver;
  *
  */
 public class ObjectDetectorII {
+	
+	public static final int CUTOFF = 40;
 	/**
 	 * saves the location parameters of potential foam
 	 * @author ychen225
@@ -54,19 +56,19 @@ public class ObjectDetectorII {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		
 
-		
-		
+
+
+
 		init();
 		//take initial readings 
 		for (int i = 0 ; i < dist.length ; i++){
-			dist[i] = usp.getChippedDistance(50);
+			dist[i] = usp.getChippedDistance(CUTOFF);
 			nap(50);
 		}
-		
+
 		ItemLocation item = null ;
-		
+
 		do {
 			//scan 
 			do{
@@ -78,12 +80,12 @@ public class ObjectDetectorII {
 			lcd.writeToScreen("rA " + item.rightEdgeAngle, 0 );
 			lcd.writeToScreen("ctr " + (item.leftEdgeAngle + item.rightEdgeAngle )/2, 2 );
 			lcd.writeToScreen("dist " + item.distance, 3 );
-			
+
 			if (usp.getDistance() < 9 ) break ;
 			//drive towards the foam
 			driver.rotateToRelatively(-((item.leftEdgeAngle + item.rightEdgeAngle )/2-5));
 			driver.forward(4);
-			
+
 		}while (usp.getDistance() > 9 );
 		ObjRec oRec = new ObjRec();
 		ArrayList <blockColor> bc = oRec.detect();
@@ -92,6 +94,42 @@ public class ObjectDetectorII {
 			ans += b.toString() ;
 		}
 		lcd.writeToScreen(ans, 6);		
+	}
+
+	public static int lookForItem(int colorID){
+		//take initial readings 
+		for (int i = 0 ; i < dist.length ; i++){
+			dist[i] = usp.getChippedDistance(CUTOFF);
+			nap(50);
+		}
+
+		ItemLocation item = null ;
+
+		do {
+			//scan 
+
+			item = scanForItem();
+			nap(100);
+			if(!item.hasItem) return -1;
+			//print info
+
+			if (usp.getDistance() < 9 ) break ;
+			//drive towards the foam
+			driver.rotateToRelatively(-((item.leftEdgeAngle + item.rightEdgeAngle )/2-5));
+			driver.forward(4);
+
+		}while (usp.getDistance() > 9 );
+		ObjRec oRec = new ObjRec();
+		ArrayList <blockColor> bc = oRec.detect();
+		String ans = "";
+		for (blockColor b : bc){
+			ans += b.toString() ;
+		}
+		lcd.writeToScreen(ans, 6);	
+		if(bc.contains(blockColor.getInstance(colorID)))
+			return 1;
+
+		return 0;
 	}
 
 	private static void init() {
@@ -109,11 +147,11 @@ public class ObjectDetectorII {
 	 */
 	private static ItemLocation scanForItem() {
 		ItemLocation itm = new ItemLocation();
-		sm.setSpeed(30);
-		sm.rotateTo(70,false);
+		sm.setSpeed(45);
+		sm.rotateTo(65,false);
 		resample(dist);
 		nap(50);
-		sm.rotateTo(-70, true);
+		sm.rotateTo(-65, true);
 		int detection = 0 ;
 		int ang ;
 		long enterTime = System.currentTimeMillis();
@@ -133,17 +171,17 @@ public class ObjectDetectorII {
 				}
 				detection ++;
 			}
-			if (System.currentTimeMillis() - enterTime > 6000)	{
+			if (System.currentTimeMillis() - enterTime > 3500)	{
 				Sound.beep();
 				itm.hasItem = false ;
 				break;	
 			}	//break out loop if havent got a good reading in 15 sec 
-			
-			nap(50);
+
 		}
 		//with the two angles rotate to center 	
 		if (itm.hasItem) sm.rotateTo((itm.rightEdgeAngle + itm.leftEdgeAngle)/2 - 10 );  //-10 because the Usensor is off to the right 
- 		nap(100);
+		else sm.rotateTo(0);
+		nap(100);
 		itm.distance = usp.getDistance();
 		return itm ;
 	}
@@ -152,10 +190,10 @@ public class ObjectDetectorII {
 	 */
 	private static boolean peekDetection() {
 		int MAX_ARR_SIZE = dist.length -1;
-		
+
 		shiftArr(dist);
-		dist[ MAX_ARR_SIZE] = usp.getChippedDistance(50);
-		
+		dist[ MAX_ARR_SIZE] = usp.getChippedDistance(CUTOFF);
+
 		//if the avg of the first 2 average is different than the last 2 average then return true 
 		boolean detected = false ;
 		if (Math.abs(dist[2] + dist[3] - dist[0] - dist[1]) > 20){ 	//if the 
@@ -169,9 +207,8 @@ public class ObjectDetectorII {
 	 */
 	private static void resample(int[] arr) {
 		for  (int i = 0 ; i < arr.length ; i++){
-			
-			arr[i] = usp.getDistance();
-			if (arr[i] > 50 ) arr[i] = 50;
+
+			arr[i] = usp.getChippedDistance(CUTOFF);
 		}
 	}
 

@@ -70,9 +70,13 @@ public class CaptureMechanism {
 //		switch(Odometer.getInstance().getDirection()){
 //		default:
 			Configuration.SENSOR_MOTOR.rotateTo(-45);
-			Driver.getInstance().forward(15);
+			Driver.getInstance().forward(10);
+			Configuration.SENSOR_MOTOR.setSpeed(250);
 			Configuration.SENSOR_MOTOR.rotateTo(55);
+			Configuration.SENSOR_MOTOR.setSpeed(45);
+
 			Configuration.SENSOR_MOTOR.rotateTo(0);
+
 //			break;
 //		}
 	}

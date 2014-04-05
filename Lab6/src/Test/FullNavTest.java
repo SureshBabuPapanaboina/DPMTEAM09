@@ -40,12 +40,14 @@ public class FullNavTest {
 												Odometer.getInstance().getCurrentCoordinate(), 
 												new Coordinate(next)));
 			
+			
 			//scan the next area
 			if(detector.scanTile()){
 				//block next tile
 				map.blockNodeAt(next.x, next.y);
 				return false;
 			}
+			
 			Coordinate n = new Coordinate(next);
 			switch(Odometer.getInstance().getDirection()){
 			case NORTH:
@@ -87,19 +89,19 @@ public class FullNavTest {
 		
 		LineReader.subscribeToAll(oc);
 		
-		odo.setTheta(Math.PI);
-		odo.setX(165);
-		odo.setY(165);
+		odo.setTheta(0);
+		odo.setX(15);
+		odo.setY(15);
 		
 		try {Thread.sleep(1000);}catch(Exception e){};
 		
-		traveller.recalculatePathToCoords(0, 0);
+		traveller.recalculatePathToCoords(165, 165);
 
 		boolean done  = false;
 		while(!done){
 			try{
 			done = followPath();
-			if(!done) traveller.recalculatePathToCoords(0, 0);
+			if(!done) traveller.recalculatePathToCoords(165, 165);
 			else break;
 			}
 			catch(Exception e){

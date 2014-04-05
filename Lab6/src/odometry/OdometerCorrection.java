@@ -289,15 +289,25 @@ public class OdometerCorrection implements LineReaderListener{
 	public void xCorrect(double offset)
 	{
 		//use reminder (odometer value divided by 30) to determine how much to correct
-		double x = (int)(Odometer.getInstance().getX()/30)*30.0;    //TODO this was 30.48 but it is inconsitant with driver's aproximation 
-		RConsole.println("correctedX: "+x);
-		if(Math.abs(x+offset-Odometer.getInstance().getX())<12)
+		double x;
+		if(offset>0)
 		{
+			x = (int)(Odometer.getInstance().getX()/30)*30.0;    //this was 30.48 but it is inconsitant with driver's aproximation 
+
+		}
+		else
+		{
+			x = ((int)(Odometer.getInstance().getX()/30)+1)*30;
+		}
+		RConsole.println("correctedX: "+x);
+		//if(Math.abs(x+offset-Odometer.getInstance().getX())<12)
+		//{
 			Odometer.getInstance().setX(x+offset);
 			Configuration.getInstance().getCurrentLocation().setX(x+offset);
 
-		}
+		//}
 	}
+	
 	
 	/**
 	 * correct y
@@ -306,13 +316,23 @@ public class OdometerCorrection implements LineReaderListener{
 	public void yCorrect(double offset)
 	{
 		//use reminder (odometer value divided by 30) to determine how much to correct
-		double y = (int)(Odometer.getInstance().getY()/30)*30.0; //TODO this was 30.48 but it is inconsitant with driver's aproximation 
-		RConsole.println("correctedY: "+y);
-		if(Math.abs(y+offset-Odometer.getInstance().getY())<12)
+		double y;
+		if(offset>0)
 		{
+			y = (int)(Odometer.getInstance().getY()/30)*30.0; //this was 30.48 but it is inconsitant with driver's aproximation 
+
+		}
+		else
+		{
+			y = ((int)(Odometer.getInstance().getY()/30)+1)*30.0; //this was 30.48 but it is inconsitant with driver's aproximation 
+
+		}
+		RConsole.println("correctedY: "+y);
+		//if(Math.abs(y+offset-Odometer.getInstance().getY())<12)
+		//{
 			Odometer.getInstance().setY(y+offset);
 			Configuration.getInstance().getCurrentLocation().setY(y+offset);
-		}
+		//}
 	}
 	
 	/**
