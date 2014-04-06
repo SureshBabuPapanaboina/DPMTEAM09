@@ -1,9 +1,11 @@
-package sensors;
+package Test;
 
 import movement.Driver;
 import odometry.Odometer;
 import robotcore.Configuration;
 import robotcore.LCDWriter;
+import sensors.LineReader;
+import sensors.LineReaderListener;
 
 public class LineReaderTest implements LineReaderListener {
 

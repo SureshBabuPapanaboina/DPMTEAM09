@@ -1,6 +1,7 @@
-package sensors;
+package Test;
 
 import robotcore.LCDWriter;
+import sensors.UltrasonicPoller;
 /**
  * test the distance measured by the us sensor and see if it's good 
  * @author yuechuan

@@ -7,8 +7,12 @@
 * February 28, 2014
 * Changed parameters for W2014 competition
 */
-package bluetoothclient;
+package Test;
 
+import bluetoothclient.BluetoothConnection;
+import bluetoothclient.PlayerRole;
+import bluetoothclient.StartCorner;
+import bluetoothclient.Transmission;
 import lejos.nxt.Button;
 import lejos.nxt.LCD;
 //import bluetooth.*;

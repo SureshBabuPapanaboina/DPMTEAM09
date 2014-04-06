@@ -1,6 +1,7 @@
-package sensors;
+package Test;
 
 import robotcore.Configuration;
+import sensors.UltrasonicPoller;
 import lejos.nxt.Motor;
 import lejos.nxt.NXTMotor;
 import lejos.nxt.NXTRegulatedMotor;

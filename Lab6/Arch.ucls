@@ -4,7 +4,8 @@
   <package id="1" language="java" name="capture" project="Lab6" file="/Lab6/src/capture" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="258" width="282" x="-134" y="260"/>    
-    <display autosize="false" stereotype="true" accessors="true"/>  
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true"/>  
   </package>  
   <class id="2" language="java" name="capture.CaptureMechanism" project="Lab6" 
     file="/Lab6/src/capture/CaptureMechanism.java" binary="false" corner="BOTTOM_RIGHT">    
@@ -18,7 +19,8 @@
   <package id="3" language="java" name="communication" project="Lab6" file="/Lab6/src/communication" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="227" width="454" x="256" y="67"/>    
-    <display autosize="false" stereotype="true" accessors="true"/>  
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true"/>  
   </package>  
   <class id="4" language="java" name="communication.RemoteConnection" project="Lab6" 
     file="/Lab6/src/communication/RemoteConnection.java" binary="false" corner="BOTTOM_RIGHT">    
@@ -32,7 +34,8 @@
   <package id="5" language="java" name="movement" project="Lab6" file="/Lab6/src/movement" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="543" width="404" x="829" y="-109"/>    
-    <display autosize="false" stereotype="true" accessors="true"/>  
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true"/>  
   </package>  
   <class id="6" language="java" name="movement.Driver" project="Lab6" file="/Lab6/src/movement/Driver.java" 
     binary="false" corner="BOTTOM_RIGHT">    
@@ -46,7 +49,8 @@
   <package id="7" language="java" name="navigation" project="Lab6" file="/Lab6/src/navigation" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="511" width="469" x="1272" y="-112"/>    
-    <display autosize="false" stereotype="true" accessors="true"/>  
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true"/>  
   </package>  
   <class id="8" language="java" name="navigation.Map" project="Lab6" file="/Lab6/src/navigation/Map.java" binary="false" 
     corner="BOTTOM_RIGHT">    
@@ -69,7 +73,8 @@
   <package id="10" language="java" name="objectdetection" project="Lab6" file="/Lab6/src/objectdetection" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="349" width="620" x="184" y="537"/>    
-    <display autosize="false" stereotype="true" accessors="true"/>  
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true"/>  
   </package>  
   <class id="11" language="java" name="objectdetection.CollisionListener" project="Lab6" 
     file="/Lab6/src/objectdetection/CollisionListener.java" binary="false" corner="BOTTOM_RIGHT">    
@@ -92,7 +97,8 @@
   <package id="13" language="java" name="odometry" project="Lab6" file="/Lab6/src/odometry" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="513" width="577" x="908" y="507"/>    
-    <display autosize="false" stereotype="true" accessors="true"/>  
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true"/>  
   </package>  
   <class id="14" language="java" name="odometry.OdometerCorrection" project="Lab6" 
     file="/Lab6/src/odometry/OdometerCorrection.java" binary="false" corner="BOTTOM_RIGHT">    
@@ -115,7 +121,8 @@
   <package id="16" language="java" name="robotcore" project="Lab6" file="/Lab6/src/robotcore" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="793" width="1221" x="358" y="-965"/>    
-    <display autosize="false" stereotype="true" accessors="true"/>  
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true"/>  
   </package>  
   <class id="17" language="java" name="bluetoothclient.BluetoothReceiver" project="Lab6" 
     file="/Lab6/src/bluetoothclient/BluetoothReceiver.java" binary="false" corner="BOTTOM_RIGHT">    
@@ -192,7 +199,8 @@
   <package id="25" language="java" name="search" project="Lab6" file="/Lab6/src/search" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="223" width="281" x="1764" y="-47"/>    
-    <display autosize="false" stereotype="true" accessors="true"/>  
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true"/>  
   </package>  
   <class id="26" language="java" name="search.Searcher" project="Lab6" file="/Lab6/src/search/Searcher.java" 
     binary="false" corner="BOTTOM_RIGHT">    
@@ -206,7 +214,8 @@
   <package id="27" language="java" name="sensors" project="Lab6" file="/Lab6/src/sensors" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="771" width="825" x="1530" y="445"/>    
-    <display autosize="false" stereotype="true" accessors="true"/>  
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true"/>  
   </package>  
   <class id="28" language="java" name="sensors.ColorPoller" project="Lab6" file="/Lab6/src/sensors/ColorPoller.java" 
     binary="false" corner="BOTTOM_RIGHT">    
@@ -256,7 +265,8 @@
   <package id="33" language="java" name="bluetoothclient" project="Lab6" file="/Lab6/src/bluetoothclient" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="604" width="597" x="-338" y="-1002"/>    
-    <display autosize="false" stereotype="true" accessors="true"/>  
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true"/>  
   </package>  
   <class id="34" language="java" name="bluetoothclient.ParseTransmission" project="Lab6" 
     file="/Lab6/src/bluetoothclient/ParseTransmission.java" binary="false" corner="BOTTOM_RIGHT">    
@@ -303,8 +313,8 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </enumeration>  
-  <class id="39" language="java" name="bluetoothclient.BTTest" project="Lab6" 
-    file="/Lab6/src/bluetoothclient/BTTest.java" binary="false" corner="BOTTOM_RIGHT">    
+  <class id="39" language="java" name="Test.BTTest" project="Lab6" file="/Lab6/src/Test/BTTest.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="-30" y="-901"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
