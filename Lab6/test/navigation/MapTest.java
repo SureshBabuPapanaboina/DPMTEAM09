@@ -46,6 +46,11 @@ public class MapTest {
 		
 		assertEquals(Configuration.GRID_SIZE*Configuration.GRID_SIZE -1, 
 				countNodes(start, new HashSet<Node>()));
+		
+		assertEquals(map.isNodeBlocked(45, 45), true);
+		assertEquals(map.isNodeBlocked(210, 245), true);
+		assertEquals(!map.isNodeBlocked(150, 150), true);
+
 	}
 	
 	/**

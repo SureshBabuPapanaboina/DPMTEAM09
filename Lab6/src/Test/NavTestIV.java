@@ -1,16 +1,23 @@
 package Test;
 
+import java.util.Stack;
+
+import communication.RemoteConnection;
+
+import capture.CaptureMechanism;
 import movement.Driver;
 import navigation.Map;
 import navigation.PathTraveller;
 import lejos.nxt.Sound;
 import lejos.robotics.navigation.Waypoint;
+import objectdetection.ObjectDetectorII;
 import objectdetection.ObstacleDetector;
 import odometry.Odometer;
 import odometry.OdometerCorrection;
 import robotcore.Configuration;
 import robotcore.Coordinate;
 import robotcore.LCDWriter;
+import search.Searcher;
 import sensors.LineReader;
 import sensors.UltrasonicPoller;
 
@@ -24,9 +31,7 @@ import sensors.UltrasonicPoller;
  * @author Peter Henderson
  *
  */
-public class FullNavTest {
-
-	static Coordinate destination = new Coordinate(165, 165, 0);
+public class NavTestIV {
 	
 	private static boolean followPath(){
 		PathTraveller t = PathTraveller.getInstance();
@@ -75,7 +80,8 @@ public class FullNavTest {
 	public static void main(String[] args){
 		LCDWriter lcd = LCDWriter.getInstance();
 		lcd.start();
-				
+		
+		Driver driver = Driver.getInstance();
 		UltrasonicPoller up = UltrasonicPoller.getInstance();
 		PathTraveller traveller = PathTraveller.getInstance();
 		LineReader llr = LineReader.getLeftSensor();	//left + right line reader
@@ -83,7 +89,11 @@ public class FullNavTest {
 		Odometer odo = Odometer.getInstance();
 		OdometerCorrection oc = OdometerCorrection.getInstance();
 		Configuration conf = Configuration.getInstance();
+		conf.setFlagZone(new Coordinate(120, 120,0), new Coordinate(180, 210,0));
+
+		Coordinate destination = traveller.getDestination();
 		
+//		lcd.writeToScreen("destin: " + destination.toString(), 2);
 		up.start();
 		odo.start();
 		llr.start();
@@ -97,14 +107,19 @@ public class FullNavTest {
 		
 		try {Thread.sleep(1000);}catch(Exception e){};
 		
+		
 		traveller.recalculatePathToCoords((int)destination.getX(), (int)destination.getY() );
 
 		boolean done  = false;
 		while(!done){
 			try{
 			done = followPath();
-			if(!done) 
+			if(!done){ 
+				if(traveller.pathIsEmpty())
+					destination = traveller.getDestination();
+				
 				traveller.recalculatePathToCoords((int)destination.getX(), (int)destination.getY() );
+			}
 			else break;
 			}
 			catch(Exception e){
@@ -112,9 +127,68 @@ public class FullNavTest {
 			}
 		}
 		
-		
 		//indicate finish
+		Sound.beepSequenceUp();	
+		
+		CaptureMechanism cm = CaptureMechanism.getInstance();
+		RemoteConnection.getInstance().setupConnection();
+		Stack<Coordinate> path = Searcher.generateSearchPath(true);
+		
+		int BLOCK_COLOR = 3; //yellows
+		boolean blockFound  = false;
+
+		while(!blockFound && !path.isEmpty()){
+			Coordinate p = path.pop();
+			lcd.writeToScreen("Des:" +p.toString(), 4);
+			driver.turnTo(Coordinate.calculateRotationAngle(conf.getCurrentLocation(), p));
+			int result = ObjectDetectorII.lookForItem(BLOCK_COLOR);
+			if(result ==1 ){
+				cm.open();
+				driver.forward(15);
+				cm.align();
+				driver.forward(15);
+				cm.close();
+				Sound.beep();
+				Sound.beepSequenceUp();		
+				break;
+				
+			}
+			else if(result == 0){
+				cm.removeBlock();
+				driver.backward(10);
+			}
+			else{
+				Sound.beepSequence();
+				Sound.beep();
+				Sound.beep();
+			}
+			
+			driver.travelTo(p);
+			
+			result = ObjectDetectorII.lookForItem(BLOCK_COLOR);
+			if(result ==1 ){
+				cm.open();
+				driver.forward(15);
+				cm.align();
+				driver.forward(15);
+				cm.close();
+				Sound.beep();
+				Sound.beepSequenceUp();		
+				break;
+				
+			}
+			else if(result == 0){
+				cm.removeBlock();
+				driver.backward(10);
+			}
+			else{
+				Sound.beepSequence();
+				Sound.beep();
+				Sound.beep();
+			}
+		}
 		Sound.beepSequenceUp();		
+
 		
 	}
 	

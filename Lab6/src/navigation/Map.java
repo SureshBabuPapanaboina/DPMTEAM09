@@ -92,6 +92,9 @@ public class Map {
 		int xDiv = ((xInt + 30) / 30);
 		int yDiv = ((yInt + 30) / 30);
 		
+		if(xDiv > nodes.length-1) return null;
+		if(yDiv > nodes[0].length-1) return null;
+		
 
 		return nodes[xDiv][yDiv];
 	}
@@ -120,6 +123,23 @@ public class Map {
 					this.blocked.add(n);
 			}	
 		}	
+	}   
+	
+	/**
+	 * Maps an obstacle by removing a node
+	 * @param x
+	 * @param y
+	 */
+	public boolean isNodeBlocked(double x, double y) {
+		if (x > -25 && x < gridSize*30-5 && y > -25 && y < gridSize*30-5 ) {
+			Node n = this.getClosestNode(x,y);
+			if (n != null) { 
+				if (!this.blocked.contains(n))
+					return false;
+			}
+		}
+		
+		return true;
 	}                                         
 
 	/**

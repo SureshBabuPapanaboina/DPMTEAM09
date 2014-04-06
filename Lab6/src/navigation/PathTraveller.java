@@ -46,6 +46,64 @@ public class PathTraveller {
 //		path = new Stack<Waypoint>();
 	}
 	
+	public Stack<Coordinate> getAllPointsInFlagZone(){
+		Stack<Coordinate> surrounding = new Stack<Coordinate>();
+		Coordinate[] bl = Configuration.getInstance().getFlagZone();
+		for(int i = (int) bl[1].getX()-15; i>=bl[0].getX()+15; i-=30){
+			for(int j = (int) bl[1].getY()-15; j>=bl[0].getY()+15; j-=30){
+				surrounding.push(new Coordinate(i, j, 0));
+			}
+		}
+		return surrounding;
+	}
+	
+	public Stack<Coordinate> getAllPointsAroundFlagZone(){
+		Stack<Coordinate> surrounding = new Stack<Coordinate>();
+		Coordinate[] bl = Configuration.getInstance().getFlagZone();
+		
+		for(int i = (int) bl[1].getX()+15; i>=bl[0].getX()-15; i-=30){
+			for(int j = (int) bl[1].getY()+15; j>=bl[0].getY()-15; j-=30){
+				if(i > bl[1].getX()){
+					surrounding.push(new Coordinate(i, j, 0));
+				}
+				if(i < bl[0].getX()){
+					surrounding.push(new Coordinate(i, j, 0));
+				}
+				if(j > bl[1].getY()){
+					surrounding.push(new Coordinate(i, j, 0));
+				}				
+				if(j < bl[0].getY()){
+					surrounding.push(new Coordinate(i, j, 0));
+				}
+			}
+		}
+		
+		return surrounding;
+	}
+	
+	
+
+	public Coordinate getDestination(){
+//		Coordinate[] flagzone = Configuration.getInstance().getFlagZone();
+//		boolean top = Configuration.getInstance().getStartLocation().getY() > 150;
+//		boolean left = Configuration.getInstance().getStartLocation().getX() < 150;
+		Coordinate current = Odometer.getInstance().getCurrentCoordinate();
+		Coordinate best = null;
+		double bestDist = Integer.MAX_VALUE;
+		Stack<Coordinate> surrounding = getAllPointsAroundFlagZone();
+		while(!surrounding.isEmpty()){
+			Coordinate possible = surrounding.pop();
+			if(!map.isNodeBlocked(possible.getX(), possible.getY())){
+				double currentDist = Coordinate.calculateDistance(possible, current);
+				if(best==null || (best != null && currentDist < bestDist)){
+					best = possible;
+					bestDist = currentDist;
+				}
+			}
+		}
+		return best;
+	}
+	
 	/**
 	 * recalculates the path (for example if an object has been detected)
 	 */

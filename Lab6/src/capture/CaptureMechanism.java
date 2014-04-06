@@ -30,12 +30,12 @@ public class CaptureMechanism {
 	 * open the robotic arm / door 
 	 */
 	public void open(){
-		config.SENSOR_MOTOR.rotateTo(90);
+		Configuration.SENSOR_MOTOR.rotateTo(90);
 		RemoteConnection rc = RemoteConnection.getInstance();
 		rc.getRemoteNXT().A.setSpeed(30);
 		rc.getRemoteNXT().B.setSpeed(30);
-		rc.getRemoteNXT().A.rotateTo(-135, true);
-		rc.getRemoteNXT().B.rotateTo(-135);
+		rc.getRemoteNXT().B.rotateTo(-135, true);
+		rc.getRemoteNXT().A.rotateTo(-135);
 	}
 	
 	/**
@@ -70,7 +70,7 @@ public class CaptureMechanism {
 //		switch(Odometer.getInstance().getDirection()){
 //		default:
 			Configuration.SENSOR_MOTOR.rotateTo(-45);
-			Driver.getInstance().forward(10);
+			Driver.getInstance().forward(15);
 			Configuration.SENSOR_MOTOR.setSpeed(250);
 			Configuration.SENSOR_MOTOR.rotateTo(55);
 			Configuration.SENSOR_MOTOR.setSpeed(45);

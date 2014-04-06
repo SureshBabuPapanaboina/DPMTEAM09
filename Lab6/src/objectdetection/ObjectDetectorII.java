@@ -5,6 +5,7 @@ package objectdetection;
 
 import java.util.ArrayList;
 
+import odometry.Odometer;
 import robotcore.Configuration;
 import robotcore.LCDWriter;
 import search.ObjRec;
@@ -126,8 +127,11 @@ public class ObjectDetectorII {
 			ans += b.toString() ;
 		}
 		lcd.writeToScreen(ans, 6);	
-		if(bc.contains(blockColor.getInstance(colorID)))
+		if(bc.contains(blockColor.getInstance(colorID))){
+			//face the robot
+			driver.turnTo(Odometer.getInstance().getTheta() - sm.getPosition());
 			return 1;
+		}
 
 		return 0;
 	}

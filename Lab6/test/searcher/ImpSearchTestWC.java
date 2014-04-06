@@ -3,6 +3,8 @@ package searcher;
 import java.util.ArrayList;
 import java.util.Stack;
 
+import communication.RemoteConnection;
+
 import lejos.nxt.Sound;
 import movement.Driver;
 import objectdetection.ObjectDetectorII;
@@ -18,7 +20,7 @@ import search.ObjRec.blockColor;
 import sensors.UltrasonicPoller;
 import capture.CaptureMechanism;
 
-public class ImpSearchTest {
+public class ImpSearchTestWC {
 
 	public static void main(String[] args){
 		LCDWriter lcd = LCDWriter.getInstance();
@@ -37,37 +39,61 @@ public class ImpSearchTest {
 		odo.start();
 		
 		Stack<Coordinate> path = Searcher.generateSearchPath(true);
-		int BLOCK_COLOR = 3; //yellows
+		int BLOCK_COLOR = 1; //yellows
 		boolean blockFound  = false;
 
+		RemoteConnection.getInstance().setupConnection();
 		while(!blockFound && !path.isEmpty()){
 			Coordinate p = path.pop();
 			lcd.writeToScreen("Des:" +p.toString(), 4);
 			dr.turnTo(Coordinate.calculateRotationAngle(config.getCurrentLocation(), p));
 			int result = ObjectDetectorII.lookForItem(BLOCK_COLOR);
 			if(result ==1 ){
+				cm.open();
+				dr.forward(15);
+				cm.align();
+				dr.forward(15);
+				cm.close();
 				Sound.beep();
+				Sound.beepSequenceUp();		
 				break;
-			}
-			else if(result == 0){ 
-				cm.removeBlock();
-			}
-			
-			
-			dr.travelTo(p);
-			
-			result = ObjectDetectorII.lookForItem(BLOCK_COLOR);
-			if(result ==1 ){
-				Sound.beep();
-				break;
+				
 			}
 			else if(result == 0){
 				cm.removeBlock();
 				dr.backward(10);
 			}
+			else{
+				Sound.beepSequence();
+				Sound.beep();
+				Sound.beep();
+			}
+			
+			dr.travelTo(p);
+			
+			result = ObjectDetectorII.lookForItem(BLOCK_COLOR);
+			if(result ==1 ){
+				cm.open();
+				dr.forward(15);
+				cm.align();
+				dr.forward(15);
+				cm.close();
+				Sound.beep();
+				Sound.beepSequenceUp();		
+				break;
+				
+			}
+			else if(result == 0){
+				cm.removeBlock();
+				dr.backward(10);
+			}
+			else{
+				Sound.beepSequence();
+				Sound.beep();
+				Sound.beep();
+			}
 			
 		}
-		Sound.beepSequenceUp();		
 
 	}
 }
