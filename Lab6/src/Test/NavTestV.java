@@ -19,7 +19,6 @@ import robotcore.LCDWriter;
 import search.Searcher;
 import sensors.LineReader;
 import sensors.UltrasonicPoller;
-import sun.security.krb5.Config;
 
 /**
  * Basic test to scan a tile in front of the robot

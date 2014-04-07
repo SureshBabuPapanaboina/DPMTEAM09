@@ -81,7 +81,7 @@ public final class Driver{
 		
 		config.setStartLocation(currentLoc.copy());
 		
-		double distance = Coordinate.calculateDistance(currentLoc, nextLocation);
+//		double distance = Coordinate.calculateDistance(currentLoc, nextLocation);
 		double turningAngle = Coordinate.calculateRotationAngle(currentLoc, nextLocation);
 		
 //		if (DEBUG) RConsole.println("Driver:travelTo:CurrentCoord: " + currentLoc.toString2());
@@ -94,11 +94,11 @@ public final class Driver{
 		setSpeed(config.getForwardSpeed());
 		
 		
-		int currentT = Configuration.LEFT_MOTOR.getTachoCount();
-		double rotations = distance/ (2*Math.PI*(+ Configuration.RIGHT_RADIUS)) ;
+//		int currentT = Configuration.LEFT_MOTOR.getTachoCount();
+//		double rotations = distance/ (2*Math.PI*(+ Configuration.RIGHT_RADIUS)) ;
 //		if (DEBUG) RConsole.println("rotations" + rotations );
 		
-		int finalTachoCount =  currentT+ (int) (rotations * 360 );
+//		int finalTachoCount =  currentT+ (int) (rotations * 360 );
 //		if (DEBUG) RConsole.println("current Tacho " + Configuration.LEFT_MOTOR.getTachoCount() + "\t\tfinal Tacho"  + finalTachoCount );
 		motorForward();
 		while(!motorStopped && (!withinRange(odo.getX(), nextLocation.getX(), 3.25) || !withinRange(odo.getY(), nextLocation.getY(), 3.25))){

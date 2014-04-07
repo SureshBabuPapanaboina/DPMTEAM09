@@ -1,8 +1,6 @@
 package capture;
 
 import movement.Driver;
-import odometry.Direction;
-import odometry.Odometer;
 import communication.RemoteConnection;
 import robotcore.Configuration;
 
@@ -12,7 +10,7 @@ import robotcore.Configuration;
  *
  */
 public class CaptureMechanism {
-	private static Configuration config = Configuration.getInstance();
+//	private static Configuration config = Configuration.getInstance();
 	private static CaptureMechanism instance;
 	
 	/**
@@ -68,8 +66,7 @@ public class CaptureMechanism {
 	 * TODO: fix this for a search zone greater than 2x2
 	 */
 	public void removeBlock(){ 
-//		switch(Odometer.getInstance().getDirection()){
-//		default:
+
 			Configuration.SENSOR_MOTOR.rotateTo(-45);
 			Driver.getInstance().forward(15);
 			Configuration.SENSOR_MOTOR.setSpeed(250);
@@ -78,8 +75,7 @@ public class CaptureMechanism {
 
 			Configuration.SENSOR_MOTOR.rotateTo(0);
 
-//			break;
-//		}
+
 	}
 	
 }

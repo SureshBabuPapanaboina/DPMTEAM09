@@ -1,12 +1,9 @@
 package objectdetection;
-import odometry.Odometer;
 import lejos.nxt.NXTRegulatedMotor;
 import lejos.nxt.Sound;
 import movement.Driver;
 import robotcore.Configuration;
-import robotcore.Coordinate;
 import robotcore.LCDWriter;
-import sensors.ColorPoller;
 import sensors.UltrasonicPoller;
 
 /**
@@ -25,8 +22,6 @@ public class ObjectDetector extends Thread{
 	private NXTRegulatedMotor sensorMotor;
 	private boolean objectFound = false;
 	private Trajectory currentObjectT;
-	private Object lock;
-	
 	/**
 	 * constructor
 	 * @param cp
@@ -35,9 +30,9 @@ public class ObjectDetector extends Thread{
 	private ObjectDetector(){
 		up = UltrasonicPoller.getInstance();
 		config = Configuration.getInstance();
-		sensorMotor = config.SENSOR_MOTOR;
+		sensorMotor = Configuration.SENSOR_MOTOR;
 		sensorMotor.setSpeed(45);
-		lock = new Object();
+		new Object();
 	}
 	
 	/**
@@ -128,12 +123,5 @@ public class ObjectDetector extends Thread{
 		return true;
 	}
 	
-	private void nap(int m){
-		try {
-			Thread.sleep(m);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+	private void nap(int m){	try {		Thread.sleep(m);	} catch (InterruptedException e) {	}	}
 }

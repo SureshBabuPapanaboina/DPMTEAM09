@@ -5,13 +5,9 @@ import java.util.Stack;
 
 import odometry.Odometer;
 
-import com.sun.tools.internal.jxc.gen.config.Config;
-
-import navigation.PathFinder;
 import navigation.PathTraveller;
 import robotcore.Configuration;
 import robotcore.Coordinate;
-import lejos.robotics.pathfinding.Path;
 
 /**
  * This generates a search path along the endzone and begins to search for the flag

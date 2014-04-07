@@ -3,13 +3,7 @@ package robotcore;
 import odometry.Odometer;
 import sensors.LineReader;
 import sensors.LineReaderListener;
-import sensors.UltrasonicListener;
 import sensors.UltrasonicPoller;
-import lejos.nxt.NXTMotor;
-import lejos.nxt.Sound;
-import lejos.nxt.comm.RConsole;
-import lejos.robotics.navigation.Waypoint;
-import lejos.robotics.pathfinding.Path;
 import movement.Driver;
 
 /**

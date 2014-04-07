@@ -5,7 +5,6 @@ import lejos.nxt.Motor;
 import lejos.nxt.NXTRegulatedMotor;
 import lejos.nxt.SensorPort;
 import lejos.nxt.comm.RConsole;
-import lejos.robotics.Color;
 
 /**
  * This class contains the fundation of a configuration class. 

@@ -5,8 +5,6 @@ import lejos.nxt.Button;
 import lejos.nxt.LCD;
 import lejos.nxt.Motor;
 import lejos.nxt.NXTRegulatedMotor;
-import lejos.nxt.Sound;
-import lejos.nxt.comm.RConsole;
 import odometry.Odometer;
 import odometry.OdometerCorrection;
 import robotcore.Configuration;

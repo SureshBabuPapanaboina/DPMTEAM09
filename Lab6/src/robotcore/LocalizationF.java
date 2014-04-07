@@ -3,7 +3,6 @@ package robotcore;
 import movement.Driver;
 import odometry.Odometer;
 import odometry.OdometerCorrection;
-import sensors.LineReader;
 import sensors.UltrasonicPoller;
 
 public class LocalizationF {

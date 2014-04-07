@@ -1,9 +1,7 @@
 package objectdetection;
 
-import odometry.Odometer;
 import lejos.nxt.NXTRegulatedMotor;
 import lejos.nxt.Sound;
-import movement.Driver;
 import robotcore.Configuration;
 import robotcore.LCDWriter;
 import sensors.UltrasonicPoller;
@@ -18,13 +16,12 @@ public class NewObstacleDetector {
 
 	private static NewObstacleDetector instance;
 	private UltrasonicPoller up;
-	private Configuration config;
 	private NXTRegulatedMotor sensorMotor;
 	
 	private NewObstacleDetector(){
 		up = UltrasonicPoller.getInstance();
-		config = Configuration.getInstance();
-		sensorMotor = config.SENSOR_MOTOR;
+		Configuration.getInstance();
+		sensorMotor = Configuration.SENSOR_MOTOR;
 		sensorMotor.setSpeed(43);
 	}
 	

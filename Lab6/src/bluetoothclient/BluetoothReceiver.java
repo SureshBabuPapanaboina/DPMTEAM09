@@ -2,8 +2,6 @@ package bluetoothclient;
 
 import robotcore.Configuration;
 import robotcore.Coordinate;
-import robotcore.LCDWriter;
-
 /**
  * This class sets up a bluetooth listener 
  * and listens for the initial commands for the task given

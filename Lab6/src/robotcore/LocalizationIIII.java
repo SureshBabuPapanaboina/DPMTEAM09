@@ -1,11 +1,9 @@
 package robotcore;
 
-import lejos.nxt.comm.RConsole;
 import movement.Driver;
 import odometry.Odometer;
 import odometry.OdometerCorrection;
 import sensors.LineReader;
-import sensors.LineReaderListener;
 import sensors.UltrasonicPoller;
 
 public class LocalizationIIII{

@@ -5,7 +5,6 @@ import java.io.IOException;
 import robotcore.CommunicationType;
 import robotcore.Configuration;
 import lejos.nxt.LCD;
-import lejos.nxt.Sound;
 import lejos.nxt.comm.Bluetooth;
 import lejos.nxt.comm.NXTCommConnector;
 import lejos.nxt.comm.RS485;

@@ -1,20 +1,13 @@
 package objectdetection;
 
 import communication.RemoteConnection;
-import odometry.Odometer;
 import lejos.nxt.ColorSensor;
-import lejos.nxt.ColorSensor.Color;
-import lejos.nxt.LCD;
 import lejos.nxt.NXTRegulatedMotor;
 import lejos.nxt.Sound;
 import lejos.nxt.UltrasonicSensor;
 import lejos.nxt.remote.RemoteNXT;
-import lejos.robotics.objectdetection.Feature;
-import lejos.robotics.objectdetection.RangeFeatureDetector;
-import movement.Driver;
 import robotcore.Configuration;
 import robotcore.LCDWriter;
-import sensors.ColorPoller;
 import sensors.UltrasonicPoller;
 
 /**
@@ -27,15 +20,15 @@ public class ObstacleDetector {
 
 	private static ObstacleDetector instance;
 	private UltrasonicPoller up;
-	private Configuration config;
+//	private Configuration config;
 	private NXTRegulatedMotor sensorMotor;
 	ColorSensor cs = new ColorSensor(Configuration.COLOR_SENSOR_PORT);
 	public final boolean TILE_INCREMENTS = true; 
 
 	private ObstacleDetector(){
 		up = UltrasonicPoller.getInstance();
-		config = Configuration.getInstance();
-		sensorMotor = config.SENSOR_MOTOR;
+//		config = Configuration.getInstance();
+		sensorMotor = Configuration.SENSOR_MOTOR;
 		sensorMotor.setSpeed(50);
 	}
 	

@@ -13,7 +13,6 @@ public class LCDWriter extends Thread {
 	private Configuration config;
 	public String [] s ;
 	private Object lock ;
-	private static boolean threadStarted = false ;
 	private static LCDWriter lcd ;
 
 	private LCDWriter(Configuration config){
@@ -36,7 +35,6 @@ public class LCDWriter extends Thread {
 	}
 	
 	public void run(){
-		threadStarted = true;
 		long displayStart, displayEnd;
 		LCD.clearDisplay();
 

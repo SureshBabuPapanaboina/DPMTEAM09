@@ -1,6 +1,3 @@
-/*
- * Untested Version
- */
 package odometry;
 
 import lejos.nxt.NXTRegulatedMotor;
