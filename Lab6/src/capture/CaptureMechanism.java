@@ -35,7 +35,7 @@ public class CaptureMechanism {
 		rc.getRemoteNXT().A.setSpeed(30);
 		rc.getRemoteNXT().B.setSpeed(30);
 		rc.getRemoteNXT().B.rotateTo(-135, true);
-		rc.getRemoteNXT().A.rotateTo(-135);
+		rc.getRemoteNXT().A.rotateTo(-135, false);
 	}
 	
 	/**

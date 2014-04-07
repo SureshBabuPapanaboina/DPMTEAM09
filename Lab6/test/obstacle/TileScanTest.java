@@ -1,5 +1,6 @@
 package obstacle;
 
+import lejos.nxt.Button;
 import objectdetection.ObstacleDetector;
 import robotcore.LCDWriter;
 import sensors.UltrasonicPoller;
@@ -26,11 +27,11 @@ public class TileScanTest {
 
 		up.start();
 		
-		
-		boolean object = detector.scanTile();
-		
-		lcd.writeToScreen("Obstacle: " + object, 4);
-		
+		while(Button.waitForAnyPress() != Button.ID_ESCAPE){
+			boolean object = detector.scanTile();
+			
+			lcd.writeToScreen("Obstacle: " + object, 4);
+		}
 		
 	}
 	

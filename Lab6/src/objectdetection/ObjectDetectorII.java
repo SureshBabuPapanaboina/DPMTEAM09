@@ -132,6 +132,8 @@ public class ObjectDetectorII {
 			driver.turnTo(Odometer.getInstance().getTheta() - sm.getPosition());
 			return 1;
 		}
+		if(bc.size() < 1 || bc.contains(blockColor.NO_BLOCK) || bc.contains(blockColor.BLOCK))
+			return -1;
 
 		return 0;
 	}

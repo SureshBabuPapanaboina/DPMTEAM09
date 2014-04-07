@@ -38,7 +38,7 @@ public class ImpSearchTestWC {
 		up.start();
 		odo.start();
 		
-		Stack<Coordinate> path = Searcher.generateSearchPath(true);
+		Stack<Coordinate> path = Searcher.generateSearchPath();
 		int BLOCK_COLOR = 1; //yellows
 		boolean blockFound  = false;
 

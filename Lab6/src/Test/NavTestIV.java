@@ -132,7 +132,7 @@ public class NavTestIV {
 		
 		CaptureMechanism cm = CaptureMechanism.getInstance();
 		RemoteConnection.getInstance().setupConnection();
-		Stack<Coordinate> path = Searcher.generateSearchPath(true);
+		Stack<Coordinate> path = Searcher.generateSearchPath();
 		
 		int BLOCK_COLOR = 3; //yellows
 		boolean blockFound  = false;
@@ -154,7 +154,7 @@ public class NavTestIV {
 				
 			}
 			else if(result == 0){
-				cm.removeBlock();
+				if(!Searcher.inSearchZone()) cm.removeBlock();
 				driver.backward(10);
 			}
 			else{

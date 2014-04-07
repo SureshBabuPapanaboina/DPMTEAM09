@@ -2,12 +2,16 @@ package searcher;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
 import java.util.Stack;
+
+import odometry.Odometer;
 
 import org.junit.Test;
 
 import robotcore.Configuration;
 import robotcore.Coordinate;
+import search.Searcher;
 
 public class SearchPathGeneratorTest {
 
@@ -26,6 +30,34 @@ public class SearchPathGeneratorTest {
 		while(!pathstack.isEmpty()){
 			System.out.println(pathstack.pop().toString());
 		}
+		
+	}
+	
+	@Test
+	public void test3(){
+		ArrayList<Coordinate> surrounding = new ArrayList<Coordinate>();
+		Coordinate[] bl = new Coordinate [] {new Coordinate(30, 30,0), new Coordinate(90, 90,0)};
+
+		for(int i = (int) bl[1].getX()-15; i>=bl[0].getX()+15; i-=15){
+			for(int j = (int) bl[1].getY()-15; j>=bl[0].getY()+15; j-=15){
+				surrounding.add(new Coordinate(i, j, 0));
+			}
+		}
+		
+
+		Stack<Coordinate> searchpath = new Stack<Coordinate>();
+		Coordinate latest = Searcher.getClosestPoint(new Coordinate(15,15,0), surrounding);
+		searchpath.push(latest);
+		
+		while(surrounding.size() > 0){
+			latest = Searcher.getClosestPoint(latest, surrounding);
+			searchpath.push(latest);
+		}
+		
+		while(!searchpath.isEmpty()){
+			System.out.println(searchpath.pop().toString());
+		}
+		
 		
 	}
 	

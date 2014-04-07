@@ -96,6 +96,7 @@ public class UltrasonicPoller extends Thread {
 			distanceUpdated = true ;
 
 			LCDWriter.getInstance().writeToScreen("Dist " + currentDist, 3);
+			LCDWriter.getInstance().writeToScreen("FDist " + currentDist, 1);
 			if (!listenerExecutionDisabled){
 				for (final UltrasonicListener usw : usListenerList){
 					//if the distance is within range.
@@ -193,7 +194,11 @@ public class UltrasonicPoller extends Thread {
 	 */
 	public int getDistance() {
 		distanceUpdated  = false ;
-		return currentDist;
+		int distance;
+		synchronized(lock){
+			distance = currentDist;
+		}
+		return distance;
 	}
 	
 	/**
@@ -201,12 +206,16 @@ public class UltrasonicPoller extends Thread {
 	 * @return filtered distance 
 	 */
 	public int getFilteredDistance(){
-		int[] distances = getFloatingRange();
+		int[] distances;
+		synchronized(lock){
+			distances = getFloatingRange();
+		}
 		int sum = 0;
 		for(int i = 0; i< distances.length;i++){
 			sum+=distances[i];
 		}
 		sum /= distances.length;
+		
 		return sum;
 	}
 	
