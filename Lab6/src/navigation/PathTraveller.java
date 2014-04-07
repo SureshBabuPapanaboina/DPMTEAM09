@@ -75,6 +75,11 @@ public class PathTraveller {
 		
 		for(int i = (int) bl[1].getX()+15; i>=bl[0].getX()-15; i-=30){
 			for(int j = (int) bl[1].getY()+15; j>=bl[0].getY()-15; j-=30){
+				if(i < bl[0].getX() && j < bl[0].getY()) continue; //bottom left corner
+				if(i < bl[0].getX() && j > bl[1].getY()) continue; //top left corner
+				if(i > bl[1].getX() && j < bl[0].getY()) continue; //bottom left corner
+				if(i > bl[1].getX() && j > bl[1].getY()) continue; //bottom left corner
+
 				if(i > bl[1].getX()){
 					surrounding.push(new Coordinate(i, j, 0));
 				}

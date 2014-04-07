@@ -1,49 +1,54 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<class-diagram version="1.1.5" icons="true" always-add-relationships="false" generalizations="true" realizations="true" 
-  associations="true" dependencies="false" nesting-relationships="true">  
+<class-diagram version="1.1.5" icons="true" automaticImage="PNG" always-add-relationships="false" generalizations="true" 
+  realizations="true" associations="true" dependencies="false" nesting-relationships="true">  
   <package id="1" language="java" name="capture" project="Lab6" file="/Lab6/src/capture" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="91" y="269"/>    
+    <position height="-1" width="-1" x="562" y="203"/>    
     <display autosize="true" stereotype="true" accessors="true"/>  
   </package>  
   <package id="2" language="java" name="robotcore" project="Lab6" file="/Lab6/src/robotcore" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="374" y="131"/>    
+    <position height="-1" width="-1" x="418" y="126"/>    
     <display autosize="true" stereotype="true" accessors="true"/>  
   </package>  
   <package id="3" language="java" name="communication" project="Lab6" file="/Lab6/src/communication" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="98" y="196"/>    
+    <position height="-1" width="-1" x="258" y="128"/>    
     <display autosize="true" stereotype="true" accessors="true"/>  
   </package>  
   <package id="4" language="java" name="movement" project="Lab6" file="/Lab6/src/movement" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="264" y="203"/>    
+    <position height="-1" width="-1" x="496" y="263"/>    
     <display autosize="true" stereotype="true" accessors="true"/>  
   </package>  
   <package id="5" language="java" name="navigation" project="Lab6" file="/Lab6/src/navigation" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="414" y="208"/>    
+    <position height="-1" width="-1" x="271" y="200"/>    
     <display autosize="true" stereotype="true" accessors="true"/>  
   </package>  
   <package id="6" language="java" name="objectdetection" project="Lab6" file="/Lab6/src/objectdetection" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="587" y="212"/>    
+    <position height="-1" width="-1" x="324" y="259"/>    
     <display autosize="true" stereotype="true" accessors="true"/>  
   </package>  
   <package id="7" language="java" name="odometry" project="Lab6" file="/Lab6/src/odometry" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="416" y="278"/>    
+    <position height="-1" width="-1" x="409" y="315"/>    
     <display autosize="true" stereotype="true" accessors="true"/>  
   </package>  
   <package id="8" language="java" name="search" project="Lab6" file="/Lab6/src/search" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="727" y="210"/>    
+    <position height="-1" width="-1" x="423" y="200"/>    
     <display autosize="true" stereotype="true" accessors="true"/>  
   </package>  
   <package id="9" language="java" name="sensors" project="Lab6" file="/Lab6/src/sensors" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="417" y="355"/>    
+    <position height="-1" width="-1" x="411" y="381"/>    
+    <display autosize="true" stereotype="true" accessors="true"/>  
+  </package>  
+  <package id="10" language="java" name="bluetoothclient" project="Lab6" file="/Lab6/src/bluetoothclient" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="572" y="127"/>    
     <display autosize="true" stereotype="true" accessors="true"/>  
   </package>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 

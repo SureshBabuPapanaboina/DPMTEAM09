@@ -20,6 +20,9 @@ public class Map {
 	private int gridSize;
 	private Node[][] nodes;
 	
+	//Determines if the nodes are in increments of 15 or 30
+	public final boolean TILE_INCREMENTS = true; 
+	
 	
 	private HashSet<Node> blocked;
 	
@@ -46,12 +49,22 @@ public class Map {
 	 */
 	public void populateMap() {	
 		this.blocked = new HashSet<Node>();
-
+		if(TILE_INCREMENTS){
 		nodes = new Node[gridSize][gridSize]; 
 
-		for (int i = 0; i < gridSize; i++) {
-			for (int j = 0; j < gridSize; j++) {
-				nodes[i][j] = new Node((30*i-15), (30*j-15));
+			for (int i = 0; i < gridSize; i++) {
+				for (int j = 0; j < gridSize; j++) {
+						nodes[i][j] = new Node((30*i-15), (30*j-15));
+				}
+			}
+		}
+		else{
+			nodes = new Node[gridSize*2][gridSize*2]; 
+
+			for (int i = 0; i < gridSize*2; i++) {
+				for (int j = 0; j < gridSize*2; j++) {
+						nodes[i][j] = new Node((15*i-15), (15*j-15));
+				}
 			}
 		}
 
@@ -63,18 +76,36 @@ public class Map {
 	 */
 	private void generateEdges() {
 		Node n = null;
-		for (int i = 0; i < gridSize; i++) { 
-			for (int j = 0; j < gridSize; j++) { 
-				n = nodes[i][j];
-
-				if (i != 0)
-					n.addNeighbor(nodes[i-1][j]);
-				if (j != 0)
-					n.addNeighbor(nodes[i][j-1]);
-				if (i != gridSize-1)
-					n.addNeighbor(nodes[i+1][j]);
-				if (j != gridSize-1)
-					n.addNeighbor(nodes[i][j+1]);			
+		if(TILE_INCREMENTS){
+			for (int i = 0; i < gridSize; i++) { 
+				for (int j = 0; j < gridSize; j++) { 
+					n = nodes[i][j];
+	
+					if (i != 0)
+						n.addNeighbor(nodes[i-1][j]);
+					if (j != 0)
+						n.addNeighbor(nodes[i][j-1]);
+					if (i != gridSize-1)
+						n.addNeighbor(nodes[i+1][j]);
+					if (j != gridSize-1)
+						n.addNeighbor(nodes[i][j+1]);			
+				}
+			}
+		}
+		else{
+			for (int i = 0; i < gridSize*2; i++) { 
+				for (int j = 0; j < gridSize*2; j++) { 
+					n = nodes[i][j];
+	
+					if (i != 0)
+						n.addNeighbor(nodes[i-1][j]);
+					if (j != 0)
+						n.addNeighbor(nodes[i][j-1]);
+					if (i != gridSize-1)
+						n.addNeighbor(nodes[i+1][j]);
+					if (j != gridSize-1)
+						n.addNeighbor(nodes[i][j+1]);			
+				}
 			}
 		}
 	}
@@ -89,9 +120,16 @@ public class Map {
 		//TODO: does this really give the closest node?
 		int xInt = (int) x;
 		int yInt = (int) y;
-		int xDiv = ((xInt + 30) / 30);
-		int yDiv = ((yInt + 30) / 30);
-		
+		int xDiv ;
+		int yDiv ;
+		if(TILE_INCREMENTS){
+			xDiv = ((xInt + 30) / 30);
+			yDiv = ((yInt + 30) / 30);
+		}
+		else{
+			xDiv = ((xInt + 15) / 15);
+			yDiv = ((yInt + 15) / 15);
+		}
 		if(xDiv > nodes.length-1) return null;
 		if(yDiv > nodes[0].length-1) return null;
 		

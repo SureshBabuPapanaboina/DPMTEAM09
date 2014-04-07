@@ -1,5 +1,6 @@
 package objectdetection;
 
+import communication.RemoteConnection;
 import odometry.Odometer;
 import lejos.nxt.ColorSensor;
 import lejos.nxt.ColorSensor.Color;
@@ -7,6 +8,7 @@ import lejos.nxt.LCD;
 import lejos.nxt.NXTRegulatedMotor;
 import lejos.nxt.Sound;
 import lejos.nxt.UltrasonicSensor;
+import lejos.nxt.remote.RemoteNXT;
 import lejos.robotics.objectdetection.Feature;
 import lejos.robotics.objectdetection.RangeFeatureDetector;
 import movement.Driver;
@@ -28,6 +30,7 @@ public class ObstacleDetector {
 	private Configuration config;
 	private NXTRegulatedMotor sensorMotor;
 	ColorSensor cs = new ColorSensor(Configuration.COLOR_SENSOR_PORT);
+	public final boolean TILE_INCREMENTS = true; 
 
 	private ObstacleDetector(){
 		up = UltrasonicPoller.getInstance();
@@ -234,6 +237,111 @@ public class ObstacleDetector {
 //		return false;
 //	}
 //	
+	
+	/**
+	 * This method scans the tile immediately in front of it. It assumes that the robot
+	 * is align straight facing the tile and does not scan the surrounding tiles
+	 * @return
+	 */
+	public boolean scanTileWithSideSensors(){
+		//TODO: might need to make this event driven
+		//TODO: CLEAN THIS UP, BUT THIS WORKS
+		//check left side
+		boolean obstacle = false;
+		
+		sensorMotor.rotateTo(-30, true);
+		
+		while(sensorMotor.getPosition() > -30){
+			if(up.getFilteredDistance() < (TILE_INCREMENTS ? 32 : 17)){
+				Sound.beep();
+				obstacle = true;
+			}
+		}
+		//top part of square
+//		while(sensorMotor.getPosition() > -17){
+//			nap(10);
+//						
+//			if(up.getFilteredDistance() < 45/Math.cos(Math.toRadians(Math.abs(sensorMotor.getPosition())))-15){
+////				LCDWriter.getInstance().writeToScreen("D: " + up.getDistance(), 0);
+////				LCDWriter.getInstance().writeToScreen("T: " + sensorMotor.getPosition() , 1);
+////				LCDWriter.getInstance().writeToScreen("P: " + 30/Math.cos(Math.toRadians(Math.abs(sensorMotor.getPosition()))) , 2);
+//				Sound.beep();
+//				obstacle = true;
+//			}
+//		}
+//		
+//		//left section of square
+//		while(sensorMotor.getPosition() > -50){
+//			nap(10);
+//			LCDWriter.getInstance().writeToScreen("P: " +  Math.abs(20/Math.cos(Math.toRadians(90-Math.abs(sensorMotor.getPosition())))-15), 5);
+//			LCDWriter.getInstance().writeToScreen("D: " + up.getDistance(), 6);
+//
+//			if(up.getFilteredDistance() < Math.abs(15/Math.cos(Math.toRadians(90-Math.abs(sensorMotor.getPosition())))-15)){
+////				LCDWriter.getInstance().writeToScreen("D: " + up.getDistance(), 0);
+////				LCDWriter.getInstance().writeToScreen("T: " + sensorMotor.getPosition() , 1);
+//				Sound.beep();
+//				obstacle = true;
+//			}
+//		}
+//		
+		if(obstacle){
+			sensorMotor.rotateTo(0, true);
+			return true;
+		}
+		
+		//NOTE: Once the sensor goes back to the center of the arm this need to change back
+		sensorMotor.rotateTo(35, true);
+	
+		while(sensorMotor.getPosition() < 35){
+			if(up.getFilteredDistance() < (TILE_INCREMENTS ? 32 : 17)){
+				Sound.beep();
+				obstacle = true;
+			}
+		}
+		
+//		while(sensorMotor.getPosition() < 19){
+//			nap(10);
+//					
+//			if(up.getFilteredDistance() < 45/Math.cos(Math.toRadians(Math.abs(sensorMotor.getPosition())))-15){
+//				LCDWriter.getInstance().writeToScreen("D: " + up.getDistance(), 0);
+//				LCDWriter.getInstance().writeToScreen("T: " + sensorMotor.getPosition() , 1);
+//				LCDWriter.getInstance().writeToScreen("P: " + 30/Math.cos(Math.toRadians(Math.abs(sensorMotor.getPosition()))) , 2);
+//
+//				Sound.beep();
+//				obstacle = true;
+//			}
+//		}
+//
+//		while(sensorMotor.getPosition() < 50){
+//			nap(10);
+//
+//			if(up.getFilteredDistance() < Math.abs(15/Math.cos(Math.toRadians(90-Math.abs(sensorMotor.getPosition())))-15)){
+////				LCDWriter.getInstance().writeToScreen("D: " + up.getDistance(), 0);
+////				LCDWriter.getInstance().writeToScreen("T: " + sensorMotor.getPosition() , 1);
+//				Sound.beep();
+//				obstacle = true;
+//			}
+//		}	
+//		
+		
+		sensorMotor.rotateTo(0, true);
+		
+		
+		RemoteNXT rm = RemoteConnection.getInstance().getRemoteNXT();
+		
+		//TODO: extract this out
+		UltrasonicSensor leftSide = new UltrasonicSensor(rm.S1);
+		UltrasonicSensor rightSide = new UltrasonicSensor(rm.S2);
+		
+		if(leftSide.getDistance() < (TILE_INCREMENTS ? 32 : 17) ||rightSide.getDistance() < (TILE_INCREMENTS ? 32 : 17)){
+			obstacle = true;
+		}
+		
+		return obstacle;
+		
+	}
+
+	
 	/**
 	 * This method scans the tile immediately in front of it. It assumes that the robot
 	 * is align straight facing the tile and does not scan the surrounding tiles

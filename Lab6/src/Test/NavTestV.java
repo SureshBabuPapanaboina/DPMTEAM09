@@ -3,7 +3,6 @@ package Test;
 import java.util.Stack;
 
 import communication.RemoteConnection;
-
 import capture.CaptureMechanism;
 import movement.Driver;
 import navigation.Map;
@@ -20,6 +19,7 @@ import robotcore.LCDWriter;
 import search.Searcher;
 import sensors.LineReader;
 import sensors.UltrasonicPoller;
+import sun.security.krb5.Config;
 
 /**
  * Basic test to scan a tile in front of the robot
@@ -31,7 +31,7 @@ import sensors.UltrasonicPoller;
  * @author Peter Henderson
  *
  */
-public class NavTestIV {
+public class NavTestV {
 	
 	private static boolean followPath(){
 		PathTraveller t = PathTraveller.getInstance();
@@ -91,6 +91,7 @@ public class NavTestIV {
 		Configuration conf = Configuration.getInstance();
 		conf.setFlagZone(new Coordinate(120, 120,0), new Coordinate(180, 210,0));
 
+		conf.setDropZone(new Coordinate(120, 90, 0));
 		Coordinate destination = traveller.getDestination();
 		
 //		lcd.writeToScreen("destin: " + destination.toString(), 2);
@@ -133,7 +134,7 @@ public class NavTestIV {
 		
 		CaptureMechanism cm = CaptureMechanism.getInstance();
 		Stack<Coordinate> path = Searcher.generateSearchPath();
-		
+		Coordinate first = path.peek();
 		int BLOCK_COLOR = 3; //yellows
 		boolean blockFound  = false;
 
@@ -187,7 +188,94 @@ public class NavTestIV {
 //				Sound.beep();
 //			}
 		}
+		
+		//Repeat search, TODO: put this in its own class
+		if(!blockFound && path.isEmpty()){
+			path = Searcher.generateSearchPath();
+			while(!blockFound && !path.isEmpty()){
+				Coordinate p = path.pop();
+				lcd.writeToScreen("Des:" +p.toString(), 4);
+				driver.turnTo(Coordinate.calculateRotationAngle(conf.getCurrentLocation(), p));
+				int result = ObjectDetectorII.lookForItem(BLOCK_COLOR);
+				if(result ==1 ){
+					cm.open();
+					driver.forward(15);
+					cm.align();
+					driver.forward(15);
+					cm.close();
+					Sound.beep();
+					Sound.beepSequenceUp();	
+					blockFound = true;
+					break;
+					
+				}
+				else if(result == 0){
+					if(!Searcher.inSearchZone()) cm.removeBlock();
+					driver.backward(10);
+				}
+				else{
+					Sound.beepSequence();
+					Sound.beep();
+					Sound.beep();
+				}
+				
+				driver.travelTo(p);
+				
+//				result = ObjectDetectorII.lookForItem(BLOCK_COLOR);
+//				if(result ==1 ){
+//					cm.open();
+//					driver.forward(15);
+//					cm.align();
+//					driver.forward(15);
+//					cm.close();
+//					Sound.beep();
+//					Sound.beepSequenceUp();		
+//					break;
+//					
+//				}
+//				else if(result == 0){
+//					cm.removeBlock();
+//					driver.backward(10);
+//				}
+//				else{
+//					Sound.beepSequence();
+//					Sound.beep();
+//					Sound.beep();
+//				}
+			}
+		}
+		
+		driver.travelTo(first);
+		driver.travelTo(destination);
+		
+		destination = conf.getDropZone();
+		
+		
+		traveller.recalculatePathToCoords((int)destination.getX(), (int)destination.getY() );
+		done  = false;
+		while(!done){
+			try{
+			done = followPath();
+			if(!done){ 
+				if(traveller.pathIsEmpty())
+					destination = traveller.getDestination();
+				
+				traveller.recalculatePathToCoords((int)destination.getX(), (int)destination.getY() );
+			}
+			else break;
+			}
+			catch(Exception e){
+				lcd.writeToScreen("E: "+ e.toString(), 1);
+			}
+		}
+		
 		Sound.beepSequenceUp();		
+		
+		cm.open();
+		driver.backward(20);
+		cm.close();
+		
+		driver.rotateToRelatively(360);
 
 		
 	}

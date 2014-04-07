@@ -28,7 +28,7 @@ public class TileScanTest {
 		up.start();
 		
 		while(Button.waitForAnyPress() != Button.ID_ESCAPE){
-			boolean object = detector.scanTile();
+			boolean object = detector.scanTileWithSideSensors();
 			
 			lcd.writeToScreen("Obstacle: " + object, 4);
 		}

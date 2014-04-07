@@ -154,7 +154,7 @@ public class ObjectDetectorII {
 	private static ItemLocation scanForItem() {
 		ItemLocation itm = new ItemLocation();
 		sm.setSpeed(45);
-		sm.rotateTo(65,false);
+		sm.rotateTo(70,false);
 		resample(dist);
 		nap(50);
 		sm.rotateTo(-65, true);
