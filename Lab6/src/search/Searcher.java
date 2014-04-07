@@ -20,7 +20,7 @@ public class Searcher {
 	 * @return
 	 */
 	public static boolean inSearchZone(){
-		Coordinate now = Odometer.getInstance().getCurrentCoordinate();
+		Coordinate now = Configuration.getInstance().getCurrentLocation();
 		Coordinate[] bl = Configuration.getInstance().getFlagZone();
 		return (now.getX() > bl[0].getX() && now.getX() < bl[1].getX() 
 				&& now.getY() > bl[0].getY() && now.getY() < bl[1].getY());

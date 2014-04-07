@@ -311,7 +311,7 @@ public final class Driver{
 		//TODO: might need to put this in a synchronized block
 
 		if (DEBUG) RConsole.println("Motor Stopped");
-		leftMotor.stop();
+		leftMotor.stop(true);
 		rightMotor.stop();
 		
 		motorStopped = true ;

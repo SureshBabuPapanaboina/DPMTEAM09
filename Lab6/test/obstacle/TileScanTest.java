@@ -1,6 +1,8 @@
 package obstacle;
 
+import communication.RemoteConnection;
 import lejos.nxt.Button;
+import lejos.nxt.Sound;
 import objectdetection.ObstacleDetector;
 import robotcore.LCDWriter;
 import sensors.UltrasonicPoller;
@@ -24,6 +26,7 @@ public class TileScanTest {
 		
 		UltrasonicPoller up = UltrasonicPoller.getInstance();
 		ObstacleDetector detector = ObstacleDetector.getInstance();
+		RemoteConnection.getInstance().setupConnection();
 
 		up.start();
 		
@@ -31,6 +34,7 @@ public class TileScanTest {
 			boolean object = detector.scanTileWithSideSensors();
 			
 			lcd.writeToScreen("Obstacle: " + object, 4);
+			if(object) Sound.beepSequence();
 		}
 		
 	}

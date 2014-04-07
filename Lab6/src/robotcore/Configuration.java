@@ -42,7 +42,7 @@ public class Configuration {
 	private Coordinate dropZone;
 	
 	//constants about the plying field
-	public static final int GRID_SIZE = 8; //set to demo size
+	public static final int GRID_SIZE = 12; //set to demo size
 	
 	 //remote 
 //	private static RemoteConnection rc = RemoteConnection.getInstance();

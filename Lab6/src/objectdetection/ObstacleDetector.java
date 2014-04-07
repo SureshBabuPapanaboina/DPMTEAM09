@@ -325,8 +325,11 @@ public class ObstacleDetector {
 		//TODO: extract this out
 		UltrasonicSensor leftSide = new UltrasonicSensor(rm.S1);
 		UltrasonicSensor rightSide = new UltrasonicSensor(rm.S2);
-		
-		if(leftSide.getDistance() < (TILE_INCREMENTS ? 32 : 17) ||rightSide.getDistance() < (TILE_INCREMENTS ? 32 : 17)){
+		int ld = leftSide.getDistance();
+		int rd = rightSide.getDistance();
+		if( ld < (TILE_INCREMENTS ? 30 : 17) || rd < (TILE_INCREMENTS ? 30 : 17)){
+			LCDWriter.getInstance().writeToScreen("LD: " + ld, 6);
+			LCDWriter.getInstance().writeToScreen("rD: " + rd, 7);
 			obstacle = true;
 		}
 		

@@ -91,7 +91,6 @@ public class NavTestV {
 		conf.setFlagZone(new Coordinate(120, 120,0), new Coordinate(180, 210,0));
 
 		conf.setDropZone(new Coordinate(120, 90, 0));
-		Coordinate destination = traveller.getDestination();
 		
 //		lcd.writeToScreen("destin: " + destination.toString(), 2);
 		up.start();
@@ -104,8 +103,11 @@ public class NavTestV {
 		odo.setTheta(0);
 		odo.setX(15);
 		odo.setY(15);
-		
+		Coordinate destination = traveller.getDestination();
+
 		try {Thread.sleep(1000);}catch(Exception e){};
+		
+		
 		
 		
 		traveller.recalculatePathToCoords((int)destination.getX(), (int)destination.getY() );
