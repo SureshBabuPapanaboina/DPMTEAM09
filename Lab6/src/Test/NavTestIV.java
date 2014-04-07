@@ -3,7 +3,6 @@ package Test;
 import java.util.Stack;
 
 import communication.RemoteConnection;
-
 import capture.CaptureMechanism;
 import movement.Driver;
 import navigation.Map;
@@ -17,6 +16,7 @@ import odometry.OdometerCorrection;
 import robotcore.Configuration;
 import robotcore.Coordinate;
 import robotcore.LCDWriter;
+import robotcore.LocalizationF;
 import search.Searcher;
 import sensors.LineReader;
 import sensors.UltrasonicPoller;
@@ -49,7 +49,7 @@ public class NavTestIV {
 			
 			
 			//scan the next area
-			if(detector.scanTileWithSideSensors()){
+			if(detector.scanTile()){
 				//block next tile
 				map.blockNodeAt(next.x, next.y);
 				return false;
@@ -89,7 +89,8 @@ public class NavTestIV {
 		Odometer odo = Odometer.getInstance();
 		OdometerCorrection oc = OdometerCorrection.getInstance();
 		Configuration conf = Configuration.getInstance();
-		conf.setFlagZone(new Coordinate(120, 120,0), new Coordinate(180, 210,0));
+		LocalizationF localize = new LocalizationF();
+		conf.setFlagZone(new Coordinate(120, 210,0), new Coordinate(180, 300,0));
 
 		Coordinate destination = traveller.getDestination();
 		
@@ -99,17 +100,18 @@ public class NavTestIV {
 		llr.start();
 		rlr.start();
 		
+		localize.callback();
+		
 		LineReader.subscribeToAll(oc);
 		
-		odo.setTheta(0);
-		odo.setX(15);
-		odo.setY(15);
+		//odo.setTheta(0);
+		//odo.setX(15);
+		//odo.setY(15);
 		
 		try {Thread.sleep(1000);}catch(Exception e){};
 		
 		
 		traveller.recalculatePathToCoords((int)destination.getX(), (int)destination.getY() );
-		RemoteConnection.getInstance().setupConnection();
 
 		boolean done  = false;
 		while(!done){
@@ -132,6 +134,7 @@ public class NavTestIV {
 		Sound.beepSequenceUp();	
 		
 		CaptureMechanism cm = CaptureMechanism.getInstance();
+		RemoteConnection.getInstance().setupConnection();
 		Stack<Coordinate> path = Searcher.generateSearchPath();
 		
 		int BLOCK_COLOR = 3; //yellows
@@ -165,31 +168,52 @@ public class NavTestIV {
 			
 			driver.travelTo(p);
 			
-//			result = ObjectDetectorII.lookForItem(BLOCK_COLOR);
-//			if(result ==1 ){
-//				cm.open();
-//				driver.forward(15);
-//				cm.align();
-//				driver.forward(15);
-//				cm.close();
-//				Sound.beep();
-//				Sound.beepSequenceUp();		
-//				break;
-//				
-//			}
-//			else if(result == 0){
-//				cm.removeBlock();
-//				driver.backward(10);
-//			}
-//			else{
-//				Sound.beepSequence();
-//				Sound.beep();
-//				Sound.beep();
-//			}
+			result = ObjectDetectorII.lookForItem(BLOCK_COLOR);
+			if(result ==1 ){
+				cm.open();
+				driver.forward(15);
+				cm.align();
+				driver.forward(15);
+				cm.close();
+				Sound.beep();
+				Sound.beepSequenceUp();		
+				break;
+				
+			}
+			else if(result == 0){
+				cm.removeBlock();
+				driver.backward(10);
+			}
+			else{
+				Sound.beepSequence();
+				Sound.beep();
+				Sound.beep();
+			}
 		}
 		Sound.beepSequenceUp();		
-
 		
+		
+		
+		//======go back to (0,0) for now  
+		Coordinate fDest = new Coordinate(0,0,0);
+		traveller.recalculatePathToCoords((int)fDest.getX(),(int)fDest.getY());
+		
+		boolean done2  = false;
+		while(!done2){
+			try{
+			done2 = followPath();
+			if(!done2){ 
+				if(traveller.pathIsEmpty())
+					fDest = traveller.getDestination();
+				
+				traveller.recalculatePathToCoords((int)fDest.getX(), (int)fDest.getY() );
+			}
+			else break;
+			}
+			catch(Exception e){
+				lcd.writeToScreen("E: "+ e.toString(), 1);
+			}
+		}
 	}
 	
 }

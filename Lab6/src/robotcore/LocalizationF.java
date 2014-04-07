@@ -3,6 +3,7 @@ package robotcore;
 import movement.Driver;
 import odometry.Odometer;
 import odometry.OdometerCorrection;
+import sensors.LineReader;
 import sensors.UltrasonicPoller;
 
 public class LocalizationF {
@@ -42,6 +43,12 @@ public class LocalizationF {
 				//LineReader.getLeftSensor().start();
 				//LineReader.getRightSensor().start();
 			}*/
+			
+			public void callback()
+			{
+				scan();
+				move();
+			}
 			
 			private void start(int startCorner)
 			{
@@ -92,7 +99,7 @@ public class LocalizationF {
 						}
 					}
 				}
-				start(0);
+				start(3);
 				//driver.motorStop();
 			}
 			
