@@ -6,6 +6,7 @@ import java.util.Stack;
 
 import robotcore.Configuration;
 import robotcore.Coordinate;
+import search.Searcher;
 import lejos.robotics.pathfinding.Node;
 
 /**
@@ -72,13 +73,7 @@ public class Map {
 		this.generateEdges();
 		
 		Coordinate opponent = Configuration.getInstance().getOpponentDropZone();
-		Stack<Coordinate> flagCoords = PathTraveller.getInstance().getAllTilesInFlagZone();
-		
-		while(flagCoords != null && !flagCoords.isEmpty()){
-			Coordinate toBlock = flagCoords.pop();
-			this.blockNodeAt(toBlock.getX(), toBlock.getY());
-		}
-		
+		Coordinate[] bl = Configuration.getInstance().getFlagZone();
 		if(opponent != null)
 			this.blockNodeAt(opponent.getX(), opponent.getY());
 		
@@ -89,7 +84,9 @@ public class Map {
 					if(nodes[i][j] != null && (nodes[i][j].x < 0 
 											|| nodes[i][j].y < 0 
 											|| nodes[i][j].x > 30*(gridSize-2)
-											|| nodes[i][j].y > 30*(gridSize-2))){
+											|| nodes[i][j].y > 30*(gridSize-2))
+							|| (nodes[i][j].x > bl[0].getX() && nodes[i][j].x < bl[1].getX() 
+							&&  nodes[i][j].y > bl[0].getY() &&  nodes[i][j].y < bl[1].getY())){
 						this.blockNodeAt(nodes[i][j].x, nodes[i][j].y);
 					}
 				}

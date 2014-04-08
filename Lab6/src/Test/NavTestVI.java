@@ -80,6 +80,11 @@ public class NavTestVI {
 	public static void main(String[] args){
 		LCDWriter lcd = LCDWriter.getInstance();
 		lcd.start();
+		Configuration conf = Configuration.getInstance();
+		conf.setFlagZone(new Coordinate(150, 240,0), new Coordinate(240, 330,0));
+		conf.setStartCorner(4);
+		conf.setDropZone(new Coordinate(120, 90, 0));
+		conf.setOpponentDropZone(new Coordinate(250, 250, 0));
 		
 		Driver driver = Driver.getInstance();
 		UltrasonicPoller up = UltrasonicPoller.getInstance();
@@ -88,12 +93,7 @@ public class NavTestVI {
 		LineReader rlr = LineReader.getRightSensor();
 		Odometer odo = Odometer.getInstance();
 		OdometerCorrection oc = OdometerCorrection.getInstance();
-		Configuration conf = Configuration.getInstance();
-		conf.setFlagZone(new Coordinate(120, 120,0), new Coordinate(180, 210,0));
-		conf.setStartCorner(1);
-		conf.setDropZone(new Coordinate(120, 90, 0));
-		conf.setOpponentDropZone(new Coordinate(250, 250, 0));
-		
+
 //		lcd.writeToScreen("destin: " + destination.toString(), 2);
 		up.start();
 		odo.start();
