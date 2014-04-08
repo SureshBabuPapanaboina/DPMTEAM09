@@ -10,7 +10,9 @@ import robotcore.Configuration;
 import robotcore.LCDWriter;
 import search.ObjRec;
 import search.ObjRec.blockColor;
+import sensors.ColorPoller;
 import sensors.UltrasonicPoller;
+import lejos.nxt.ColorSensor;
 import lejos.nxt.NXTRegulatedMotor;
 import lejos.nxt.Sound;
 import movement.Driver;
@@ -51,6 +53,7 @@ public class ObjectDetectorII {
 	private static UltrasonicPoller usp = UltrasonicPoller.getInstance();
 	private static Driver driver = Driver.getInstance();
 	private static LCDWriter lcd = LCDWriter.getInstance();
+	private static ColorSensor cs = new ColorSensor(Configuration.COLOR_SENSOR_PORT);
 
 	static int [] dist = new int [4];	//stores the past 5 distance mesaures	
 	/**
@@ -157,6 +160,7 @@ public class ObjectDetectorII {
 		sm.rotateTo(70,false);
 		resample(dist);
 		nap(50);
+//		cs.setFloodlight(true);
 		sm.rotateTo(-65, true);
 		int detection = 0 ;
 		int ang ;
@@ -177,6 +181,16 @@ public class ObjectDetectorII {
 				}
 				detection ++;
 			}
+//			//TODO: test this and remove if not
+//			if(cs.getColor().getRed() > 40){
+//				//probably a block
+//				sm.stop(true);
+//				itm.hasItem = true;
+//				itm.rightEdgeAngle = sm.getPosition(); //+5 to compensate for later minus 10
+//				itm.leftEdgeAngle = sm.getPosition();
+//				break;
+//			}
+//			
 			if (System.currentTimeMillis() - enterTime > 3500)	{
 				Sound.beep();
 				itm.hasItem = false ;
@@ -185,10 +199,12 @@ public class ObjectDetectorII {
 
 		}
 		//with the two angles rotate to center 	
-		if (itm.hasItem) sm.rotateTo((itm.rightEdgeAngle + itm.leftEdgeAngle)/2 - 10 );  //-10 because the Usensor is off to the right 
+		if (itm.hasItem) sm.rotateTo((itm.rightEdgeAngle + itm.leftEdgeAngle)/2 -3 );  //-10 because the Usensor is off to the right 
 		else sm.rotateTo(0);
 		nap(100);
 		itm.distance = usp.getDistance();
+//		cs.setFloodlight(false);
+
 		return itm ;
 	}
 	/**

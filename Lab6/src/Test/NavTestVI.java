@@ -16,6 +16,7 @@ import odometry.OdometerCorrection;
 import robotcore.Configuration;
 import robotcore.Coordinate;
 import robotcore.LCDWriter;
+import robotcore.LocalizationF;
 import search.Searcher;
 import sensors.LineReader;
 import sensors.UltrasonicPoller;
@@ -30,7 +31,7 @@ import sensors.UltrasonicPoller;
  * @author Peter Henderson
  *
  */
-public class NavTestV {
+public class NavTestVI {
 	
 	private static boolean followPath(){
 		PathTraveller t = PathTraveller.getInstance();
@@ -89,7 +90,7 @@ public class NavTestV {
 		OdometerCorrection oc = OdometerCorrection.getInstance();
 		Configuration conf = Configuration.getInstance();
 		conf.setFlagZone(new Coordinate(120, 120,0), new Coordinate(180, 210,0));
-
+		conf.setStartCorner(1);
 		conf.setDropZone(new Coordinate(120, 90, 0));
 		
 //		lcd.writeToScreen("destin: " + destination.toString(), 2);
@@ -98,13 +99,14 @@ public class NavTestV {
 		llr.start();
 		rlr.start();
 		
+		LocalizationF localizer = new LocalizationF();
+		localizer.callback();
+		
 		LineReader.subscribeToAll(oc);
 		
-		odo.setTheta(0);
-		odo.setX(15);
-		odo.setY(15);
 		Coordinate destination = traveller.getDestination();
 
+		
 		try {Thread.sleep(1000);}catch(Exception e){};
 		
 		

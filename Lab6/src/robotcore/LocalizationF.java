@@ -19,9 +19,9 @@ public class LocalizationF {
 			private final double offsetForBigger = 67;
 			private final static double offsetForSmaller = 38;
 			
-			private final int LOW_LEFT = 0; 
-			private final int LOW_RIGHT = 1; 
-			private final int UP_LEFT= 2; 
+			private final int LOW_LEFT = 1; 
+			private final int LOW_RIGHT = 2; 
+			private final int UP_LEFT= 4; 
 			private final int UP_RIGHT = 3;
 			
 			/*public static void main(String[] args)
@@ -99,7 +99,7 @@ public class LocalizationF {
 						}
 					}
 				}
-				start(3);
+				start(conf.getStartCorner());
 				//driver.motorStop();
 			}
 			

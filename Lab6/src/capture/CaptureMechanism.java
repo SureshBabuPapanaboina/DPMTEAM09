@@ -44,6 +44,7 @@ public class CaptureMechanism {
 		
 		rc.getRemoteNXT().A.rotateTo(15, true);
 		rc.getRemoteNXT().B.rotateTo(15);
+		Configuration.SENSOR_MOTOR.rotateTo(0);
 		
 	}
 	

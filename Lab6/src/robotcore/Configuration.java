@@ -41,6 +41,8 @@ public class Configuration {
 	 */
 	private Coordinate dropZone;
 	
+	private int startCorner;
+	
 	//constants about the plying field
 	public static final int GRID_SIZE = 12; //set to demo size
 	
@@ -156,6 +158,22 @@ public class Configuration {
 	 */
 	public void setDropZone(Coordinate lowerLeft){
 		dropZone = lowerLeft;
+	}
+	
+	/**
+	 * Sets the starting corner
+	 * @param corner
+	 */
+	public void setStartCorner(int corner){
+		this.startCorner = corner;
+	}
+	
+	/**
+	 * gets the starting corner
+	 * @return
+	 */
+	public int getStartCorner(){
+		return this.startCorner;
 	}
 	
 	/**
