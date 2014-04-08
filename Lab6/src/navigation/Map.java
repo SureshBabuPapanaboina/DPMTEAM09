@@ -81,6 +81,20 @@ public class Map {
 		
 		if(opponent != null)
 			this.blockNodeAt(opponent.getX(), opponent.getY());
+		
+		//Block all the edge nodes since the robot can't go there anyways without seeing an obstacle
+		if(TILE_INCREMENTS){
+			for (int i = 0; i < gridSize; i++) {
+				for (int j = 0; j < gridSize; j++) {
+					if(nodes[i][j] != null && (nodes[i][j].x < 0 
+											|| nodes[i][j].y < 0 
+											|| nodes[i][j].x > 30*(gridSize-2)
+											|| nodes[i][j].y > 30*(gridSize-2))){
+						this.blockNodeAt(nodes[i][j].x, nodes[i][j].y);
+					}
+				}
+			}
+		}
 	}
 
 	/**
