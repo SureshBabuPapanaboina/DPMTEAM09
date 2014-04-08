@@ -2,8 +2,10 @@ package navigation;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Stack;
 
 import robotcore.Configuration;
+import robotcore.Coordinate;
 import lejos.robotics.pathfinding.Node;
 
 /**
@@ -31,7 +33,6 @@ public class Map {
 	 */
 	private Map() {
 		this.gridSize = Configuration.GRID_SIZE;
-
 		this.populateMap();
 	}
 	
@@ -69,6 +70,17 @@ public class Map {
 		}
 
 		this.generateEdges();
+		
+		Coordinate opponent = Configuration.getInstance().getOpponentDropZone();
+		Stack<Coordinate> flagCoords = PathTraveller.getInstance().getAllTilesInFlagZone();
+		
+		while(flagCoords != null && !flagCoords.isEmpty()){
+			Coordinate toBlock = flagCoords.pop();
+			this.blockNodeAt(toBlock.getX(), toBlock.getY());
+		}
+		
+		if(opponent != null)
+			this.blockNodeAt(opponent.getX(), opponent.getY());
 	}
 
 	/**

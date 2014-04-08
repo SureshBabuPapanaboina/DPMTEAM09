@@ -135,10 +135,13 @@ public class ObjectDetectorII {
 			driver.turnTo(Odometer.getInstance().getTheta() - sm.getPosition());
 			return 1;
 		}
-		if(bc.size() < 1 || bc.contains(blockColor.NO_BLOCK) || bc.contains(blockColor.BLOCK))
+		else if(bc.size() < 1 || bc.contains(blockColor.NO_BLOCK) || bc.contains(blockColor.BLOCK))
 			return -1;
+		else{
+			driver.turnTo(Odometer.getInstance().getTheta() - sm.getPosition());
+			return 0;
+		}
 
-		return 0;
 	}
 
 	private static void init() {
@@ -180,6 +183,14 @@ public class ObjectDetectorII {
 					sm.rotateTo(0);		//rotate back to center 
 				}
 				detection ++;
+			}
+			
+			if(usp.getFilteredDistance() < 10){
+				sm.stop();
+				itm.hasItem = true;
+				itm.rightEdgeAngle = sm.getPosition()-5;
+				itm.leftEdgeAngle = sm.getPosition()-5;
+				break;
 			}
 //			//TODO: test this and remove if not
 //			if(cs.getColor().getRed() > 40){

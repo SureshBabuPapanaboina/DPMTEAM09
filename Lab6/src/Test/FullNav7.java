@@ -2,6 +2,7 @@ package Test;
 
 import java.util.Stack;
 
+import bluetoothclient.BluetoothReceiver;
 import communication.RemoteConnection;
 import capture.CaptureMechanism;
 import movement.Driver;
@@ -31,7 +32,7 @@ import sensors.UltrasonicPoller;
  * @author Peter Henderson
  *
  */
-public class NavTestVI {
+public class FullNav7 {
 	
 	private static boolean followPath(){
 		PathTraveller t = PathTraveller.getInstance();
@@ -78,6 +79,10 @@ public class NavTestVI {
 	}
 	
 	public static void main(String[] args){
+		Configuration conf = Configuration.getInstance();
+		BluetoothReceiver br = new BluetoothReceiver(); 
+		br.listenForStartCommand();// info in Config should be set 
+		
 		LCDWriter lcd = LCDWriter.getInstance();
 		lcd.start();
 		
@@ -88,11 +93,10 @@ public class NavTestVI {
 		LineReader rlr = LineReader.getRightSensor();
 		Odometer odo = Odometer.getInstance();
 		OdometerCorrection oc = OdometerCorrection.getInstance();
-		Configuration conf = Configuration.getInstance();
-		conf.setFlagZone(new Coordinate(120, 120,0), new Coordinate(180, 210,0));
-		conf.setStartCorner(1);
-		conf.setDropZone(new Coordinate(120, 90, 0));
-		conf.setOpponentDropZone(new Coordinate(250, 250, 0));
+//		conf.setFlagZone(new Coordinate(120, 120,0), new Coordinate(180, 210,0));
+//		conf.setStartCorner(1);
+//		conf.setDropZone(new Coordinate(120, 90, 0));
+//		conf.setOpponentDropZone(new Coordinate(250, 250, 0));
 		
 //		lcd.writeToScreen("destin: " + destination.toString(), 2);
 		up.start();
@@ -159,7 +163,7 @@ public class NavTestVI {
 				
 			}
 			else if(result == 0){
-				if(Searcher.inSearchZone())cm.removeBlock();
+				if(Searcher.inSearchZone()) cm.removeBlock();
 				driver.backward(10);
 			}
 			else{
