@@ -21,7 +21,7 @@ public class Configuration {
 	private int ROTATE_SPEED = 250 ;
 	private int FORWARD_SPEED = 300;
 	public static int ACCELERATION = 2000;
-	private int USB_TIMEOUT = 3000;
+	private int USB_TIMEOUT = 50;
 	//block to look for 
 	private blockColor block;
 	/**

@@ -1,8 +1,8 @@
 package Test;
 
+import java.util.ArrayList;
 import java.util.Stack;
 
-import bluetoothclient.BluetoothReceiver;
 import communication.RemoteConnection;
 import capture.CaptureMechanism;
 import movement.Driver;
@@ -18,7 +18,9 @@ import robotcore.Configuration;
 import robotcore.Coordinate;
 import robotcore.LCDWriter;
 import robotcore.LocalizationF;
+import search.ObjRec;
 import search.Searcher;
+import search.ObjRec.blockColor;
 import sensors.LineReader;
 import sensors.UltrasonicPoller;
 
@@ -32,7 +34,7 @@ import sensors.UltrasonicPoller;
  * @author Peter Henderson
  *
  */
-public class FullNav7 {
+public class NavTestVII {
 	
 	private static boolean followPath(){
 		PathTraveller t = PathTraveller.getInstance();
@@ -79,12 +81,13 @@ public class FullNav7 {
 	}
 	
 	public static void main(String[] args){
-		Configuration conf = Configuration.getInstance();
-		BluetoothReceiver br = new BluetoothReceiver(); 
-		br.listenForStartCommand();// info in Config should be set 
-		
 		LCDWriter lcd = LCDWriter.getInstance();
 		lcd.start();
+		Configuration conf = Configuration.getInstance();
+		conf.setFlagZone(new Coordinate(150, 240,0), new Coordinate(240, 330,0));
+		conf.setStartCorner(4);
+		conf.setDropZone(new Coordinate(120, 90, 0));
+		conf.setOpponentDropZone(new Coordinate(250, 250, 0));
 		
 		Driver driver = Driver.getInstance();
 		UltrasonicPoller up = UltrasonicPoller.getInstance();
@@ -92,24 +95,18 @@ public class FullNav7 {
 		LineReader llr = LineReader.getLeftSensor();	//left + right line reader
 		LineReader rlr = LineReader.getRightSensor();
 		Odometer odo = Odometer.getInstance();
-		OdometerCorrection oc = OdometerCorrection.getInstance();
-		int BLOCK_COLOR = conf.getBlockColor().getCode(); //yellows
+//		OdometerCorrection oc = OdometerCorrection.getInstance();
 
-//		conf.setFlagZone(new Coordinate(120, 120,0), new Coordinate(180, 210,0));
-//		conf.setStartCorner(1);
-//		conf.setDropZone(new Coordinate(120, 90, 0));
-//		conf.setOpponentDropZone(new Coordinate(250, 250, 0));
-		
 //		lcd.writeToScreen("destin: " + destination.toString(), 2);
 		up.start();
 		odo.start();
 		llr.start();
 		rlr.start();
 		
-		LocalizationF localizer = new LocalizationF();
-		localizer.callback();
+//		LocalizationF localizer = new LocalizationF();
+//		localizer.callback();
 		
-		LineReader.subscribeToAll(oc);
+//		LineReader.subscribeToAll(oc);
 		
 		Coordinate destination = traveller.getDestination();
 
@@ -143,16 +140,23 @@ public class FullNav7 {
 		Sound.beepSequenceUp();	
 		
 		CaptureMechanism cm = CaptureMechanism.getInstance();
+		
+		CaptureMechanism.setDropOff(destination);
+		
 		Stack<Coordinate> path = Searcher.generateSearchPath();
 		Coordinate first = path.peek();
+
+		int BLOCK_COLOR = 3; //yellows
 		boolean blockFound  = false;
 
 		while(!blockFound && !path.isEmpty()){
 			Coordinate p = path.pop();
 			lcd.writeToScreen("Des:" +p.toString(), 4);
 			driver.turnTo(Coordinate.calculateRotationAngle(conf.getCurrentLocation(), p));
-			int result = ObjectDetectorII.lookForItem(BLOCK_COLOR);
+			int result = ObjectDetectorII.lookForItemII(BLOCK_COLOR);
 			if(result ==1 ){
+				Sound.beep();
+				blockFound = true;
 				cm.open();
 				driver.forward(15);
 				cm.align();
@@ -161,97 +165,76 @@ public class FullNav7 {
 				Sound.beep();
 				Sound.beepSequenceUp();		
 				break;
+			}
+			else if(result == 0){ 
+				cm.removeBlockII();
 				
-			}
-			else if(result == 0){
-				if(Searcher.inSearchZone()) cm.removeBlock();
-				driver.backward(10);
-			}
-			else{
-				Sound.beepSequence();
-				Sound.beep();
-				Sound.beep();
-			}
-			
-			driver.travelTo(p);
-			
-//			result = ObjectDetectorII.lookForItem(BLOCK_COLOR);
-//			if(result ==1 ){
-//				cm.open();
-//				driver.forward(15);
-//				cm.align();
-//				driver.forward(15);
-//				cm.close();
-//				Sound.beep();
-//				Sound.beepSequenceUp();		
-//				break;
-//				
-//			}
-//			else if(result == 0){
-//				cm.removeBlock();
-//				driver.backward(10);
-//			}
-//			else{
-//				Sound.beepSequence();
-//				Sound.beep();
-//				Sound.beep();
-//			}
-		}
-		
-		//Repeat search, TODO: put this in its own class
-		if(!blockFound && path.isEmpty()){
-			path = Searcher.generateSearchPath();
-			while(!blockFound && !path.isEmpty()){
-				Coordinate p = path.pop();
-				lcd.writeToScreen("Des:" +p.toString(), 4);
-				driver.turnTo(Coordinate.calculateRotationAngle(conf.getCurrentLocation(), p));
-				int result = ObjectDetectorII.lookForItem(BLOCK_COLOR);
-				if(result ==1 ){
+				ObjRec oRec = new ObjRec();
+				//test again
+				ArrayList <blockColor> bc = oRec.detect();
+				String ans = "";
+				for (blockColor b : bc){
+					ans += b.toString() ;
+				}
+				lcd.writeToScreen(ans, 6);	
+				if(bc.contains(blockColor.getInstance(BLOCK_COLOR))){
+					//face the robot
+					blockFound = true;
 					cm.open();
 					driver.forward(15);
 					cm.align();
 					driver.forward(15);
 					cm.close();
 					Sound.beep();
-					Sound.beepSequenceUp();	
-					blockFound = true;
+					Sound.beepSequenceUp();		
 					break;
-					
 				}
-				else if(result == 0){
-					if(Searcher.inSearchZone()) cm.removeBlock();
-					driver.backward(10);
-				}
-				else{
-					Sound.beepSequence();
-					Sound.beep();
-					Sound.beep();
-				}
-				
-				driver.travelTo(p);
-				
-//				result = ObjectDetectorII.lookForItem(BLOCK_COLOR);
-//				if(result ==1 ){
-//					cm.open();
-//					driver.forward(15);
-//					cm.align();
-//					driver.forward(15);
-//					cm.close();
-//					Sound.beep();
-//					Sound.beepSequenceUp();		
-//					break;
-//					
-//				}
-//				else if(result == 0){
-//					cm.removeBlock();
-//					driver.backward(10);
-//				}
-//				else{
-//					Sound.beepSequence();
-//					Sound.beep();
-//					Sound.beep();
-//				}
 			}
+			
+			
+			driver.travelTo(p);
+			
+			result = ObjectDetectorII.lookForItemII(BLOCK_COLOR);
+			if(result ==1 ){
+				Sound.beep();
+				blockFound = true;
+				cm.open();
+				driver.forward(15);
+				cm.align();
+				driver.forward(15);
+				cm.close();
+				Sound.beep();
+				Sound.beepSequenceUp();		
+				break;
+			}
+			else if(result == 0){
+				cm.removeBlockII();
+				ObjRec oRec = new ObjRec();
+				//test again
+				ArrayList <blockColor> bc = oRec.detect();
+				String ans = "";
+				for (blockColor b : bc){
+					ans += b.toString() ;
+				}
+				lcd.writeToScreen(ans, 6);	
+				if(bc.contains(blockColor.getInstance(BLOCK_COLOR))){
+					//face the robot
+					blockFound = true;
+					cm.open();
+					driver.forward(15);
+					cm.align();
+					driver.forward(15);
+					cm.close();
+					Sound.beep();
+					Sound.beepSequenceUp();		
+					break;
+				}
+		}
+			
+			if(path.isEmpty() && !blockFound){
+				path = Searcher.generateSearchPath();
+			}
+			
 		}
 		
 		driver.travelTo(first);

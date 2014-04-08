@@ -99,6 +99,58 @@ public class ObjectDetectorII {
 		}
 		lcd.writeToScreen(ans, 6);		
 	}
+	
+	public static int lookForItemII(int colorID){
+		//take initial readings
+		ObjRec oRec = new ObjRec();
+		sm.setSpeed(40);
+
+		sm.rotateTo(70, false);
+		sm.rotateTo(-65, true);
+		
+		while(sm.getPosition() >-65 ){
+			nap(10);
+			if(usp.getFilteredDistance() < 7){
+				//found object
+				sm.stop();
+				
+				//to align the light sensor
+				sm.rotateTo(sm.getPosition() - 20);
+				ArrayList <blockColor> bc = oRec.detect();
+				String ans = "";
+				for (blockColor b : bc){
+					ans += b.toString() ;
+				}
+				lcd.writeToScreen(ans, 6);	
+				if(bc.contains(blockColor.getInstance(colorID))){
+					//face the robot
+					driver.backward(3);
+					driver.turnTo(Odometer.getInstance().getTheta() - (sm.getPosition())-10);
+					return 1;
+//				}
+//				else if(bc.size() < 1 || bc.contains(blockColor.BLOCK)){
+//					return -1;
+				}else{
+					driver.backward(3);
+					driver.turnTo(Odometer.getInstance().getTheta() - sm.getPosition() - 10);
+					return 0;
+				}
+			}
+			if(usp.getFilteredDistance() < 18){
+				sm.stop();
+				
+				driver.turnTo(Odometer.getInstance().getTheta() - sm.getPosition());
+				driver.forward(5);
+				
+				sm.rotateTo(70, false);
+				sm.rotateTo(-65, true);
+			}
+		}
+		
+		return -1;
+
+	}
+
 
 	public static int lookForItem(int colorID){
 		//take initial readings 
@@ -111,16 +163,36 @@ public class ObjectDetectorII {
 
 		do {
 			//scan 
-
-			item = scanForItem();
-			nap(100);
-			if(!item.hasItem) return -1;
-			//print info
-
-			if (usp.getDistance() < 9 ) break ;
-			//drive towards the foam
-			driver.rotateToRelatively(-((item.leftEdgeAngle + item.rightEdgeAngle )/2-5));
-			driver.forward(4);
+			
+			//Initial scan for anything too close 
+			sm.rotateTo(70,false);
+			sm.rotateTo(-65, true);
+			boolean found = false;
+			int smAngle = 0;
+			while(sm.getPosition() > -65){
+				if(usp.getFilteredDistance() < 9){
+					sm.stop();
+					found = true;
+					smAngle = sm.getPosition();
+					break;
+				}
+			}
+			
+			if(!found){
+				item = scanForItem();
+				nap(100);
+				if(!item.hasItem) return -1;
+				//print info
+	
+				if (usp.getDistance() < 9 ) break ;
+				//drive towards the foam
+				driver.rotateToRelatively(-((item.leftEdgeAngle + item.rightEdgeAngle )/2-5));
+				driver.forward(4);
+			}
+			else{
+				sm.rotateTo(smAngle - 15);
+				break;
+			}
 
 		}while (usp.getDistance() > 9 );
 		ObjRec oRec = new ObjRec();
@@ -184,14 +256,14 @@ public class ObjectDetectorII {
 				}
 				detection ++;
 			}
-			
-			if(usp.getFilteredDistance() < 10){
-				sm.stop();
-				itm.hasItem = true;
-				itm.rightEdgeAngle = sm.getPosition()-5;
-				itm.leftEdgeAngle = sm.getPosition()-5;
-				break;
-			}
+//			
+//			if(usp.getFilteredDistance() < 10){
+//				sm.stop();
+//				itm.hasItem = true;
+//				itm.rightEdgeAngle = sm.getPosition()-7;
+//				itm.leftEdgeAngle = sm.getPosition()-7;
+//				break;
+//			}
 //			//TODO: test this and remove if not
 //			if(cs.getColor().getRed() > 40){
 //				//probably a block
@@ -210,7 +282,7 @@ public class ObjectDetectorII {
 
 		}
 		//with the two angles rotate to center 	
-		if (itm.hasItem) sm.rotateTo((itm.rightEdgeAngle + itm.leftEdgeAngle)/2 -3 );  //-10 because the Usensor is off to the right 
+		if (itm.hasItem) sm.rotateTo((itm.rightEdgeAngle + itm.leftEdgeAngle)/2 - 10);  //-10 because the Usensor is off to the right 
 		else sm.rotateTo(0);
 		nap(100);
 		itm.distance = usp.getDistance();
