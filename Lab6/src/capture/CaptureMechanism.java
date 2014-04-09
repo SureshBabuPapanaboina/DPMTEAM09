@@ -101,8 +101,8 @@ public class CaptureMechanism {
 		Driver.getInstance().forward(18);
 
 		//grab the block
-		rc.getRemoteNXT().A.rotateTo(-65, true);
-		rc.getRemoteNXT().B.rotateTo(-65);
+		rc.getRemoteNXT().A.rotateTo(-60, true);
+		rc.getRemoteNXT().B.rotateTo(-60);
 	
 		if(dropOff != null)
 			Driver.getInstance().travelTo(dropOff);
@@ -114,9 +114,11 @@ public class CaptureMechanism {
 		rc.getRemoteNXT().A.rotateTo(-90, true);
 		rc.getRemoteNXT().B.rotateTo(-90);
 		
-		Driver.getInstance().backward(10);
+		Driver.getInstance().backward(17);
 
 		close();
+		
+		Driver.getInstance().forward(7);
 
 
 	}
