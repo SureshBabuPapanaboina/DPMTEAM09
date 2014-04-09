@@ -95,11 +95,11 @@ public class NavTestVIII {
 		Configuration conf = Configuration.getInstance();
 		
 		//TODO: replace this with bluetooth-----
-		conf.setFlagZone(new Coordinate(120, 60,0), new Coordinate(180,120,0));
-		conf.setStartCorner(1);
+		conf.setFlagZone(new Coordinate(150, 240,0), new Coordinate(210,300,0));
+		conf.setStartCorner(2);
 		conf.setDropZone(new Coordinate(0, 0, 0));
 		conf.setOpponentDropZone(new Coordinate(250, 250, 0));
-		conf.setFlagColor(3);
+		conf.setFlagColor(5);
 		//-----------------
 		Driver driver = Driver.getInstance();
 		UltrasonicPoller up = UltrasonicPoller.getInstance();

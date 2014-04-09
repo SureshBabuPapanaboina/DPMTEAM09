@@ -105,13 +105,30 @@ public class LocalizationF {
 			
 			public void move()
 			{
-				//LineReader.subscribeToAll(odoC);
-				driver.forward(28);
-				driver.turnTo(-90);
-				driver.forward(28);
-				/*while(true)
+				LineReader.subscribeToAll(odoC);
+				//driver.forward(26);
+				//driver.travelTo(15,-15);
+				//driver.turnTo(-90);
+				//driver.forward(26);
+				//driver.travelTo(15,15);
+				switch(conf.getStartCorner())
 				{
-					driver.motorStop();
-				}*/
+					case LOW_LEFT:
+						driver.travelTo(15,-15);
+						driver.travelTo(15,15);
+						break;
+					case LOW_RIGHT:
+						driver.travelTo(315,15);
+						driver.travelTo(285,15);
+						break;
+					case UP_LEFT:
+						driver.travelTo(-15,285);
+						driver.travelTo(15,285);
+						break;
+					case UP_RIGHT :
+						driver.travelTo(285,315);
+						driver.travelTo(285,285);
+						break;
+				}
 			}
 }
