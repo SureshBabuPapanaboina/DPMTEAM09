@@ -95,10 +95,10 @@ public class NavTestVIII {
 		Configuration conf = Configuration.getInstance();
 		
 		//TODO: replace this with bluetooth-----
-		conf.setFlagZone(new Coordinate(150, 240,0), new Coordinate(210,300,0));
-		conf.setStartCorner(2);
-		conf.setDropZone(new Coordinate(0, 0, 0));
-		conf.setOpponentDropZone(new Coordinate(250, 250, 0));
+		conf.setFlagZone(new Coordinate(150, 240,0), new Coordinate(210,330,0));
+		conf.setStartCorner(4);
+		conf.setDropZone(new Coordinate(15, 300, 0));
+		conf.setOpponentDropZone(new Coordinate(0, 0, 0));
 		conf.setFlagColor(5);
 		//-----------------
 		Driver driver = Driver.getInstance();
@@ -159,6 +159,9 @@ public class NavTestVIII {
 
 		int BLOCK_COLOR = conf.getBlockColor().getCode();
 		boolean blockFound  = false;
+		
+		//Turn off correction?
+		LineReader.unsubscribeToAll(oc);
 
 		while(!blockFound && !path.isEmpty()){
 			Coordinate p = path.pop();
@@ -177,7 +180,7 @@ public class NavTestVIII {
 				Sound.beepSequenceUp();		
 				break;
 			}
-			else if(result == 0){ 
+			else if(result == 0 && Searcher.inSearchZone()){ 
 				cm.removeBlockII();
 				
 				ObjRec oRec = new ObjRec();
@@ -218,7 +221,7 @@ public class NavTestVIII {
 				Sound.beepSequenceUp();		
 				break;
 			}
-			else if(result == 0){
+			else if(result == 0 && Searcher.inSearchZone()){
 				cm.removeBlockII();
 				ObjRec oRec = new ObjRec();
 				//test again
@@ -253,6 +256,8 @@ public class NavTestVIII {
 		
 		destination = conf.getDropZone();
 		
+		LineReader.subscribeToAll(oc);
+
 		
 		traveller.recalculatePathToCoords((int)destination.getX(), (int)destination.getY() );
 		done  = false;

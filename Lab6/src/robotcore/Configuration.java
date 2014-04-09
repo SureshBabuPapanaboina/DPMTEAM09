@@ -18,8 +18,8 @@ public class Configuration {
 	private Coordinate flagUpperRight;	//upper right corner of flag zone 
 	
 	private boolean driveComplete  = false ;
-	private int ROTATE_SPEED = 250 ;
-	private int FORWARD_SPEED = 300;
+	private int ROTATE_SPEED = 300 ;
+	private int FORWARD_SPEED = 350;
 	public static int ACCELERATION = 2000;
 	private int USB_TIMEOUT = 50;
 	//block to look for 

@@ -15,6 +15,13 @@ import robotcore.Coordinate;
  */
 public class Searcher {
 	
+	
+	public static boolean nearWall(){
+		Coordinate now = Configuration.getInstance().getCurrentLocation();
+
+		return now.getX() < 25 || now.getY() < 25 || now.getX()>305 || now.getY()>305;
+	}
+	
 	/**
 	 * Am I in the search zone?
 	 * @return
@@ -23,7 +30,7 @@ public class Searcher {
 		Coordinate now = Configuration.getInstance().getCurrentLocation();
 		Coordinate[] bl = Configuration.getInstance().getFlagZone();
 		return (now.getX() > bl[0].getX() && now.getX() < bl[1].getX() 
-				&& now.getY() > bl[0].getY() && now.getY() < bl[1].getY());
+				&& now.getY() > bl[0].getY() && now.getY() < bl[1].getY()) && !nearWall();
 
 	}
 	
