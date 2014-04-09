@@ -3,6 +3,7 @@ package Test;
 import java.util.ArrayList;
 import java.util.Stack;
 
+import bluetoothclient.BluetoothReceiver;
 import communication.RemoteConnection;
 import capture.CaptureMechanism;
 import movement.Driver;
@@ -95,12 +96,16 @@ public class NavTestVIII {
 		Configuration conf = Configuration.getInstance();
 		
 		//TODO: replace this with bluetooth-----
-		conf.setFlagZone(new Coordinate(150, 240,0), new Coordinate(210,330,0));
-		conf.setStartCorner(4);
-		conf.setDropZone(new Coordinate(15, 300, 0));
-		conf.setOpponentDropZone(new Coordinate(0, 0, 0));
-		conf.setFlagColor(5);
+//		conf.setFlagZone(new Coordinate(150, 240,0), new Coordinate(210,330,0));
+//		conf.setStartCorner(4);
+//		conf.setDropZone(new Coordinate(15, 300, 0));
+//		conf.setOpponentDropZone(new Coordinate(0, 0, 0));
+//		conf.setFlagColor(5);
 		//-----------------
+		
+		BluetoothReceiver br = new BluetoothReceiver(); 
+		br.listenForStartCommand();// info in Config should be set 
+		
 		Driver driver = Driver.getInstance();
 		UltrasonicPoller up = UltrasonicPoller.getInstance();
 		PathTraveller traveller = PathTraveller.getInstance();
@@ -159,9 +164,11 @@ public class NavTestVIII {
 
 		int BLOCK_COLOR = conf.getBlockColor().getCode();
 		boolean blockFound  = false;
-		
+
+		Configuration.getInstance().setForwardSpeed(300);
+		Configuration.getInstance().setRotationSpeed(250);
 		//Turn off correction?
-		LineReader.unsubscribeToAll(oc);
+//		LineReader.unsubscribeToAll(oc);
 
 		while(!blockFound && !path.isEmpty()){
 			Coordinate p = path.pop();
@@ -256,8 +263,9 @@ public class NavTestVIII {
 		
 		destination = conf.getDropZone();
 		
-		LineReader.subscribeToAll(oc);
-
+//		LineReader.subscribeToAll(oc);
+		Configuration.getInstance().setForwardSpeed(350);
+		Configuration.getInstance().setRotationSpeed(300);
 		
 		traveller.recalculatePathToCoords((int)destination.getX(), (int)destination.getY() );
 		done  = false;
