@@ -84,18 +84,20 @@ public class NavTestVII {
 		LCDWriter lcd = LCDWriter.getInstance();
 		lcd.start();
 		Configuration conf = Configuration.getInstance();
+		
+		//TODO: replace this with bluetooth-----
 		conf.setFlagZone(new Coordinate(150, 240,0), new Coordinate(240, 330,0));
 		conf.setStartCorner(4);
 		conf.setDropZone(new Coordinate(120, 90, 0));
 		conf.setOpponentDropZone(new Coordinate(250, 250, 0));
-		
+		//-----------------
 		Driver driver = Driver.getInstance();
 		UltrasonicPoller up = UltrasonicPoller.getInstance();
 		PathTraveller traveller = PathTraveller.getInstance();
 		LineReader llr = LineReader.getLeftSensor();	//left + right line reader
 		LineReader rlr = LineReader.getRightSensor();
 		Odometer odo = Odometer.getInstance();
-//		OdometerCorrection oc = OdometerCorrection.getInstance();
+		OdometerCorrection oc = OdometerCorrection.getInstance();
 
 //		lcd.writeToScreen("destin: " + destination.toString(), 2);
 		up.start();
@@ -103,17 +105,15 @@ public class NavTestVII {
 		llr.start();
 		rlr.start();
 		
-//		LocalizationF localizer = new LocalizationF();
-//		localizer.callback();
+		LocalizationF localizer = new LocalizationF();
+		localizer.callback();
 		
-//		LineReader.subscribeToAll(oc);
+		LineReader.subscribeToAll(oc);
 		
 		Coordinate destination = traveller.getDestination();
 
 		
 		try {Thread.sleep(1000);}catch(Exception e){};
-		
-		
 		
 		
 		traveller.recalculatePathToCoords((int)destination.getX(), (int)destination.getY() );
@@ -267,7 +267,9 @@ public class NavTestVII {
 		driver.backward(20);
 		cm.close();
 		
-		driver.rotateToRelatively(360);
+		//TODO: play awesome victory music here
+		
+//		driver.rotateToRelatively(360);
 
 		
 	}
