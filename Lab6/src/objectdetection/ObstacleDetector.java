@@ -245,7 +245,7 @@ public class ObstacleDetector {
 		sensorMotor.rotateTo(-30, true);
 		
 		while(sensorMotor.getPosition() > -30){
-			if(up.getFilteredDistance() < (TILE_INCREMENTS ? 32 : 17)){
+			if(up.getFilteredDistance() < (TILE_INCREMENTS ? 30 : 17)){
 				Sound.beep();
 				obstacle = true;
 			}

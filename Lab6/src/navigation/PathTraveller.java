@@ -80,6 +80,35 @@ public class PathTraveller {
 		return surrounding;
 	}
 	
+	public ArrayList<Coordinate> getAllPointsAroundFlagZoneList(){
+		ArrayList<Coordinate> surrounding = new ArrayList<Coordinate>();
+		Coordinate[] bl = Configuration.getInstance().getFlagZone();
+		
+		for(int i = (int) bl[1].getX()+15; i>=bl[0].getX()-15; i-=30){
+			for(int j = (int) bl[1].getY()+15; j>=bl[0].getY()-15; j-=30){
+				if(i < bl[0].getX() && j < bl[0].getY()) continue; //bottom left corner
+				if(i < bl[0].getX() && j > bl[1].getY()) continue; //top left corner
+				if(i > bl[1].getX() && j < bl[0].getY()) continue; //bottom left corner
+				if(i > bl[1].getX() && j > bl[1].getY()) continue; //bottom left corner
+
+				if(i > bl[1].getX()){
+					surrounding.add(new Coordinate(i, j, 0));
+				}
+				if(i < bl[0].getX()){
+					surrounding.add(new Coordinate(i, j, 0));
+				}
+				if(j > bl[1].getY()){
+					surrounding.add(new Coordinate(i, j, 0));
+				}				
+				if(j < bl[0].getY()){
+					surrounding.add(new Coordinate(i, j, 0));
+				}
+			}
+		}
+		
+		return surrounding;
+	}
+	
 	public Stack<Coordinate> getAllPointsAroundFlagZone(){
 		Stack<Coordinate> surrounding = new Stack<Coordinate>();
 		Coordinate[] bl = Configuration.getInstance().getFlagZone();

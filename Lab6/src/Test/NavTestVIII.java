@@ -7,9 +7,11 @@ import communication.RemoteConnection;
 import capture.CaptureMechanism;
 import movement.Driver;
 import navigation.Map;
+import navigation.PathFinder;
 import navigation.PathTraveller;
 import lejos.nxt.Sound;
 import lejos.robotics.navigation.Waypoint;
+import lejos.robotics.pathfinding.Node;
 import objectdetection.ObjectDetectorII;
 import objectdetection.ObstacleDetector;
 import odometry.Odometer;
@@ -34,14 +36,13 @@ import sensors.UltrasonicPoller;
  * @author Peter Henderson
  *
  */
-public class NavTestVII {
+public class NavTestVIII {
 	
-	private static boolean followPath(){
+	private static boolean followPath(ArrayList<Coordinate> nodesAroundFlag){
 		PathTraveller t = PathTraveller.getInstance();
 		Driver driver = Driver.getInstance();
 		ObstacleDetector detector = ObstacleDetector.getInstance();
 		Map map = Map.getInstance();
-		Configuration conf = Configuration.getInstance();
 		
 		while(!t.pathIsEmpty()){
 			Waypoint next = t.popNextWaypoint();
@@ -74,6 +75,14 @@ public class NavTestVII {
 				break;
 			}
 			driver.travelTo(n);
+			
+			if(nodesAroundFlag != null){
+				Node m = Map.getInstance().getClosestNode(n.getX(), n.getY());
+				
+				if(nodesAroundFlag.contains(m)){
+					return true;
+				}
+			}
 		}
 		
 		return true;
@@ -120,10 +129,11 @@ public class NavTestVII {
 		traveller.recalculatePathToCoords((int)destination.getX(), (int)destination.getY() );
 		RemoteConnection.getInstance().setupConnection();
 
+		ArrayList<Coordinate> nodesAroundFlag = PathTraveller.getInstance().getAllPointsAroundFlagZoneList();
 		boolean done  = false;
 		while(!done){
 			try{
-			done = followPath();
+			done = followPath(nodesAroundFlag);
 			if(!done){ 
 				if(traveller.pathIsEmpty())
 					destination = traveller.getDestination();
@@ -248,7 +258,7 @@ public class NavTestVII {
 		done  = false;
 		while(!done){
 			try{
-			done = followPath();
+			done = followPath(null);
 			if(!done){ 
 				if(traveller.pathIsEmpty())
 					destination = traveller.getDestination();
