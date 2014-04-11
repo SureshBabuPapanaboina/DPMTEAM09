@@ -13,6 +13,7 @@ import lejos.nxt.NXTRegulatedMotor;
 import lejos.nxt.Sound;
 import lejos.robotics.navigation.Waypoint;
 import localization.Localization;
+import localization.LocalizationI;
 import objectdetection.ObstacleDetector;
 import objectdetection.Trajectory;
 import odometry.Odometer;
@@ -169,7 +170,7 @@ public class FullNavTestIII {
 		//=====================INIT END=========================
 		
 		//do localization 
-		Localization.localizeAndMoveToStartLoc();
+		LocalizationI.localizeAndMoveToStartLoc();
 		
 		
 		//===============end of localization==================== 

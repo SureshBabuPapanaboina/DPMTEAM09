@@ -1,7 +1,7 @@
 package robotcore;
 
 import lejos.nxt.Sound;
-import localization.Localization;
+import localization.LocalizationI;
 
 /**
  * This is similar to:
@@ -82,7 +82,7 @@ public enum States implements State{
 
 		@Override
 		public void onEnter() {
-			Localization.localizeAndMoveToStartLoc();
+			LocalizationI.localizeAndMoveToStartLoc();
 		}
 
 		@Override

@@ -7,6 +7,7 @@ import navigation.PathTraveller;
 import lejos.nxt.Sound;
 import lejos.robotics.navigation.Waypoint;
 import localization.Localization;
+import localization.LocalizationI;
 import objectdetection.ObstacleDetector;
 import odometry.Odometer;
 import odometry.OdometerCorrection;
@@ -86,7 +87,7 @@ public class FullNavTestII {
 		//=====================INIT END=========================
 		
 		//do localization 
-		Localization.localizeAndMoveToStartLoc();
+		LocalizationI.localizeAndMoveToStartLoc();
 		
 		
 		//====end of localization 

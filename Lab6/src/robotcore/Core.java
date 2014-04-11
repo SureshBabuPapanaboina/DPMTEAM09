@@ -1,12 +1,14 @@
 package robotcore;
 
 import java.util.ArrayList;
+
 import bluetoothclient.BluetoothReceiver;
 import communication.RemoteConnection;
 import capture.CaptureMechanism;
 import movement.Driver;
 import navigation.PathTraveller;
 import lejos.nxt.Sound;
+import localization.Localization;
 import odometry.Odometer;
 import odometry.OdometerCorrection;
 import robotcore.Configuration;

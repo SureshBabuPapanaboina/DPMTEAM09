@@ -1,7 +1,7 @@
 package integration;
 
 import lejos.nxt.Button;
-import localization.Localization;
+import localization.LocalizationI;
 import movement.Driver;
 import odometry.Odometer;
 import odometry.OdometerCorrection;
@@ -24,7 +24,7 @@ public class LocAndOdoCorr {
 		init();	
 		lcd.writeToScreen("Enter!" , 0);
 		driver.setSpeed(150);
-		Localization.localizeAndMoveToStartLoc();
+		LocalizationI.localizeAndMoveToStartLoc();
 		nap(200);
 		LineReader.subscribeToAll(odoCorr);	
 		LineReader.unpauseAll();
