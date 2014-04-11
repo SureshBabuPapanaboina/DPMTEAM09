@@ -14,7 +14,7 @@ import java.io.IOException;
 
 import lejos.nxt.LCD;
 import lejos.nxt.comm.*;
-/*
+/**
  * This class inits a bluetooth connection, waits for the data
  * and then allows access to the data after closing the BT channel.
  * 
@@ -27,6 +27,9 @@ import lejos.nxt.comm.*;
 public class BluetoothConnection {
 	private Transmission trans;
 	
+	/**
+	 * Constructor
+	 */
 	public BluetoothConnection() {
 		LCD.clear();
 		LCD.drawString("Starting BT connection", 0, 0);
@@ -44,10 +47,17 @@ public class BluetoothConnection {
 		conn.close();
 	}
 	
+	/**
+	 * Get the transmission
+	 * @return
+	 */
 	public Transmission getTransmission() {
 		return this.trans;
 	}
 	
+	/**
+	 * Print for testing
+	 */
 	public void printTransmission() {
 		try {
 			LCD.clear();

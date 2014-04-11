@@ -39,9 +39,7 @@ public final class Driver{
 	 * use getInstance to either generate a new instance on the fly or get the previously
 	 * generated instance 
 	 * @param config
-	 * @Deprecated open for extend
 	 */
-
 	private Driver(Configuration config){
 		leftMotor= Configuration.LEFT_MOTOR; 
 		rightMotor = Configuration.RIGHT_MOTOR;
@@ -81,25 +79,12 @@ public final class Driver{
 		
 		config.setStartLocation(currentLoc.copy());
 		
-//		double distance = Coordinate.calculateDistance(currentLoc, nextLocation);
 		double turningAngle = Coordinate.calculateRotationAngle(currentLoc, nextLocation);
-		
-//		if (DEBUG) RConsole.println("Driver:travelTo:CurrentCoord: " + currentLoc.toString2());
-//		if (DEBUG) RConsole.println("Driver:travelTo:NxtCoord: " + nextLocation.toString2());
-//		if (DEBUG) RConsole.println("Driver:travelTo:traveling dist: " + distance);
-//		if (DEBUG) RConsole.println("Driver:travelTo:turning Angle: " + turningAngle);
 		//make turn
 		rotateToRelatively(turningAngle);
 
 		setSpeed(config.getForwardSpeed());
 		
-		
-//		int currentT = Configuration.LEFT_MOTOR.getTachoCount();
-//		double rotations = distance/ (2*Math.PI*(+ Configuration.RIGHT_RADIUS)) ;
-//		if (DEBUG) RConsole.println("rotations" + rotations );
-		
-//		int finalTachoCount =  currentT+ (int) (rotations * 360 );
-//		if (DEBUG) RConsole.println("current Tacho " + Configuration.LEFT_MOTOR.getTachoCount() + "\t\tfinal Tacho"  + finalTachoCount );
 		motorForward();
 		while(!motorStopped && (!withinRange(odo.getX(), nextLocation.getX(), 3.75) || !withinRange(odo.getY(), nextLocation.getY(), 3.75))){
 			double desiredAngle = Coordinate.calculateRotationAngle(odo.getCurrentCoordinate(), nextLocation);
@@ -111,15 +96,11 @@ public final class Driver{
 				setSpeed(config.getForwardSpeed());
 				motorForward();
 			}
-//			if (DEBUG) RConsole.println("current Tacho " + Configuration.LEFT_MOTOR.getTachoCount() );
 			try{Thread.sleep(25);} catch (Exception e){};
 		}
 		
 		motorStop();		
-//		if (DEBUG) RConsole.println("Driver:travelTo:currentCoordinate : x " + odo.getX()
-//			+"\ty " + odo.getY() 
-//			+ "\ttheata " +odo.getTheta());
-//		if (DEBUG) RConsole.println("=======");
+
 		
 			
 		}
@@ -196,7 +177,7 @@ public final class Driver{
 	 * the return value of {@link #isTurning()} !! </b> <br> 
 	 * @param degree 
 	 * @param returnRightAway should the function finish before finishing the turn 
-	 * @deprecated since this method will return right away and will not wait for the rotation to finish
+	 *  since this method will return right away and will not wait for the rotation to finish
 	 * we must manually call the {@link #motorStop()} method to ensure the motorStopped flag is set correctly.
 	 * also note that {@link #isTurning()} will never return true when this method is called also due to the 
 	 * return right away property. 
@@ -302,7 +283,9 @@ public final class Driver{
 		return motorStopped;
 	}
 	
+	//Lock for synch
 	Object lock = new Object();
+	
 	/**
 	 * stop motor
 	 * All actions involving stopping the motor must call this method

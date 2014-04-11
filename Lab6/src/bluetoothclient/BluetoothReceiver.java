@@ -25,7 +25,6 @@ public class BluetoothReceiver {
 	 * It sets the configuration file
 	 */
 	public void listenForStartCommand(){
-		// example usage of Tranmission class
 		Transmission t = conn.getTransmission();
 
 		if(t.role.getId() == 2){
@@ -42,7 +41,6 @@ public class BluetoothReceiver {
 			config.setDropZone(new Coordinate(t.greenDZone_X*30, t.greenDZone_Y*30, 0));		
 			config.setOpponentDropZone(new Coordinate(t.redDZone_X*30, t.redDZone_Y*30, 0));		
 		}
-		//TODO more for the final 
 	}
 
 }

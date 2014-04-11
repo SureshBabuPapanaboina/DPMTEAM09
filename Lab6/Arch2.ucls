@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<class-diagram version="1.1.4" icons="true" automaticImage="JPEG" always-add-relationships="false" 
+<class-diagram version="1.1.5" icons="true" automaticImage="JPEG" always-add-relationships="false" 
   generalizations="true" realizations="true" associations="true" dependencies="false" nesting-relationships="true">  
-  <class id="1" language="java" name="Test.blueTTst" project="Lab6" file="/Lab6/src/Test/blueTTst.java" binary="false" 
-    corner="BOTTOM_RIGHT">    
+  <class id="1" language="java" name="bluetooth.blueTTst" project="Lab6" file="/Lab6/test/bluetooth/blueTTst.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="332" y="760"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
@@ -10,8 +10,8 @@
       <operations public="true" package="true" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="2" language="java" name="Test.FullNavTestIII" project="Lab6" file="/Lab6/src/Test/FullNavTestIII.java" 
-    binary="false" corner="BOTTOM_RIGHT">    
+  <class id="2" language="java" name="integration.FullNavTestIII" project="Lab6" 
+    file="/Lab6/test/integration/FullNavTestIII.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="336" y="644"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
@@ -19,8 +19,8 @@
       <operations public="true" package="true" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="3" language="java" name="Test.LocAndOdoCorr" project="Lab6" file="/Lab6/src/Test/LocAndOdoCorr.java" 
-    binary="false" corner="BOTTOM_RIGHT">    
+  <class id="3" language="java" name="integration.LocAndOdoCorr" project="Lab6" 
+    file="/Lab6/test/integration/LocAndOdoCorr.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="474" y="761"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
@@ -28,8 +28,8 @@
       <operations public="true" package="true" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="4" language="java" name="Test.FullNavTestII" project="Lab6" file="/Lab6/src/Test/FullNavTestII.java" 
-    binary="false" corner="BOTTOM_RIGHT">    
+  <class id="4" language="java" name="integration.FullNavTestII" project="Lab6" 
+    file="/Lab6/test/integration/FullNavTestII.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="337" y="527"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
@@ -37,8 +37,8 @@
       <operations public="true" package="true" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="5" language="java" name="Test.FullNavTest" project="Lab6" file="/Lab6/src/Test/FullNavTest.java" 
-    binary="false" corner="BOTTOM_RIGHT">    
+  <class id="5" language="java" name="integration.FullNavTest" project="Lab6" 
+    file="/Lab6/test/integration/FullNavTest.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="475" y="646"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      

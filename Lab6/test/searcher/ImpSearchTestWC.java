@@ -7,9 +7,9 @@ import communication.RemoteConnection;
 
 import lejos.nxt.Sound;
 import movement.Driver;
-import objectdetection.ObjectDetectorII;
+import objectdetection.ObjectDetector;
 import objectdetection.Trajectory;
-import objectdetection.ObjectDetectorII.ItemLocation;
+import objectdetection.ObjectDetector.ItemLocation;
 import odometry.Odometer;
 import robotcore.Configuration;
 import robotcore.Coordinate;
@@ -47,7 +47,7 @@ public class ImpSearchTestWC {
 			Coordinate p = path.pop();
 			lcd.writeToScreen("Des:" +p.toString(), 4);
 			dr.turnTo(Coordinate.calculateRotationAngle(config.getCurrentLocation(), p));
-			int result = ObjectDetectorII.lookForItem(BLOCK_COLOR);
+			int result = ObjectDetector.lookForItem(BLOCK_COLOR);
 			if(result ==1 ){
 				cm.open();
 				dr.forward(15);
@@ -71,7 +71,7 @@ public class ImpSearchTestWC {
 			
 			dr.travelTo(p);
 			
-			result = ObjectDetectorII.lookForItem(BLOCK_COLOR);
+			result = ObjectDetector.lookForItem(BLOCK_COLOR);
 			if(result ==1 ){
 				cm.open();
 				dr.forward(15);

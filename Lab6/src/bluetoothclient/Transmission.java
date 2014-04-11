@@ -9,7 +9,7 @@
 */
 package bluetoothclient;
 
-/*
+/**
  * Skeleton class to hold datatypes needed for final project
  * 
  * Simply all public variables so can be accessed with 

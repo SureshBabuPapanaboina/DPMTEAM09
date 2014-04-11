@@ -94,7 +94,6 @@ public class RemoteConnection {
 			conn = Bluetooth.getConnector();
 
 		try {
-			//TODO: need to change name of the two bricks to match the standards
 			remoteNXT = new RemoteNXT("TEAM09-2", conn);
 		} catch (IOException e) {
 			LCD.drawString("Conn failed", 0, 2);

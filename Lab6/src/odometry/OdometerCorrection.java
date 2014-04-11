@@ -34,6 +34,9 @@ public class OdometerCorrection implements LineReaderListener{
 
 	private boolean DEBUG = false ;
 	
+	/**
+	 * constructor
+	 */
 	private OdometerCorrection(){
 		lMotor = Configuration.LEFT_MOTOR;
 		rMotor = Configuration.RIGHT_MOTOR;
@@ -46,6 +49,10 @@ public class OdometerCorrection implements LineReaderListener{
 		timeEndL = timeEndR = 0;
 	}
 	
+	/**
+	 * Callback for the Line Listener when the line has been passed, 
+	 * update the correction if needed
+	 */
 	public void passedLine(boolean isLeft)
 	{
 		//get angle from odometer in degrees

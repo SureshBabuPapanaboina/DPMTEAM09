@@ -1,4 +1,3 @@
-package bluetooth;
 /*
 * @author Sean Lawlor
 * @date November 3, 2011
@@ -8,12 +7,15 @@ package bluetooth;
 * February 28, 2014
 * Changed parameters for W2014 competition
 */
+package bluetooth;
+
 import bluetoothclient.BluetoothConnection;
 import bluetoothclient.PlayerRole;
 import bluetoothclient.StartCorner;
 import bluetoothclient.Transmission;
 import lejos.nxt.Button;
 import lejos.nxt.LCD;
+//import bluetooth.*;
 
 public class BTTest {
 	// example call of the transmission protocol
@@ -34,8 +36,12 @@ public class BTTest {
 			StartCorner corner = t.startingCorner;
 			int greenZoneLL_X = t.greenZoneLL_X;
 			int greenZoneLL_Y = t.greenZoneLL_Y;
+			int greenZoneUR_X = t.greenZoneUR_X;
+			int greenZoneUR_Y = t.greenZoneUR_Y;
 			int redZoneLL_X = t.redZoneLL_X;
 			int redZoneLL_Y = t.redZoneLL_Y;
+			int redZoneUR_X = t.redZoneUR_X;
+			int redZoneUR_Y = t.redZoneUR_Y;
 			int greenDZone_X = t.greenDZone_X;
 			int greenDZone_Y = t.greenDZone_Y;
 			int redDZone_X = t.redDZone_X;

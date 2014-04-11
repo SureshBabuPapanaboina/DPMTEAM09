@@ -1,5 +1,9 @@
 package robotcore;
 
+/**
+ * Class implementing a basic point
+ * TODO: isn't this a standard library implementation? -ph
+ */
 public class Point {
 	private double x , y ;
 	

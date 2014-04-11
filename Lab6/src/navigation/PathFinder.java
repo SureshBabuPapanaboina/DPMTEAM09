@@ -31,6 +31,10 @@ public class PathFinder {
 		this.map = Map.getInstance();
 	}
 	
+	/**
+	 * Get singleton instance
+	 * @return
+	 */
 	public static PathFinder getInstance(){
 		if(instance == null) instance = new PathFinder();
 		
@@ -44,11 +48,6 @@ public class PathFinder {
 	public Path getOptimalPathToFlagZone(){
 		config = Configuration.getInstance();
 
-		//Assuming we want to stop in front of the flag zone, not in it,
-		//so 15 cm to the right and 15 cm down from the bottom left coord
-		//This is also assuming that the flag zone is in the top right corner
-		//as for the demo 
-		//TODO: change this hard coded assumption
 		Coordinate[] coord = config.getFlagZone();
 		
 		Node flagNode = map.getClosestNode(coord[0].getX()+15, coord[0].getY()-15);
@@ -56,6 +55,10 @@ public class PathFinder {
 		return getPathBetweenNodes(getCurrentNode(), flagNode);
 	}
 	
+	/**
+	 * This gets teh current node the robot is at
+	 * @return
+	 */
 	public Node getCurrentNode(){
 		return map.getClosestNode(Odometer.getInstance().getX(), Odometer.getInstance().getY());
 	}
@@ -76,6 +79,12 @@ public class PathFinder {
 		
 	}
 	
+	/**
+	 * Gets a path between two given nodes
+	 * @param start
+	 * @param end
+	 * @return
+	 */
 	public Path getPathBetweenNodes(Node start, Node end){
 		Path path = search.findPath(start, end);
 		if(path == null || path.isEmpty()){

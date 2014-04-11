@@ -97,31 +97,18 @@ public class BasicPeakTest {
 		Configuration config = Configuration.getInstance();
 
 		UltrasonicPoller up = UltrasonicPoller.getInstance();
-//		PathTraveller traveller = PathTraveller.getInstance();
-//		LineReader llr = LineReader.getLeftSensor();	//left + right line reader
-//		LineReader rlr = LineReader.getRightSensor();
+
 		Odometer odo = Odometer.getInstance();
-//		OdometerCorrection oc = OdometerCorrection.getInstance();
 		Driver.setSpeed(30);
 		Driver dr = Driver.getInstance();
-		ObjectDetector detector = ObjectDetector.getInstance();
 		ObjRec or = new ObjRec();
 		
 		up.start();
 		odo.start();
-//		llr.start();
-//		rlr.start();
-		
 
-		boolean blockFound  = false;
-//		detector.start();
-//		if(!detector.objectFound())
-//			dr.travelTo(15, 45);
+
 		Trajectory block = searchTile();
-//		while(!blockFound){
-//			lcd.writeToScreen("blockf:" + blockFound, 1);
-//			blockFound = detector.objectFound();
-//		}
+
 //		
 		lcd.writeToScreen("here", 1);
 		if(block != null){

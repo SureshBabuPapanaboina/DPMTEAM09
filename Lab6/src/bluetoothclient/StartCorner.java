@@ -10,6 +10,10 @@
 */
 package bluetoothclient;
 
+/**
+ * Class representing the starting corner with info
+ *
+ */
 public enum StartCorner {
 	BOTTOM_LEFT(1,0,0, "BL"),
 	BOTTOM_RIGHT(2,300,0, "BR"),

@@ -1,5 +1,10 @@
 package objectdetection;
 
+/**
+ * Class for representing the trajectory of an object
+ * @author Peter Henderson
+ *
+ */
 public class Trajectory {
 	
 	public double theta;

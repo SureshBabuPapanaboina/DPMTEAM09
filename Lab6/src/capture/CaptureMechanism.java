@@ -6,25 +6,32 @@ import robotcore.Configuration;
 import robotcore.Coordinate;
 
 /**
- * Class for the basic capture mechanism, assumes that doors start off as closed
- * @author yuechuan
- *
+ * Class for the basic capture mechanism, assumes both arms are aligned to the inside of the robot
+ * at -90 to start, this is now 0 degrees
+ * 
+ * @author Peter Henderson
  */
 public class CaptureMechanism {
-	//	private static Configuration config = Configuration.getInstance();
+
+	//Instance for singleton
 	private static CaptureMechanism instance;
-	
+
+	//the dropoff point for removing wrong blocks
 	private static Coordinate dropOff;
 
 	/**
 	 * do not allow creating instances 
 	 */
 	private CaptureMechanism(){}
-	
+
 	public static void setDropOff(Coordinate drop){
 		dropOff = drop;
 	}
 
+	/**
+	 * Get singleton instance
+	 * @return
+	 */
 	public static CaptureMechanism getInstance(){
 		if(instance == null) instance = new CaptureMechanism();
 
@@ -70,8 +77,7 @@ public class CaptureMechanism {
 	}
 
 	/**
-	 * Removes a block from the end zone
-	 * TODO: fix this for a search zone greater than 2x2
+	 * Removes a block from the end zone by slapping it with the sensor arm
 	 */
 	public void removeBlock(){ 
 
@@ -87,15 +93,15 @@ public class CaptureMechanism {
 	}
 
 	/**
-	 * Removes a block from the end zone
-	 * TODO: fix this for a search zone greater than 2x2
+	 * This is the new block removal code, 
+	 * using the little arms to pick it up and bring it out of the zone
 	 */
 	public void removeBlockII(){ 
 		RemoteConnection rc = RemoteConnection.getInstance();
-		
+
 		rc.getRemoteNXT().A.setSpeed(200);
 		rc.getRemoteNXT().B.setSpeed(200);
-		
+
 		open();
 
 		Driver.getInstance().forward(18);
@@ -103,21 +109,21 @@ public class CaptureMechanism {
 		//grab the block
 		rc.getRemoteNXT().A.rotateTo(-60, true);
 		rc.getRemoteNXT().B.rotateTo(-60);
-	
+
 		if(dropOff != null)
 			Driver.getInstance().travelTo(dropOff);
 		else{
 			Driver.getInstance().rotateToRelatively(180);
 			Driver.getInstance().forward(8);
 		}
-		
+
 		rc.getRemoteNXT().A.rotateTo(-90, true);
 		rc.getRemoteNXT().B.rotateTo(-90);
-		
+
 		Driver.getInstance().backward(17);
 
 		close();
-		
+
 		Driver.getInstance().forward(7);
 
 

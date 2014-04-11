@@ -1,6 +1,7 @@
 package robotcore;
 
 import lejos.nxt.Sound;
+import localization.Localization;
 
 /**
  * This is similar to:

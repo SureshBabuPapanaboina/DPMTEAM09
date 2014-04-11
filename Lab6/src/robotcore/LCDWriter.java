@@ -15,6 +15,10 @@ public class LCDWriter extends Thread {
 	private Object lock ;
 	private static LCDWriter lcd ;
 
+	/**
+	 * Constructor
+	 * @param config
+	 */
 	private LCDWriter(Configuration config){
 		lock = new Object();
 		s = new String[8];
@@ -34,6 +38,9 @@ public class LCDWriter extends Thread {
 		return lcd;
 	}
 	
+	/**
+	 * Runs the thread
+	 */
 	public void run(){
 		long displayStart, displayEnd;
 		LCD.clearDisplay();

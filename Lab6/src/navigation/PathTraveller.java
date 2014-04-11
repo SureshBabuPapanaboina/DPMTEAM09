@@ -25,12 +25,13 @@ public class PathTraveller {
 	private static PathTraveller instance;
 	private PathFinder finder;
 	private Map map;
-//	private Stack<Waypoint> path;
 	private Path path;
 	private ListIterator<Waypoint> pathIter;
-	private Driver driver;
-	private ObstacleDetector detector;
 	
+	/**
+	 * Get singleton instance
+	 * @return
+	 */
 	public static PathTraveller getInstance(){
 		if(instance == null) instance = new PathTraveller();
 		
@@ -41,12 +42,14 @@ public class PathTraveller {
 	 * Private constructor
 	 */
 	private PathTraveller(){
-		driver = Driver.getInstance();
 		finder = PathFinder.getInstance();
 		map = Map.getInstance();
-//		path = new Stack<Waypoint>();
 	}
 	
+	/**
+	 * Get all the coordinates in the flag zone by 15 cm increments
+	 * @return
+	 */
 	public Stack<Coordinate> getAllPointsInFlagZone(){
 		Stack<Coordinate> surrounding = new Stack<Coordinate>();
 		Coordinate[] bl = Configuration.getInstance().getFlagZone();
@@ -58,6 +61,10 @@ public class PathTraveller {
 		return surrounding;
 	}
 	
+	/**
+	 * Get all the coordinates in teh flag zone by 30 cm increments
+	 * @return
+	 */
 	public Stack<Coordinate> getAllTilesInFlagZone(){
 		Stack<Coordinate> surrounding = new Stack<Coordinate>();
 		Coordinate[] bl = Configuration.getInstance().getFlagZone();
@@ -69,6 +76,10 @@ public class PathTraveller {
 		return surrounding;
 	}
 	
+	/**
+	 * Get list of coords in flag zone by 30 cm
+	 * @return
+	 */
 	public ArrayList<Coordinate> getAllPointsInFlagZoneList(){
 		ArrayList<Coordinate> surrounding = new ArrayList<Coordinate>();
 		Coordinate[] bl = Configuration.getInstance().getFlagZone();
@@ -80,6 +91,10 @@ public class PathTraveller {
 		return surrounding;
 	}
 	
+	/**
+	 * Get all points surrounding the flag zone except for diagonal for pathfinding as list
+	 * @return
+	 */
 	public ArrayList<Coordinate> getAllPointsAroundFlagZoneList(){
 		ArrayList<Coordinate> surrounding = new ArrayList<Coordinate>();
 		Coordinate[] bl = Configuration.getInstance().getFlagZone();
@@ -109,6 +124,10 @@ public class PathTraveller {
 		return surrounding;
 	}
 	
+	/**
+	 * Get all points surrounding the flag zone except for diagonal for pathfinding as stack
+	 * @return
+	 */
 	public Stack<Coordinate> getAllPointsAroundFlagZone(){
 		Stack<Coordinate> surrounding = new Stack<Coordinate>();
 		Coordinate[] bl = Configuration.getInstance().getFlagZone();
@@ -140,10 +159,11 @@ public class PathTraveller {
 	
 	
 
+	/**
+	 * Get the best destination that is not blocked from the points surrounding the flag zone
+	 * @return
+	 */
 	public Coordinate getDestination(){
-//		Coordinate[] flagzone = Configuration.getInstance().getFlagZone();
-//		boolean top = Configuration.getInstance().getStartLocation().getY() > 150;
-//		boolean left = Configuration.getInstance().getStartLocation().getX() < 150;
 		Coordinate current = Odometer.getInstance().getCurrentCoordinate();
 		Coordinate best = null;
 		double bestDist = Integer.MAX_VALUE;
@@ -181,33 +201,69 @@ public class PathTraveller {
 		path = finder.getPathBetweenNodes(map.getClosestNode(x,y), 
 								   map.getClosestNode(tox, toy));
 		pathIter = path.listIterator();
-//		dumpToStack(p); 
 	}
 	
 	/**
-	 * Travels along the currently stored path, checking for obstacles at each point
-	 * Returns whether arrived at destination or not
+	 * Follow a path checking to see if we have entered the area surrounding the flag zone if
+	 * passed null, then assumes that don't stop for flag zone
+	 * @param nodesAroundFlag
 	 * @return
 	 */
-	public boolean followThePath(){
-		while(!pathIter.hasNext()){
-			Waypoint next = pathIter.next();
+	public static boolean followPath(ArrayList<Coordinate> nodesAroundFlag){
+		PathTraveller t = PathTraveller.getInstance();
+		Driver driver = Driver.getInstance();
+		ObstacleDetector detector = ObstacleDetector.getInstance();
+		Map map = Map.getInstance();
+		
+		while(!t.pathIsEmpty()){
+			Waypoint next = t.popNextWaypoint();
 			//Turn to the next tile
 			driver.turnTo(Coordinate.calculateRotationAngle(
-												Configuration.getInstance().getCurrentLocation(), 
+												Odometer.getInstance().getCurrentCoordinate(), 
 												new Coordinate(next)));
 			
+			
 			//scan the next area
-			if(detector.scanTile()){
+			if(detector.scanTileWithSideSensors()){
 				//block next tile
 				map.blockNodeAt(next.x, next.y);
 				return false;
 			}
+			
+			Coordinate n = new Coordinate(next);
+			switch(Odometer.getInstance().getDirection()){
+			case NORTH:
+				n.setY(n.getY()+3);
+				break;
+			case WEST:
+				n.setX(n.getX()-3);
+				break;
+			case EAST:
+				n.setX(n.getX()+3);
+				break;	
+			case SOUTH:
+				n.setY(n.getY()-3);
+				break;
+			}
+			driver.travelTo(n);
+			
+			if(nodesAroundFlag != null){
+				Node m = Map.getInstance().getClosestNode(n.getX(), n.getY());
+				
+				if(nodesAroundFlag.contains(m)){
+					return true;
+				}
+			}
 		}
 		
 		return true;
+			
 	}
 	
+	/**
+	 * Check if the current path is done
+	 * @return
+	 */
 	public boolean pathIsEmpty(){
 		return !pathIter.hasNext();
 	}
@@ -219,20 +275,6 @@ public class PathTraveller {
 	public Waypoint popNextWaypoint(){
 		return pathIter.next();
 	}
-//	
-//	/**
-//	 * Pushes all points from lejos.Path to an internal Stack
-//	 * This makes it more intuitive, though may be unnecessary 
-//	 * @param p
-//	 */
-//	private void dumpToStack(Path p){
-//		path = new Stack<Waypoint>();
-//		
-//		ListIterator<Waypoint> iter = p.listIterator(p.size());
-//		while(iter.hasPrevious()){
-//			Waypoint point = iter.previous();
-//			path.push(point);
-//		}
-//	}
+
 	
 }

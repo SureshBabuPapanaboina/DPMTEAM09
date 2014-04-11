@@ -33,6 +33,10 @@ public class Odometer extends Thread {
 		return odo;
 	}
 
+	/**
+	 * Constructor
+	 * @param config
+	 */
 	private Odometer(Configuration config){
 		lock = new Object();
 		lMotor = Configuration.LEFT_MOTOR;

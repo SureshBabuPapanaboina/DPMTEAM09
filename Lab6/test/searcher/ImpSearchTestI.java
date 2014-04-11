@@ -6,9 +6,9 @@ import java.util.Stack;
 import communication.RemoteConnection;
 import lejos.nxt.Sound;
 import movement.Driver;
-import objectdetection.ObjectDetectorII;
+import objectdetection.ObjectDetector;
 import objectdetection.Trajectory;
-import objectdetection.ObjectDetectorII.ItemLocation;
+import objectdetection.ObjectDetector.ItemLocation;
 import odometry.Odometer;
 import robotcore.Configuration;
 import robotcore.Coordinate;
@@ -48,7 +48,7 @@ public class ImpSearchTestI {
 			Coordinate p = path.pop();
 			lcd.writeToScreen("Des:" +p.toString(), 4);
 			dr.turnTo(Coordinate.calculateRotationAngle(config.getCurrentLocation(), p));
-			int result = ObjectDetectorII.lookForItemII(BLOCK_COLOR);
+			int result = ObjectDetector.lookForItemII(BLOCK_COLOR);
 			if(result ==1 ){
 				Sound.beep();
 				blockFound = true;
@@ -89,7 +89,7 @@ public class ImpSearchTestI {
 			
 			dr.travelTo(p);
 			
-			result = ObjectDetectorII.lookForItemII(BLOCK_COLOR);
+			result = ObjectDetector.lookForItemII(BLOCK_COLOR);
 			if(result ==1 ){
 				Sound.beep();
 				blockFound = true;

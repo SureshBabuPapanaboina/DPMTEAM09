@@ -2,13 +2,14 @@ bluetooth
 bluetoothclient
 capture
 communication
+integration
 interbrick
+localization
 movement
 navigation
 objectdetection
 obstacle
 odometry
-reference
 robotcore
 search
 searcher
